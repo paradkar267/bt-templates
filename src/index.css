@@ -50,7 +50,7 @@
 
 @layer components {
   .glass-panel {
-    @apply bg-white/60 dark:bg-white/5 backdrop-blur-2xl border border-black/5 dark:border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.05)];
+    @apply bg-white/60 dark:bg-white/5 backdrop-blur-xl border border-black/5 dark:border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.05)] transform-gpu;
   }
 
   .glass-nav {
@@ -62,7 +62,9 @@
   }
 
   .aurora-blob {
-    @apply absolute rounded-full mix-blend-multiply filter blur-[120px] opacity-60 animate-blob pointer-events-none;
+    @apply absolute rounded-full opacity-40 animate-blob pointer-events-none transform-gpu;
+    filter: blur(80px);
+    will-change: transform;
   }
   
   .glow-hover {
