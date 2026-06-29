@@ -1,0 +1,251 @@
+import React, { useState, useEffect, useMemo } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { ShoppingCart, Search, ArrowLeft, Filter, X } from 'lucide-react';
+import { useCart } from './CartContext';
+import { useTemplates } from './useTemplates';
+import { DenseCard } from './Home';
+import { SkeletonCard } from './components/ui/Skeleton';
+import UserMenu from './UserMenu';
+import { motion, AnimatePresence } from "motion/react";
+import { useTheme } from './ThemeContext';
+import { useAuth } from './AuthContext';
+
+export default function TemplatesPage() {
+  const { cartItems } = useCart();
+  const { theme } = useTheme();
+  const { requireAuth } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const isDark = theme === 'dark';
+  
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedTechs, setSelectedTechs] = useState([]);
+  const [priceRange, setPriceRange] = useState("all");
+  const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
+    const tech = new URLSearchParams(location.search).get('tech');
+    if (tech) {
+      setSelectedTechs([tech]);
+    }
+  }, [location.search]);
+
+  const { templates, loading } = useTemplates();
+
+  // Extract unique tech categories automatically from templates
+  const allTechs = useMemo(() => {
+    if (!templates.length) return ["Figma", "Next.js", "React", "Webflow", "Tailwind", "HTML", "Shopify", "React Native", "Framer"];
+    const techs = new Set(templates.map(t => t.category));
+    return Array.from(techs).sort();
+  }, [templates]);
+
+  const toggleTech = (tech) => {
+    setSelectedTechs(prev => 
+      prev.includes(tech) ? prev.filter(t => t !== tech) : [...prev, tech]
+    );
+  };
+
+  const filteredTemplates = templates.filter(t => {
+    // Tech filter
+    const matchesTech = selectedTechs.length === 0 || selectedTechs.includes(t.category);
+    
+    // Price filter
+    const price = parseFloat(t.price);
+    let matchesPrice = true;
+    if (priceRange === "free") matchesPrice = price === 0;
+    else if (priceRange === "under40") matchesPrice = price > 0 && price < 40;
+    else if (priceRange === "40to70") matchesPrice = price >= 40 && price <= 70;
+    else if (priceRange === "over70") matchesPrice = price > 70;
+
+    // Search filter
+    const searchLower = searchQuery.toLowerCase();
+    const matchesSearch = !searchQuery || 
+                          t.title?.toLowerCase().includes(searchLower) || 
+                          t.author?.toLowerCase().includes(searchLower) ||
+                          t.description?.toLowerCase().includes(searchLower) ||
+                          t.category?.toLowerCase().includes(searchLower) ||
+                          t.tag?.toLowerCase().includes(searchLower) ||
+                          (t.keywords && t.keywords.some(k => k?.toLowerCase().includes(searchLower)));
+                          
+    return matchesTech && matchesPrice && matchesSearch;
+  });
+
+  const SidebarContent = () => (
+    <div className="space-y-8">
+      {/* Search */}
+      <div>
+        <h3 className="text-sm font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-3">Search</h3>
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+          <input 
+            type="text" 
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search templates..." 
+            className={`w-full pl-10 pr-4 py-2.5 border rounded-xl outline-none transition-all text-sm font-medium shadow-sm ${isDark ? 'bg-white/5 border-white/10 text-white focus:border-white/30 placeholder:text-gray-500' : 'bg-white border-gray-200 text-black focus:border-black placeholder:text-gray-400'}`}
+          />
+        </div>
+      </div>
+
+      {/* Technology */}
+      <div>
+        <h3 className="text-sm font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-3">Technology</h3>
+        <div className="space-y-2 max-h-[300px] overflow-y-auto pr-2" style={{ scrollbarWidth: 'thin' }}>
+          {allTechs.map(tech => (
+            <label key={tech} className="flex items-center gap-3 cursor-pointer group py-1">
+              <div className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${selectedTechs.includes(tech) ? (isDark ? 'bg-white border-white text-black' : 'bg-black border-black text-white') : (isDark ? 'border-white/20 group-hover:border-white/50' : 'border-gray-300 group-hover:border-black')}`}>
+                {selectedTechs.includes(tech) && (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                )}
+              </div>
+              <span className={`text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>{tech}</span>
+              {/* Invisible checkbox for accessibility */}
+              <input type="checkbox" className="hidden" checked={selectedTechs.includes(tech)} onChange={() => toggleTech(tech)} />
+            </label>
+          ))}
+        </div>
+      </div>
+
+      {/* Price */}
+      <div>
+        <h3 className="text-sm font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-3">Price Range</h3>
+        <div className="space-y-2">
+          {[
+            { id: "all", label: "Any Price" },
+            { id: "free", label: "Free" },
+            { id: "under40", label: "Under $40" },
+            { id: "40to70", label: "$40 to $70" },
+            { id: "over70", label: "$70 & Above" },
+          ].map(range => (
+            <label key={range.id} className="flex items-center gap-3 cursor-pointer group py-1">
+              <div className={`w-5 h-5 rounded-full border flex items-center justify-center transition-colors ${priceRange === range.id ? (isDark ? 'border-white' : 'border-black') : (isDark ? 'border-white/20 group-hover:border-white/50' : 'border-gray-300 group-hover:border-black')}`}>
+                {priceRange === range.id && (
+                  <div className={`w-2.5 h-2.5 rounded-full ${isDark ? 'bg-white' : 'bg-black'}`} />
+                )}
+              </div>
+              <span className={`text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>{range.label}</span>
+              <input type="radio" className="hidden" name="price" checked={priceRange === range.id} onChange={() => setPriceRange(range.id)} />
+            </label>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+
+  return (
+    <div className={`min-h-screen flex flex-col font-sans pb-32 transition-colors duration-1000 ${isDark ? 'bg-transparent text-white' : 'bg-gray-50 text-black'}`}>
+      
+      {/* Navigation */}
+      <nav className={`h-[80px] w-full px-4 md:px-8 lg:px-16 flex items-center justify-between border-b sticky top-0 z-50 shadow-sm transition-colors duration-1000 ${isDark ? 'bg-black/20 border-white/10 text-white backdrop-blur-md' : 'bg-white border-gray-200 text-black'}`}>
+        <Link to="/" className="text-xl md:text-2xl font-black tracking-[0.25em] uppercase hover:opacity-80 transition-opacity">Bizleap</Link>
+        <div className="flex items-center gap-4 md:gap-6">
+          <UserMenu />
+          <button onClick={() => requireAuth(() => navigate('/cart'))} className={`relative p-2 rounded-full transition-colors cursor-pointer ${isDark ? 'hover:bg-gray-800' : 'hover:bg-gray-100'}`}>
+            <ShoppingCart className="w-5 h-5 md:w-6 md:h-6" />
+            {cartItems.length > 0 && (
+              <span className="absolute -top-1 -right-1 w-4 h-4 md:w-5 md:h-5 bg-black text-white text-[10px] md:text-[11px] font-bold rounded-full flex items-center justify-center shadow-md">
+                {cartItems.length}
+              </span>
+            )}
+          </button>
+        </div>
+      </nav>
+
+      {/* Main Content */}
+      <div className="max-w-[1600px] w-full mx-auto px-4 md:px-8 lg:px-16 mt-8 md:mt-12 flex flex-col">
+        
+        <Link to="/" className="inline-flex items-center gap-2 text-gray-500 font-bold hover:text-black dark:text-white mb-6 md:mb-8 transition-colors self-start">
+          <ArrowLeft className="w-4 h-4 md:w-5 md:h-5" /> Back to Home
+        </Link>
+
+        <div className="flex flex-col mb-8">
+           <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-4">All Templates</h1>
+           <p className="text-lg md:text-xl text-gray-500 font-medium">Browse our collection of premium digital assets.</p>
+        </div>
+
+        {/* Mobile Filter Toggle */}
+        <div className="lg:hidden mb-6 flex justify-between items-center">
+          <button 
+            onClick={() => setIsMobileFiltersOpen(true)}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg font-bold text-sm border transition-colors ${isDark ? 'border-white/20 hover:bg-white/5' : 'border-gray-300 hover:bg-gray-100'}`}
+          >
+            <Filter className="w-4 h-4" /> Filters
+          </button>
+          <span className="text-sm font-bold text-gray-500">{filteredTemplates.length} results</span>
+        </div>
+
+        <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-start">
+          
+          {/* Desktop Sidebar */}
+          <aside className="hidden lg:block w-64 flex-shrink-0 sticky top-32">
+             <SidebarContent />
+          </aside>
+
+          {/* Mobile Sidebar Overlay */}
+          <AnimatePresence>
+            {isMobileFiltersOpen && (
+              <>
+                <motion.div 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  onClick={() => setIsMobileFiltersOpen(false)}
+                  className="fixed inset-0 bg-black/60 z-50 lg:hidden backdrop-blur-sm"
+                />
+                <motion.aside 
+                  initial={{ x: "-100%" }}
+                  animate={{ x: 0 }}
+                  exit={{ x: "-100%" }}
+                  transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                  className={`fixed top-0 left-0 bottom-0 w-4/5 max-w-[320px] z-[60] p-6 overflow-y-auto ${isDark ? 'bg-gray-900' : 'bg-white'}`}
+                >
+                  <div className="flex justify-between items-center mb-8">
+                    <h2 className="text-xl font-black">Filters</h2>
+                    <button onClick={() => setIsMobileFiltersOpen(false)} className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-800">
+                      <X className="w-5 h-5" />
+                    </button>
+                  </div>
+                  <SidebarContent />
+                </motion.aside>
+              </>
+            )}
+          </AnimatePresence>
+
+          {/* Template Grid */}
+          <div className="flex-1 w-full">
+            <div className="hidden lg:flex justify-end mb-6">
+              <span className="text-sm font-bold text-gray-500">{filteredTemplates.length} results found</span>
+            </div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8">
+               {loading ? (
+                 Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)
+               ) : (
+                 filteredTemplates.map(template => (
+                    <DenseCard key={template.id} template={template} />
+                 ))
+               )}
+               
+               {!loading && filteredTemplates.length === 0 && (
+                  <div className={`col-span-full py-20 lg:py-32 text-center border-2 border-dashed rounded-3xl ${isDark ? 'border-white/10 bg-white/5' : 'border-gray-300 bg-white'}`}>
+                     <h3 className={`text-xl lg:text-2xl font-black mb-2 ${isDark ? 'text-gray-300' : 'text-gray-400'}`}>No templates found</h3>
+                     <p className="text-gray-500 font-medium">Try adjusting your filters.</p>
+                     <button 
+                       onClick={() => { setSelectedTechs([]); setPriceRange('all'); setSearchQuery(''); setIsMobileFiltersOpen(false); }}
+                       className="mt-6 font-bold underline text-blue-500"
+                     >
+                       Clear all filters
+                     </button>
+                  </div>
+               )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

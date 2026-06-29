@@ -1,0 +1,201 @@
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { ShoppingCart, Search, Filter, X, Layers } from 'lucide-react';
+import { useCart } from './CartContext';
+import { useTemplates } from './useTemplates';
+import { DenseCard } from './Home';
+import { SkeletonCard } from './components/ui/Skeleton';
+import UserMenu from './UserMenu';
+import { motion, AnimatePresence } from "motion/react";
+import { useTheme } from './ThemeContext';
+import { useAuth } from './AuthContext';
+
+export default function UiKitsPage() {
+  const { cartItems } = useCart();
+  const { theme } = useTheme();
+  const { requireAuth } = useAuth();
+  const navigate = useNavigate();
+  const isDark = theme === 'dark';
+  
+  const [searchQuery, setSearchQuery] = useState("");
+  const [priceRange, setPriceRange] = useState("all");
+  const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  const { templates, loading } = useTemplates();
+
+  // Filter for UI Kits (Figma, Sketch, Adobe XD, UI Kit)
+  const uiKits = templates.filter(t => {
+    const cat = t.category?.toLowerCase() || '';
+    return cat === 'figma' || cat === 'ui kit' || cat === 'sketch';
+  });
+
+  const filteredTemplates = uiKits.filter(t => {
+    // Price filter
+    const price = parseFloat(t.price);
+    let matchesPrice = true;
+    if (priceRange === "free") matchesPrice = price === 0;
+    else if (priceRange === "under40") matchesPrice = price > 0 && price < 40;
+    else if (priceRange === "40to70") matchesPrice = price >= 40 && price <= 70;
+    else if (priceRange === "over70") matchesPrice = price > 70;
+
+    // Search filter
+    const searchLower = searchQuery.toLowerCase();
+    const matchesSearch = !searchQuery || 
+                          t.title?.toLowerCase().includes(searchLower) || 
+                          t.description?.toLowerCase().includes(searchLower);
+                          
+    return matchesPrice && matchesSearch;
+  });
+
+  const SidebarContent = () => (
+    <div className="space-y-8">
+      {/* Search */}
+      <div>
+        <h3 className="text-sm font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-3">Search UI Kits</h3>
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+          <input 
+            type="text" 
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search..." 
+            className={`w-full pl-10 pr-4 py-2.5 border rounded-xl outline-none transition-all text-sm font-medium shadow-sm ${isDark ? 'bg-white/5 border-white/10 text-white focus:border-white/30 placeholder:text-gray-500' : 'bg-white border-gray-200 text-black focus:border-black placeholder:text-gray-400'}`}
+          />
+        </div>
+      </div>
+
+      {/* Price */}
+      <div>
+        <h3 className="text-sm font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-3">Price Range</h3>
+        <div className="space-y-2">
+          {[
+            { id: "all", label: "Any Price" },
+            { id: "free", label: "Free" },
+            { id: "under40", label: "Under $40" },
+            { id: "40to70", label: "$40 to $70" },
+            { id: "over70", label: "$70 & Above" },
+          ].map(range => (
+            <label key={range.id} className="flex items-center gap-3 cursor-pointer group py-1">
+              <div className={`w-5 h-5 rounded-full border flex items-center justify-center transition-colors ${priceRange === range.id ? (isDark ? 'border-white' : 'border-black') : (isDark ? 'border-white/20 group-hover:border-white/50' : 'border-gray-300 group-hover:border-black')}`}>
+                {priceRange === range.id && (
+                  <div className={`w-2.5 h-2.5 rounded-full ${isDark ? 'bg-white' : 'bg-black'}`} />
+                )}
+              </div>
+              <span className={`text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>{range.label}</span>
+              <input type="radio" className="hidden" name="price" checked={priceRange === range.id} onChange={() => setPriceRange(range.id)} />
+            </label>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+
+  return (
+    <div className={`min-h-screen flex flex-col font-sans pb-32 transition-colors duration-1000 ${isDark ? 'bg-transparent text-white' : 'bg-gray-50 text-black'}`}>
+      
+      {/* Navigation */}
+      <nav className={`h-[80px] w-full px-4 md:px-8 lg:px-16 flex items-center justify-between border-b sticky top-0 z-50 shadow-sm transition-colors duration-1000 ${isDark ? 'bg-black/20 border-white/10 text-white backdrop-blur-md' : 'bg-white border-gray-200 text-black'}`}>
+        <Link to="/" className="text-xl md:text-2xl font-black tracking-[0.25em] uppercase hover:opacity-80 transition-opacity">Bizleap</Link>
+        <div className="flex items-center gap-4 md:gap-6">
+          <UserMenu />
+          <button onClick={() => requireAuth(() => navigate('/cart'))} className={`relative p-2 rounded-full transition-colors cursor-pointer ${isDark ? 'hover:bg-gray-800' : 'hover:bg-gray-100'}`}>
+            <ShoppingCart className="w-5 h-5 md:w-6 md:h-6" />
+            {cartItems.length > 0 && (
+              <span className="absolute -top-1 -right-1 w-4 h-4 md:w-5 md:h-5 bg-black text-white text-[10px] md:text-[11px] font-bold rounded-full flex items-center justify-center shadow-md">
+                {cartItems.length}
+              </span>
+            )}
+          </button>
+        </div>
+      </nav>
+
+      {/* Hero Section */}
+      <div className="w-full bg-gradient-to-br from-blue-50 to-purple-50 dark:from-[#0a0a0a] dark:to-[#111] py-16 px-4 border-b border-black/5 dark:border-white/10 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl pointer-events-none mix-blend-screen" />
+        <div className="max-w-7xl mx-auto flex flex-col items-center text-center relative z-10">
+          <div className="w-16 h-16 bg-black dark:bg-white text-white dark:text-black rounded-2xl flex items-center justify-center shadow-xl shadow-black/10 mb-6">
+             <Layers className="w-8 h-8" />
+          </div>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-4">Premium UI Kits</h1>
+          <p className="text-lg text-gray-500 dark:text-gray-400 max-w-2xl">
+            Accelerate your design workflow with high-quality, pixel-perfect UI kits for Figma and beyond. Build beautiful interfaces faster.
+          </p>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 mt-12">
+        <div className="flex flex-col lg:flex-row gap-8 items-start relative">
+          
+          {/* Desktop Sidebar Filter */}
+          <aside className={`hidden lg:block w-72 shrink-0 p-6 rounded-3xl border shadow-sm sticky top-[120px] transition-colors ${isDark ? 'bg-white/5 border-white/10' : 'bg-white border-gray-200'}`}>
+            <SidebarContent />
+          </aside>
+
+          {/* Mobile Filter Button */}
+          <button 
+            onClick={() => setIsMobileFiltersOpen(true)}
+            className={`lg:hidden w-full flex items-center justify-center gap-2 py-3.5 rounded-xl font-bold border shadow-sm mb-6 ${isDark ? 'bg-white/5 border-white/10' : 'bg-white border-gray-200'}`}
+          >
+            <Filter className="w-4 h-4" /> Filters
+          </button>
+
+          {/* Mobile Filter Overlay */}
+          <AnimatePresence>
+            {isMobileFiltersOpen && (
+              <>
+                <motion.div 
+                  initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                  className="fixed inset-0 bg-black/60 z-[100] lg:hidden backdrop-blur-sm"
+                  onClick={() => setIsMobileFiltersOpen(false)}
+                />
+                <motion.div 
+                  initial={{ y: "100%" }} animate={{ y: 0 }} exit={{ y: "100%" }}
+                  transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                  className={`fixed bottom-0 left-0 right-0 z-[101] p-6 rounded-t-3xl h-[80vh] overflow-y-auto lg:hidden shadow-[0_-10px_40px_rgba(0,0,0,0.2)] ${isDark ? 'bg-gray-900 border-t border-white/10' : 'bg-white border-t border-gray-200'}`}
+                >
+                  <div className="flex justify-between items-center mb-6">
+                    <h2 className="text-xl font-black">Filters</h2>
+                    <button onClick={() => setIsMobileFiltersOpen(false)} className="p-2 bg-black/5 dark:bg-white/10 rounded-full">
+                      <X className="w-5 h-5" />
+                    </button>
+                  </div>
+                  <SidebarContent />
+                </motion.div>
+              </>
+            )}
+          </AnimatePresence>
+
+          {/* Product Grid */}
+          <div className="flex-1 w-full">
+            <div className="flex justify-between items-center mb-8">
+              <h2 className="text-2xl font-black">Showing {filteredTemplates.length} UI Kits</h2>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+              {loading ? (
+                <>
+                  <SkeletonCard /><SkeletonCard /><SkeletonCard /><SkeletonCard /><SkeletonCard /><SkeletonCard />
+                </>
+              ) : filteredTemplates.length > 0 ? (
+                filteredTemplates.map((template) => (
+                  <DenseCard key={template.id} template={template} />
+                ))
+              ) : (
+                <div className={`col-span-full py-20 text-center rounded-3xl border border-dashed ${isDark ? 'bg-white/5 border-white/20' : 'bg-gray-50 border-gray-300'}`}>
+                  <h3 className="text-xl font-bold mb-2">No UI Kits found</h3>
+                  <p className="text-gray-500 dark:text-gray-400">Try adjusting your filters or search query.</p>
+                </div>
+              )}
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  );
+}
