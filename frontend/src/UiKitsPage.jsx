@@ -9,6 +9,7 @@ import UserMenu from './UserMenu';
 import { motion, AnimatePresence } from "motion/react";
 import { useTheme } from './ThemeContext';
 import { useAuth } from './AuthContext';
+import { Logo } from './components/ui/Logo';
 
 export default function UiKitsPage() {
   const { cartItems } = useCart();
@@ -38,9 +39,9 @@ export default function UiKitsPage() {
     const price = parseFloat(t.price);
     let matchesPrice = true;
     if (priceRange === "free") matchesPrice = price === 0;
-    else if (priceRange === "under40") matchesPrice = price > 0 && price < 40;
-    else if (priceRange === "40to70") matchesPrice = price >= 40 && price <= 70;
-    else if (priceRange === "over70") matchesPrice = price > 70;
+    else if (priceRange === "under6000") matchesPrice = price > 0 && price < 6000;
+    else if (priceRange === "6000to8000") matchesPrice = price >= 6000 && price <= 8000;
+    else if (priceRange === "over8000") matchesPrice = price > 8000;
 
     // Search filter
     const searchLower = searchQuery.toLowerCase();
@@ -75,9 +76,9 @@ export default function UiKitsPage() {
           {[
             { id: "all", label: "Any Price" },
             { id: "free", label: "Free" },
-            { id: "under40", label: "Under $40" },
-            { id: "40to70", label: "$40 to $70" },
-            { id: "over70", label: "$70 & Above" },
+            { id: "under6000", label: "Under ₹6000" },
+            { id: "6000to8000", label: "₹6000 to ₹8000" },
+            { id: "over8000", label: "₹8000 & Above" },
           ].map(range => (
             <label key={range.id} className="flex items-center gap-3 cursor-pointer group py-1">
               <div className={`w-5 h-5 rounded-full border flex items-center justify-center transition-colors ${priceRange === range.id ? (isDark ? 'border-white' : 'border-black') : (isDark ? 'border-white/20 group-hover:border-white/50' : 'border-gray-300 group-hover:border-black')}`}>
@@ -99,10 +100,9 @@ export default function UiKitsPage() {
       
       {/* Navigation */}
       <nav className={`h-[80px] w-full px-4 md:px-8 lg:px-16 flex items-center justify-between border-b sticky top-0 z-50 shadow-sm transition-colors duration-1000 ${isDark ? 'bg-black/20 border-white/10 text-white backdrop-blur-md' : 'bg-white border-gray-200 text-black'}`}>
-        <Link to="/" className="text-xl md:text-2xl font-black tracking-[0.25em] uppercase hover:opacity-80 transition-opacity">Bizleap</Link>
+        <Logo />
         <div className="flex items-center gap-4 md:gap-6">
-          <UserMenu />
-          <button onClick={() => requireAuth(() => navigate('/cart'))} className={`relative p-2 rounded-full transition-colors cursor-pointer ${isDark ? 'hover:bg-gray-800' : 'hover:bg-gray-100'}`}>
+<button onClick={() => requireAuth(() => navigate('/cart'))} className={`relative p-2 rounded-full transition-colors cursor-pointer ${isDark ? 'hover:bg-gray-800' : 'hover:bg-gray-100'}`}>
             <ShoppingCart className="w-5 h-5 md:w-6 md:h-6" />
             {cartItems.length > 0 && (
               <span className="absolute -top-1 -right-1 w-4 h-4 md:w-5 md:h-5 bg-black text-white text-[10px] md:text-[11px] font-bold rounded-full flex items-center justify-center shadow-md">
@@ -110,6 +110,8 @@ export default function UiKitsPage() {
               </span>
             )}
           </button>
+          <UserMenu />
+          
         </div>
       </nav>
 

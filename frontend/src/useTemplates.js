@@ -15,13 +15,22 @@ export function useTemplates() {
           .order('id', { ascending: true });
 
         if (error) throw error;
+
+        // Ensure all prices from database are above 5000
+        const adjustedData = data?.map(t => {
+          let currentPrice = parseInt(t.price, 10);
+          if (currentPrice < 5000) {
+            currentPrice += 5000;
+          }
+          return { ...t, price: currentPrice.toString() };
+        }) || [];
         
         const luxuryMockTemplates = [
           {
             id: 9001,
             title: 'Aura Luxury UI Kit',
             author: 'Bizleap Studio',
-            price: 99,
+            price: 9920,
             category: 'Figma',
             rating: 5,
             reviews: 124,
@@ -35,7 +44,7 @@ export function useTemplates() {
             id: 9002,
             title: 'Velvet E-Commerce Kit',
             author: 'Premium Design',
-            price: 79,
+            price: 7920,
             category: 'UI Kit',
             rating: 4.9,
             reviews: 89,
@@ -49,7 +58,7 @@ export function useTemplates() {
             id: 9003,
             title: 'Lumina Dashboard',
             author: 'Bizleap Studio',
-            price: 129,
+            price: 12920,
             category: 'Figma',
             rating: 5,
             reviews: 210,
@@ -61,7 +70,7 @@ export function useTemplates() {
           }
         ];
         
-        setTemplates([...(data || []), ...luxuryMockTemplates]);
+        setTemplates([...adjustedData, ...luxuryMockTemplates]);
       } catch (err) {
         console.error('Error fetching templates:', err.message);
         setError(err);

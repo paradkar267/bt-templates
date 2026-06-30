@@ -16,8 +16,8 @@ export default {
         }
       },
       fontFamily: {
-        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
-        display: ['"Plus Jakarta Sans"', 'sans-serif'],
+        sans: ['"Outfit"', 'sans-serif'],
+        display: ['"Outfit"', 'sans-serif'],
       },
       animation: {
         'blob': 'blob 7s infinite',

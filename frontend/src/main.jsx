@@ -16,6 +16,8 @@ import WishlistPage from './WishlistPage.jsx'
 import ProfilePage from './ProfilePage.jsx'
 import ContactPage from './ContactPage.jsx'
 import UiKitsPage from './UiKitsPage.jsx'
+import ResetPasswordPage from './ResetPasswordPage.jsx'
+import TermsPage from './TermsPage.jsx'
 
 import { ThemeProvider } from './ThemeContext'
 import { AuthProvider } from './AuthContext'
@@ -50,6 +52,8 @@ createRoot(document.getElementById('root')).render(
                     <Route path="/dashboard" element={<DashboardPage />} />
                     <Route path="/contact" element={<ContactPage />} />
                     <Route path="/ui-kits" element={<UiKitsPage />} />
+                    <Route path="/reset-password" element={<ResetPasswordPage />} />
+                    <Route path="/terms" element={<TermsPage />} />
                   </Routes>
                 </SmoothScroll>
               </WishlistProvider>

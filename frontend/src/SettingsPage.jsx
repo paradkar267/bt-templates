@@ -7,6 +7,7 @@ import { toast } from 'sonner';
 import { User, Moon, Sun, Settings as SettingsIcon, Save, Loader2, LogOut, ArrowLeft, Camera } from 'lucide-react';
 import { motion } from 'framer-motion';
 import UserMenu from './UserMenu';
+import { Logo } from './components/ui/Logo';
 
 export default function SettingsPage() {
   const { user, profile, setProfile, signOut } = useAuth();
@@ -57,65 +58,63 @@ export default function SettingsPage() {
     }
   };
 
-  if (!user) {
-    return (
-      <div className="min-h-screen bg-gray-50 dark:bg-[#0A0A0A] flex flex-col items-center justify-center">
-        <h2 className="text-2xl font-bold mb-2 dark:text-white">Access Denied</h2>
-        <p className="text-gray-500 dark:text-gray-400">Please sign in to view settings.</p>
-        <Link to="/" className="mt-4 text-blue-500 hover:underline">Go back home</Link>
-      </div>
-    );
-  }
-
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
     setIsSaving(true);
+    
     try {
-      // Update auth
-      const { error } = await supabase.auth.updateUser({
+      // Update the user's auth metadata directly (works without creating custom tables)
+      const { error: authError } = await supabase.auth.updateUser({
         data: { full_name: fullName, avatar_url: avatarUrl }
       });
-      if (error) throw error;
-      
-      // Force update local context immediately so UI updates instantly
-      setProfile(prev => ({
-        ...prev,
-        full_name: fullName,
-        avatar_url: avatarUrl
-      }));
 
-      // Update profiles table (ignore if it fails due to missing table/RLS)
+      if (authError) throw authError;
+
+      // Try updating profiles table as backup but ignore if it doesn't exist
       try {
-        await supabase.from('profiles').upsert({
-          id: user.id,
-          full_name: fullName,
-          avatar_url: avatarUrl,
-          updated_at: new Date().toISOString()
-        }, { onConflict: 'id' });
+        await supabase
+          .from('profiles')
+          .upsert({
+            id: user.id,
+            full_name: fullName,
+            avatar_url: avatarUrl,
+            updated_at: new Date().toISOString()
+          });
       } catch (err) {
-        console.warn("Could not update profiles table:", err);
+        // Ignore table errors
       }
 
+      setProfile(prev => ({ ...prev, full_name: fullName, avatar_url: avatarUrl }));
       toast.success("Profile updated successfully!");
     } catch (error) {
       toast.error(error.message || "Failed to update profile");
+      console.error(error);
     } finally {
       setIsSaving(false);
     }
   };
 
+
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-[#0A0A0A] flex flex-col items-center justify-center">
+        <h2 className="text-2xl font-bold mb-2 dark:text-white">Access Denied</h2>
+        <p className="text-gray-500 dark:text-gray-400">Please sign in to view settings.</p>
+        <Logo />
+      </div>
+    );
+  }
+
   return (
-    <div className={`min-h-screen flex flex-col font-sans pb-32 transition-colors duration-1000 ${isDark ? 'bg-transparent text-white' : 'bg-gray-50 dark:bg-gray-900 text-black dark:text-white'}`}>
-      
-      {/* Navigation */}
-      <nav className={`h-[80px] w-full px-8 md:px-16 flex items-center justify-between border-b sticky top-0 z-50 shadow-sm transition-colors duration-1000 ${isDark ? 'bg-black/20 border-white/10 text-white backdrop-blur-md' : 'bg-white dark:bg-black border-gray-200 dark:border-gray-800 text-black dark:text-white'}`}>
-        <Link to="/" className="text-2xl font-black tracking-[0.25em] uppercase hover:opacity-80 transition-opacity">Bizleap</Link>
+    <div className="min-h-screen bg-gray-50 dark:bg-[#0A0A0A] text-black dark:text-white flex flex-col transition-colors duration-500">
+      <nav className="flex items-center justify-between p-6 md:px-16 border-b border-gray-200 dark:border-white/10">
+        <Logo />
         <div className="flex items-center gap-6">
           <UserMenu />
         </div>
       </nav>
 
-      <main className="max-w-6xl w-full mx-auto px-4 pt-16 sm:px-6 lg:px-8">
+      <main className="max-w-6xl w-full mx-auto px-4 pt-16 sm:px-6 lg:px-8 flex-1">
         
         <Link to="/" className="inline-flex items-center gap-2 text-gray-500 font-bold hover:text-black dark:text-white mb-8 transition-colors self-start">
           <ArrowLeft className="w-5 h-5" /> Back to Home

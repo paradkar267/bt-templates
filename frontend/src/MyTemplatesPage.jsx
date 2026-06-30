@@ -4,6 +4,7 @@ import { Download, LayoutTemplate, ArrowLeft, Loader2, CheckCircle2, Trash2 } fr
 import { useCart } from './CartContext';
 import UserMenu from './UserMenu';
 import { toast } from 'sonner';
+import { Logo } from './components/ui/Logo';
 
 export default function MyTemplatesPage() {
   const { purchasedTemplates, removePurchasedTemplate } = useCart();
@@ -45,7 +46,7 @@ export default function MyTemplatesPage() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-black text-black dark:text-white font-sans pb-24 transition-colors duration-500">
       <nav className="h-[80px] w-full px-8 md:px-16 flex items-center justify-between glass-nav sticky top-0 z-50 bg-white/80 dark:bg-black/80 backdrop-blur-xl border-b border-gray-200 dark:border-white/10">
-        <Link to="/" className="text-2xl font-black tracking-[0.25em] uppercase text-black dark:text-white">Bizleap</Link>
+        <Logo />
         <div className="flex items-center gap-6">
           <UserMenu />
         </div>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { X, Mail, Lock, User as UserIcon, Loader2, ArrowRight } from 'lucide-react';
+import { X, Mail, Lock, User as UserIcon, Loader2, ArrowRight, Eye, EyeOff } from 'lucide-react';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../../AuthContext';
@@ -35,14 +35,26 @@ const GithubIcon = ({ className }) => (
   </svg>
 );
 
+// Figma Icon Component
+const FigmaIcon = ({ className }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 12C12 15.3137 9.31371 18 6 18C2.68629 18 0 15.3137 0 12C0 8.68629 2.68629 6 6 6C9.31371 6 12 8.68629 12 12Z" fill="#1ABCFE"/>
+    <path d="M0 24C0 27.3137 2.68629 30 6 30C9.31371 30 12 27.3137 12 24V18H6C2.68629 18 0 20.6863 0 24Z" fill="#0ACF83"/>
+    <path d="M12 0V6H18C21.3137 6 24 3.31371 24 0C24 -3.31371 21.3137 -6 18 -6H12Z" fill="#FF7262" transform="translate(0, 6)"/>
+    <path d="M0 6C0 9.31371 2.68629 12 6 12H12V0H6C2.68629 0 0 2.68629 0 6Z" fill="#F24E1E"/>
+    <path d="M12 12V24H18C21.3137 24 24 21.3137 24 18C24 14.6863 21.3137 12 18 12H12Z" fill="#A259FF"/>
+  </svg>
+);
+
 export function AuthModal({ isOpen, onClose }) {
-  const { signInWithGoogle, signInWithGithub, signIn, signUp, verifyOtp } = useAuth();
+  const { signInWithGoogle, signInWithGithub, signInWithFigma, signIn, signUp, verifyOtp, resetPassword } = useAuth();
   
   const [view, setView] = useState('login'); // 'login' | 'signup' | 'verify'
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
   const [otp, setOtp] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   
   const [loadingGoogle, setLoadingGoogle] = useState(false);
   const [loadingEmail, setLoadingEmail] = useState(false);
@@ -56,6 +68,7 @@ export function AuthModal({ isOpen, onClose }) {
         setPassword('');
         setFullName('');
         setOtp('');
+        setShowPassword(false);
       }, 300);
     }
   }, [isOpen]);
@@ -78,6 +91,15 @@ export function AuthModal({ isOpen, onClose }) {
     }
   };
 
+  const handleFigmaSignIn = async () => {
+    setLoadingGoogle(true);
+    try {
+      await signInWithFigma();
+    } catch (error) {
+      setLoadingGoogle(false);
+    }
+  };
+
   const handleEmailSubmit = async (e) => {
     e.preventDefault();
     setLoadingEmail(true);
@@ -92,19 +114,18 @@ export function AuthModal({ isOpen, onClose }) {
            toast.success("Successfully logged in!");
            onClose();
         }
+        await signIn(email, password);
+        onClose();
       } else if (view === 'signup') {
-        const data = await signUp(email, password, fullName);
-        if (data.user && !data.session) {
-           setView('verify');
-           toast.success("Account created! Please check your email for the verification code.");
-        } else {
-           toast.success("Account created successfully!");
-           onClose();
-        }
+        await signUp(email, password, { full_name: fullName });
+        setView('verify');
       } else if (view === 'verify') {
         await verifyOtp(email, otp);
-        toast.success("Email verified and logged in successfully!");
         onClose();
+      } else if (view === 'forgot-password') {
+        await resetPassword(email);
+        toast.success("Password reset email sent! Check your inbox.");
+        setView('login');
       }
     } catch (error) {
       console.error("Auth Error:", error);
@@ -129,10 +150,10 @@ export function AuthModal({ isOpen, onClose }) {
         />
 
         <motion.div
-          initial={{ opacity: 0, scale: 0.9, y: 20 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.9, y: 20 }}
-          transition={{ type: "spring", damping: 25, stiffness: 300 }}
+          initial={{ opacity: 0, y: 20, scale: 0.95 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: 20, scale: 0.95 }}
+          transition={{ duration: 0.3, ease: 'easeOut' }}
           className="relative w-full max-w-md bg-white/95 dark:bg-black/95 backdrop-blur-2xl border border-white/20 dark:border-white/10 rounded-[2.5rem] shadow-[0_0_50px_rgba(0,0,0,0.1)] dark:shadow-[0_0_50px_rgba(0,0,0,0.5)] overflow-hidden my-8"
         >
           {/* Background Blobs */}
@@ -152,63 +173,80 @@ export function AuthModal({ isOpen, onClose }) {
                 <span className="text-2xl font-black text-white dark:text-black transform -rotate-3">BT</span>
               </div>
               <h2 className="text-3xl font-black mb-2 text-black dark:text-white tracking-tight">
-                {view === 'login' ? 'Welcome back' : view === 'signup' ? 'Create account' : 'Verify Email'}
+                {view === 'login' ? 'Welcome back' : view === 'signup' ? 'Create account' : view === 'forgot-password' ? 'Reset password' : 'Verify Email'}
               </h2>
               <p className="text-gray-500 dark:text-gray-400 text-sm font-medium">
                 {view === 'login'
                   ? 'Enter your details to access your dashboard.'
                   : view === 'signup' 
                     ? 'Join the ultimate digital marketplace today.'
-                    : `We sent a 6-digit code to ${email || 'your email'}.`}
+                    : view === 'forgot-password'
+                      ? 'Enter your email to get a reset link.'
+                      : `We sent a 6-digit code to ${email || 'your email'}.`}
               </p>
             </div>
 
             {/* Social Login Buttons */}
-            {view !== 'verify' && (
-              <>
-                <div className="flex gap-4 mb-6">
-                  <button
-                    onClick={handleGoogleSignIn}
-                    disabled={loadingGoogle || loadingEmail}
-                    className="group relative flex-1 flex items-center justify-center py-3.5 px-4 border border-black/10 dark:border-white/10 rounded-2xl text-sm font-bold text-gray-900 bg-white hover:bg-gray-50 dark:bg-[#1A1A1A] dark:text-white dark:hover:bg-[#252525] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black dark:focus:ring-white transition-all disabled:opacity-70 shadow-sm"
-                  >
-                    {loadingGoogle ? (
-                      <Loader2 className="w-5 h-5 animate-spin text-gray-500" />
-                    ) : (
-                      <>
-                        <GoogleIcon className="w-5 h-5" />
-                        <span className="sr-only">Continue with Google</span>
-                      </>
-                    )}
-                  </button>
+            {view !== 'verify' && view !== 'forgot-password' && (
+              <div className="flex gap-4 mb-6">
+                <button
+                  onClick={handleGoogleSignIn}
+                  disabled={loadingGoogle || loadingEmail}
+                  className="group relative flex-1 flex items-center justify-center py-3.5 px-4 border border-black/10 dark:border-white/10 rounded-2xl text-sm font-bold text-gray-900 bg-white hover:bg-gray-50 dark:bg-[#1A1A1A] dark:text-white dark:hover:bg-[#252525] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black dark:focus:ring-white transition-all disabled:opacity-70 shadow-sm"
+                >
+                  {loadingGoogle ? (
+                    <Loader2 className="w-5 h-5 animate-spin text-gray-500" />
+                  ) : (
+                    <>
+                      <GoogleIcon className="w-5 h-5" />
+                      <span className="sr-only">Continue with Google</span>
+                    </>
+                  )}
+                </button>
 
-                  <button
-                    onClick={handleGithubSignIn}
-                    disabled={loadingGoogle || loadingEmail}
-                    className="group relative flex-1 flex items-center justify-center py-3.5 px-4 border border-black/10 dark:border-white/10 rounded-2xl text-sm font-bold text-gray-900 bg-white hover:bg-gray-50 dark:bg-[#1A1A1A] dark:text-white dark:hover:bg-[#252525] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black dark:focus:ring-white transition-all disabled:opacity-70 shadow-sm"
-                  >
-                    {loadingGoogle ? (
-                      <Loader2 className="w-5 h-5 animate-spin text-gray-500" />
-                    ) : (
-                      <>
-                        <GithubIcon className="w-5 h-5 text-black dark:text-white" />
-                        <span className="sr-only">Continue with GitHub</span>
-                      </>
-                    )}
-                  </button>
-                </div>
+                <button
+                  onClick={handleGithubSignIn}
+                  disabled={loadingGoogle || loadingEmail}
+                  className="group relative flex-1 flex items-center justify-center py-3.5 px-4 border border-black/10 dark:border-white/10 rounded-2xl text-sm font-bold text-gray-900 bg-white hover:bg-gray-50 dark:bg-[#1A1A1A] dark:text-white dark:hover:bg-[#252525] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black dark:focus:ring-white transition-all disabled:opacity-70 shadow-sm"
+                >
+                  {loadingGoogle ? (
+                    <Loader2 className="w-5 h-5 animate-spin text-gray-500" />
+                  ) : (
+                    <>
+                      <GithubIcon className="w-5 h-5 text-black dark:text-white" />
+                      <span className="sr-only">Continue with GitHub</span>
+                    </>
+                  )}
+                </button>
 
-                <div className="relative mb-6">
-                  <div className="absolute inset-0 flex items-center">
-                    <div className="w-full border-t border-gray-200 dark:border-gray-800"></div>
-                  </div>
-                  <div className="relative flex justify-center text-sm">
-                    <span className="px-3 bg-white dark:bg-[#0A0A0A] text-gray-500 dark:text-gray-400 font-medium">
-                      Or continue with email
-                    </span>
-                  </div>
+                <button
+                  onClick={handleFigmaSignIn}
+                  disabled={loadingGoogle || loadingEmail}
+                  className="group relative flex-1 flex items-center justify-center py-3.5 px-4 border border-black/10 dark:border-white/10 rounded-2xl text-sm font-bold text-gray-900 bg-white hover:bg-gray-50 dark:bg-[#1A1A1A] dark:text-white dark:hover:bg-[#252525] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black dark:focus:ring-white transition-all disabled:opacity-70 shadow-sm"
+                >
+                  {loadingGoogle ? (
+                    <Loader2 className="w-5 h-5 animate-spin text-gray-500" />
+                  ) : (
+                    <>
+                      <FigmaIcon className="w-5 h-5 text-black dark:text-white" />
+                      <span className="sr-only">Continue with Figma</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            )}
+
+            {view !== 'verify' && view !== 'forgot-password' && (
+              <div className="relative mb-6">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-gray-200 dark:border-gray-800"></div>
                 </div>
-              </>
+                <div className="relative flex justify-center text-sm">
+                  <span className="px-3 bg-white dark:bg-[#0A0A0A] text-gray-500 dark:text-gray-400 font-medium">
+                    Or continue with email
+                  </span>
+                </div>
+              </div>
             )}
 
             {/* Email Form */}
@@ -234,6 +272,23 @@ export function AuthModal({ isOpen, onClose }) {
                         placeholder="123456"
                         maxLength={6}
                       />
+                    </div>
+                  ) : view === 'forgot-password' ? (
+                    <div>
+                      <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-1.5 ml-1">Email Address</label>
+                      <div className="relative group">
+                        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
+                          <Mail className="h-5 w-5" />
+                        </div>
+                        <input
+                          type="email"
+                          required
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          className="block w-full pl-11 pr-4 py-3 bg-gray-50/50 dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-2xl leading-5 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20 transition-all sm:text-sm font-medium"
+                          placeholder="you@example.com"
+                        />
+                      </div>
                     </div>
                   ) : (
                     <>
@@ -276,19 +331,35 @@ export function AuthModal({ isOpen, onClose }) {
                       <div>
                         <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-1.5 ml-1 flex justify-between">
                           <span>Password</span>
+                          {view === 'login' && (
+                            <button type="button" onClick={() => setView('forgot-password')} className="text-indigo-600 dark:text-indigo-400 hover:underline">
+                              Forgot password?
+                            </button>
+                          )}
                         </label>
                         <div className="relative group">
                           <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
                             <Lock className="h-5 w-5" />
                           </div>
                           <input
-                            type="password"
+                            type={showPassword ? "text" : "password"}
                             required
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="block w-full pl-11 pr-4 py-3 bg-gray-50/50 dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-2xl leading-5 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20 transition-all sm:text-sm font-medium"
+                            className="block w-full pl-11 pr-12 py-3 bg-gray-50/50 dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-2xl leading-5 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20 transition-all sm:text-sm font-medium"
                             placeholder="••••••••"
                           />
+                          <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 focus:outline-none"
+                          >
+                            {showPassword ? (
+                              <EyeOff className="h-5 w-5" />
+                            ) : (
+                              <Eye className="h-5 w-5" />
+                            )}
+                          </button>
                         </div>
                       </div>
                     </>
@@ -306,7 +377,7 @@ export function AuthModal({ isOpen, onClose }) {
                 ) : (
                   <>
                     <span className="relative z-10">
-                      {view === 'login' ? 'Sign In with Email' : view === 'signup' ? 'Create Account' : 'Verify Code'}
+                      {view === 'login' ? 'Sign in' : view === 'signup' ? 'Create account' : view === 'forgot-password' ? 'Send reset link' : 'Verify code'}
                     </span>
                     <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform relative z-10" />
                   </>
@@ -317,7 +388,7 @@ export function AuthModal({ isOpen, onClose }) {
             {view !== 'verify' && (
               <div className="mt-6 text-center">
                 <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">
-                  {view === 'login' ? "Don't have an account? " : "Already have an account? "}
+                  {view === 'login' ? "Don't have an account? " : view === 'signup' ? "Already have an account? " : ""}
                   <button
                     type="button"
                     onClick={() => setView(view === 'login' ? 'signup' : 'login')}
@@ -329,7 +400,7 @@ export function AuthModal({ isOpen, onClose }) {
               </div>
             )}
             
-            {view === 'verify' && (
+            {view === 'verify' || view === 'forgot-password' ? (
               <div className="mt-6 text-center">
                 <button
                   type="button"
@@ -339,7 +410,7 @@ export function AuthModal({ isOpen, onClose }) {
                   Back to login
                 </button>
               </div>
-            )}
+            ) : null}
           </div>
         </motion.div>
       </div>

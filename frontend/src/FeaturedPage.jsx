@@ -8,6 +8,7 @@ import { SkeletonCard } from './components/ui/Skeleton';
 import UserMenu from './UserMenu';
 import { useTheme } from './ThemeContext';
 import { useAuth } from './AuthContext';
+import { Logo } from './components/ui/Logo';
 
 export default function FeaturedPage() {
   const { cartItems } = useCart();
@@ -40,10 +41,9 @@ export default function FeaturedPage() {
       
       {/* Navigation */}
       <nav className={`h-[80px] w-full px-8 md:px-16 flex items-center justify-between border-b sticky top-0 z-50 shadow-sm transition-colors duration-1000 ${isDark ? 'bg-black/20 border-white/10 text-white backdrop-blur-md' : 'bg-white dark:bg-black border-gray-200 dark:border-gray-800 text-black dark:text-white'}`}>
-        <Link to="/" className="text-2xl font-black tracking-[0.25em] uppercase hover:opacity-80 transition-opacity">Bizleap</Link>
+        <Logo />
         <div className="flex items-center gap-6">
-          <UserMenu />
-          <button onClick={() => requireAuth(() => navigate('/cart'))} className="relative p-2 hover:bg-gray-100 dark:bg-gray-800 rounded-full transition-colors cursor-pointer">
+<button onClick={() => requireAuth(() => navigate('/cart'))} className="relative p-2 hover:bg-gray-100 dark:bg-gray-800 rounded-full transition-colors cursor-pointer">
             <ShoppingCart className="w-6 h-6" />
             {cartItems.length > 0 && (
               <span className="absolute -top-1 -right-1 w-5 h-5 bg-black text-white text-[11px] font-bold rounded-full flex items-center justify-center shadow-md">
@@ -51,6 +51,8 @@ export default function FeaturedPage() {
               </span>
             )}
           </button>
+          <UserMenu />
+          
         </div>
       </nav>
 

@@ -5,7 +5,7 @@ import { NavBar } from './components/ui/tubelight-navbar';
 import { useCart } from './CartContext';
 import { marketplaceTemplates } from './data';
 import { useAuth } from './AuthContext';
-import { TestimonialsSection } from './components/ui/TestimonialsSection';
+
 import { ExploreCategories } from './components/ui/ExploreCategories';
 import { InteractiveProductCard } from './components/ui/card-7';
 import Spline from '@splinetool/react-spline';
@@ -20,6 +20,7 @@ import { motion } from "motion/react";
 import { HeroGeometricBackground } from '@/components/ui/shape-landing-hero';
 import { Button as NeonButton } from '@/components/ui/neon-button';
 import { AnimatedThemeToggle } from '@/components/ui/animated-theme-toggle';
+import { Logo } from './components/ui/Logo';
 
 const HeroCard = ({ tag, title, price, image, className }) => (
   <div className={`absolute p-4 rounded-[2rem] bg-white/80 dark:bg-black/80 backdrop-blur-xl border border-white text-black dark:text-white shadow-[0_20px_40px_rgba(0,0,0,0.06)] hover:-translate-y-2 transition-transform duration-500 cursor-pointer ${className}`}>
@@ -33,9 +34,6 @@ const HeroCard = ({ tag, title, price, image, className }) => (
           <Star className="w-3 h-3 fill-current text-black dark:text-white" /> {tag}
         </p>
         <h4 className={`font-bold text-lg tracking-tight text-gray-900 dark:text-gray-100`}>{title}</h4>
-      </div>
-      <div className={`px-3 py-1.5 rounded-full text-xs font-black shadow-sm bg-black text-white`}>
-        ₹{price}
       </div>
     </div>
   </div>
@@ -89,14 +87,7 @@ export default function Home({ mountSpline }) {
       {/* 0. GLOBAL STICKY NAVIGATION */}
       <nav className={`sticky top-0 hero-nav h-[80px] w-full px-6 md:px-12 flex items-center justify-between z-[100] glass-nav pointer-events-auto transition-all dark:bg-black/50 dark:border-gray-800`}>
         {/* LOGO */}
-        <Link 
-          to="/" 
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="flex items-center gap-3 cursor-pointer group"
-        >
-          <div className="w-9 h-9 bg-black text-white rounded-xl flex items-center justify-center font-bold text-lg group-hover:scale-105 transition-transform shadow-md">B</div>
-          <div className="text-xl font-black tracking-[0.1em] uppercase text-gray-900 dark:text-gray-100 group-hover:opacity-80 transition-opacity">Bizleap</div>
-        </Link>
+        <Logo />
 
         {/* CENTER LINKS - TUBELIGHT NAVBAR */}
         <div className="hidden lg:flex items-center absolute left-1/2 -translate-x-1/2 mt-2">
@@ -132,9 +123,6 @@ export default function Home({ mountSpline }) {
           >
             <Search className="w-4 h-4" />
           </div>
-          <div className="hidden md:block">
-            <UserMenu />
-          </div>
           <AnimatedThemeToggle className="rounded-full w-10 h-10 border border-black/[0.03] dark:border-gray-700 shadow-sm bg-gray-50 dark:bg-gray-900 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300 dark:hover:text-white" />
           <button onClick={() => requireAuth(() => navigate('/cart'))} className="relative flex items-center justify-center h-10 w-10 bg-gray-50 dark:bg-gray-900 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-full transition-colors hidden md:flex cursor-pointer text-gray-600 dark:text-gray-300 hover:text-black dark:text-white dark:hover:text-white shadow-sm border border-black/[0.03] dark:border-gray-700">
             <ShoppingCart className="w-4 h-4" />
@@ -144,6 +132,9 @@ export default function Home({ mountSpline }) {
               </span>
             )}
           </button>
+          <div className="hidden md:block">
+            <UserMenu />
+          </div>
         </div>
       </nav>
 
@@ -336,8 +327,7 @@ export default function Home({ mountSpline }) {
             </div>
          </div>
 
-         {/* D2. TESTIMONIALS SECTION */}
-         <TestimonialsSection />
+
 
 
          {/* F. FOOTER */}

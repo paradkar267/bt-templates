@@ -49,7 +49,7 @@ export const CartProvider = ({ children }) => {
     toast.success("Item removed from cart");
   };
 
-  const checkout = async () => {
+  const checkout = async (paymentId = 'mock_pay_id') => {
     if (cartItems.length === 0) return;
     if (!user) {
       toast.error("You must be logged in to checkout.");
@@ -63,14 +63,29 @@ export const CartProvider = ({ children }) => {
     const finalIds = [...new Set([...existingIds, ...newPurchaseIds])];
     
     // Save to Supabase User Metadata (works without creating custom tables)
-    const { data, error } = await supabase.auth.updateUser({
+    const { error: metadataError } = await supabase.auth.updateUser({
       data: { purchased_templates: finalIds }
     });
       
-    if (error) {
-      console.error("Purchase error:", error);
+    if (metadataError) {
+      console.error("Purchase metadata error:", metadataError);
       toast.error("Failed to save purchase. Please try again.");
       return;
+    }
+
+    // Insert into the purchases table for Admin Dashboard analytics
+    const purchaseRecords = cartItems.map(item => ({
+      user_id: user.id,
+      template_id: item.id,
+      payment_id: paymentId // Save the Razorpay payment ID here!
+    }));
+
+    const { error: dbError } = await supabase
+      .from('purchases')
+      .insert(purchaseRecords);
+
+    if (dbError) {
+       console.error("Database purchase log error:", dbError);
     }
     
     // Update local state

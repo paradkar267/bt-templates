@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/tooltip"
 import { Moon, Send, Sun } from "lucide-react"
 import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa"
+import { Link } from "react-router-dom"
 
 import { useTheme } from "../../ThemeContext"
 
@@ -156,9 +157,9 @@ function Footerdemo() {
             <a href="#" className="transition-colors hover:text-primary">
               Privacy Policy
             </a>
-            <a href="#" className="transition-colors hover:text-primary">
+            <Link to="/terms" className="transition-colors hover:text-primary">
               Terms of Service
-            </a>
+            </Link>
             <a href="#" className="transition-colors hover:text-primary">
               Cookie Settings
             </a>

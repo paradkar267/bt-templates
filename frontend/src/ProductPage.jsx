@@ -12,6 +12,7 @@ import { ProductSkeleton } from './components/ui/Skeleton';
 import { FAQSection } from './components/ui/FAQSection';
 import { LivePreviewModal } from './components/ui/LivePreviewModal';
 import { InteractiveProductCard } from './components/ui/card-7';
+import { Logo } from './components/ui/Logo';
 
 export default function ProductPage() {
   const { id } = useParams();
@@ -33,7 +34,7 @@ export default function ProductPage() {
     return (
       <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white font-sans transition-colors duration-500">
         <nav className="h-[80px] w-full px-8 md:px-16 flex items-center justify-between glass-nav sticky top-0 z-50 bg-white/80 dark:bg-black/80 backdrop-blur-xl border-b border-gray-200 dark:border-white/10">
-          <Link to="/" className="text-2xl font-black tracking-[0.25em] uppercase">Bizleap</Link>
+          <Logo />
           <UserMenu />
         </nav>
         <ProductSkeleton />
@@ -43,37 +44,26 @@ export default function ProductPage() {
 
   const template = templates.find(t => t.id === parseInt(id));
 
+  const inCart = template ? cartItems.some(item => item.id === template.id) : false;
+  const similarTemplates = template ? templates.filter(t => t.category === template.category && t.id !== template.id).slice(0, 3) : [];
+
   if (!template) {
     return (
       <div className={`min-h-screen flex items-center justify-center ${isDark ? 'bg-transparent text-white' : 'bg-white dark:bg-black text-black dark:text-white'}`}>
-        <div className="text-center">
+        <div className="text-center flex flex-col items-center">
           <h1 className="text-4xl font-black mb-4">Template Not Found</h1>
-          <Link to="/" className="text-gray-500 hover:text-black dark:text-white underline">Back to Marketplace</Link>
+          <Logo />
         </div>
       </div>
     );
   }
 
-  const inCart = cartItems.some(item => item.id === template.id);
-
-  const similarTemplates = templates
-    .filter(t => t.id !== template.id && t.category === template.category)
-    .slice(0, 3);
-  if (similarTemplates.length < 3) {
-    const additional = templates
-      .filter(t => t.id !== template.id && !similarTemplates.find(st => st.id === t.id))
-      .slice(0, 3 - similarTemplates.length);
-    similarTemplates.push(...additional);
-  }
-
   return (
-    <div className={`min-h-screen font-sans pb-24 transition-colors duration-1000 ${isDark ? 'bg-transparent text-white' : 'bg-gray-50 text-black'}`}>
-      {/* Mini Nav */}
-      <nav className={`h-[80px] w-full px-8 md:px-16 flex items-center justify-between border-b sticky top-0 z-50 transition-colors duration-1000 ${isDark ? 'bg-black/20 border-white/10 text-white backdrop-blur-md' : 'bg-white/80 border-gray-200 text-black backdrop-blur-md'}`}>
-        <Link to="/" className="text-2xl font-black tracking-[0.25em] text-black dark:text-white uppercase">Bizleap</Link>
+    <div className={`min-h-screen font-sans transition-colors duration-1000 ${isDark ? 'bg-black text-white' : 'bg-gray-50 text-black'}`}>
+      <nav className="flex items-center justify-between p-6 md:px-16 border-b border-gray-200 dark:border-white/10">
+        <Logo />
         <div className="flex items-center gap-6">
-          <UserMenu />
-          <button onClick={() => requireAuth(() => navigate('/cart'))} className="relative p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors cursor-pointer">
+<button onClick={() => requireAuth(() => navigate('/cart'))} className="relative p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors cursor-pointer">
             <ShoppingCart className="w-6 h-6" />
             {cartItems.length > 0 && (
               <span className="absolute -top-1 -right-1 w-5 h-5 bg-black text-white text-[11px] font-bold rounded-full flex items-center justify-center shadow-md">
@@ -81,6 +71,8 @@ export default function ProductPage() {
               </span>
             )}
           </button>
+          <UserMenu />
+          
         </div>
       </nav>
 

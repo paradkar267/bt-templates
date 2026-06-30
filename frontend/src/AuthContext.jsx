@@ -125,6 +125,23 @@ export function AuthProvider({ children }) {
     }
   };
 
+  const signInWithFigma = async () => {
+    try {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'figma',
+        options: {
+          scopes: 'file_metadata:read file_content:read',
+          redirectTo: window.location.origin
+        }
+      });
+      if (error) throw error;
+      return data;
+    } catch (error) {
+      toast.error(error.message || "Failed to sign in with Figma");
+      throw error;
+    }
+  };
+
   const signIn = async (email, password) => {
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) throw error;
@@ -153,6 +170,32 @@ export function AuthProvider({ children }) {
     return data;
   };
 
+  const resetPassword = async (email) => {
+    try {
+      const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: window.location.origin + '/reset-password',
+      });
+      if (error) throw error;
+      return data;
+    } catch (error) {
+      toast.error(error.message || "Failed to send reset link");
+      throw error;
+    }
+  };
+
+  const updatePassword = async (newPassword) => {
+    try {
+      const { data, error } = await supabase.auth.updateUser({
+        password: newPassword
+      });
+      if (error) throw error;
+      return data;
+    } catch (error) {
+      toast.error(error.message || "Failed to update password");
+      throw error;
+    }
+  };
+
   const signOut = async () => {
     try {
       const { error } = await supabase.auth.signOut();
@@ -166,7 +209,7 @@ export function AuthProvider({ children }) {
   const isAdmin = user?.email === 'yashparadkar63@gmail.com';
 
   return (
-    <AuthContext.Provider value={{ user, profile, setProfile, isAdmin, loading, signInWithGoogle, signInWithGithub, signIn, signUp, verifyOtp, signOut, openAuthModal, closeAuthModal, requireAuth }}>
+    <AuthContext.Provider value={{ user, profile, setProfile, isAdmin, loading, signInWithGoogle, signInWithGithub, signInWithFigma, signIn, signUp, verifyOtp, resetPassword, updatePassword, signOut, openAuthModal, closeAuthModal, requireAuth }}>
       {children}
       <AuthModal isOpen={isAuthModalOpen} onClose={closeAuthModal} />
     </AuthContext.Provider>

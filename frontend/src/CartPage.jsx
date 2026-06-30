@@ -7,6 +7,8 @@ import { useCart } from './CartContext';
 import UserMenu from './UserMenu';
 import { useTheme } from './ThemeContext';
 import { useAuth } from './AuthContext';
+import { Logo } from './components/ui/Logo';
+import { AnimatedThemeToggle } from './components/ui/animated-theme-toggle';
 
 export default function CartPage() {
   const { cartItems, removeFromCart, checkout, cartTotal, isLoggedIn } = useCart();
@@ -167,7 +169,7 @@ export default function CartPage() {
       toast.error("Receipt email could not be sent, but purchase was successful.", { duration: 4000 });
     }
 
-    await checkout();
+    await checkout(orderId);
     
     const duration = 3 * 1000;
     const animationEnd = Date.now() + duration;
@@ -197,7 +199,7 @@ export default function CartPage() {
       return;
     }
 
-    const razorpayKey = import.meta.env.VITE_RAZORPAY_TEST_KEY || 'rzp_test_1DP5mmOlF5G5ag';
+    const razorpayKey = import.meta.env.VITE_RAZORPAY_KEY || import.meta.env.VITE_RAZORPAY_TEST_KEY || 'rzp_test_1DP5mmOlF5G5ag';
 
     // If using the public dummy key, it will show "No appropriate payment method found"
     // because Razorpay disables payment methods on public leaked keys.
@@ -253,13 +255,14 @@ export default function CartPage() {
       {/* Mini Nav */}
       <nav className={`h-[80px] w-full px-8 md:px-16 flex items-center justify-between border-b sticky top-0 z-50 ${isDark ? 'bg-transparent border-white/10' : 'bg-white dark:bg-black border-gray-200 dark:border-gray-800'}`}>
         <div className="flex items-center gap-8">
-          <Link to="/" className="text-2xl font-black tracking-[0.25em] uppercase text-black dark:text-white">Bizleap</Link>
+          <Logo />
           <div className="w-px h-6 bg-gray-200 dark:bg-gray-800 hidden md:block"></div>
           <Link to="/" className="hidden md:flex items-center gap-2 text-gray-500 font-bold hover:text-black dark:text-white transition-colors text-sm">
             <ArrowLeft className="w-4 h-4" /> Continue Shopping
           </Link>
         </div>
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-4 md:gap-6">
+          <AnimatedThemeToggle className="rounded-full w-9 h-9 md:w-10 md:h-10 border border-black/[0.03] dark:border-gray-700 shadow-sm bg-gray-50 dark:bg-gray-900 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300 dark:hover:text-white" />
           <UserMenu />
         </div>
       </nav>

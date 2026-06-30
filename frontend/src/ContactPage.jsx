@@ -4,6 +4,7 @@ import { Mail, Phone, MapPin, ArrowLeft, Send, Loader2, Sparkles, MessageCircle,
 import UserMenu from './UserMenu';
 import { useTheme } from './ThemeContext';
 import { toast } from 'sonner';
+import { Logo } from './components/ui/Logo';
 
 export default function ContactPage() {
   const { theme } = useTheme();
@@ -55,7 +56,7 @@ export default function ContactPage() {
       
       {/* Navigation */}
       <nav className={`h-[80px] w-full px-8 md:px-16 flex items-center justify-between border-b sticky top-0 z-50 shadow-sm transition-colors duration-1000 ${isDark ? 'bg-black/40 border-white/10 text-white backdrop-blur-md' : 'bg-white/80 border-gray-200 text-black backdrop-blur-md'}`}>
-        <Link to="/" className="text-2xl font-black tracking-[0.25em] uppercase hover:opacity-80 transition-opacity">Bizleap</Link>
+        <Logo />
         <div className="flex items-center gap-6">
           <UserMenu />
         </div>
