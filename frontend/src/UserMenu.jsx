@@ -25,7 +25,7 @@ export default function UserMenu() {
               <img src={profile.avatar_url} alt="User" className="w-full h-full rounded-full object-cover" />
             ) : (
               <span className="text-sm font-bold text-gray-700 dark:text-gray-300">
-                {profile?.full_name ? profile.full_name.charAt(0).toUpperCase() : (user.email ? user.email.charAt(0).toUpperCase() : 'U')}
+                {profile?.full_name ? String(profile.full_name).charAt(0).toUpperCase() : (user?.email ? String(user.email).charAt(0).toUpperCase() : 'U')}
               </span>
             )}
           </button>

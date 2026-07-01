@@ -26,10 +26,12 @@ import { GradientBackground } from '@/components/ui/gradient-background-4'
 import SmoothScroll from './SmoothScroll'
 import { CommandPalette } from './components/ui/CommandPalette'
 import { SocialProofToast } from './components/ui/SocialProofToast'
+import { ErrorBoundary } from './ErrorBoundary.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
+      <ErrorBoundary>
         <ThemeProvider>
           <GradientBackground />
           <AuthProvider>
@@ -60,6 +62,7 @@ createRoot(document.getElementById('root')).render(
             </CartProvider>
           </AuthProvider>
         </ThemeProvider>
+      </ErrorBoundary>
     </BrowserRouter>
   </StrictMode>,
 )

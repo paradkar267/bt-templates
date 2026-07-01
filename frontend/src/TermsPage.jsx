@@ -93,7 +93,7 @@ export default function TermsPage() {
             
             <section className="pt-8 border-t border-gray-200 dark:border-white/10">
               <p className="text-sm">
-                Last updated: June 30, 2026. For any questions regarding these terms, please contact us at support@btmarket.com.
+                Last updated: June 30, 2026. For any questions regarding these terms, please contact us at bizleap1@gmail.com.
               </p>
             </section>
           </div>

@@ -4,5 +4,5 @@ CREATE POLICY "Admin can view all purchases"
 ON public.purchases 
 FOR SELECT 
 USING (
-  auth.email() = 'yashparadkar63@gmail.com'
+  auth.email() = 'bizleap1@gmail.com'
 );

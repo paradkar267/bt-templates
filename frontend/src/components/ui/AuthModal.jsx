@@ -117,7 +117,7 @@ export function AuthModal({ isOpen, onClose }) {
         await signIn(email, password);
         onClose();
       } else if (view === 'signup') {
-        await signUp(email, password, { full_name: fullName });
+        await signUp(email, password, fullName);
         setView('verify');
       } else if (view === 'verify') {
         await verifyOtp(email, otp);

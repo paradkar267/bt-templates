@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Trash2, Lock, ShieldCheck, User, ShoppingCart } from 'lucide-react';
 import { toast } from 'sonner';
@@ -16,6 +16,7 @@ export default function CartPage() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const isDark = theme === 'dark';
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const loadRazorpayScript = () => {
     return new Promise((resolve) => {
@@ -76,8 +77,8 @@ export default function CartPage() {
       doc.text("Billed To:", 20, 55);
       doc.setFont("helvetica", "normal");
       doc.setTextColor(...secondaryColor);
-      doc.text("Valued Customer", 20, 62);
-      doc.text("customer@example.com", 20, 69);
+      doc.text(user?.user_metadata?.full_name || "Valued Customer", 20, 62);
+      doc.text(user?.email || "", 20, 69);
       
       // Table Header
       let startY = 100;
@@ -136,6 +137,7 @@ export default function CartPage() {
       doc.setFontSize(10);
       doc.setFont("helvetica", "italic");
       doc.text("Thank you for your business. We hope you enjoy your new templates!", 105, 280, { align: "center" });
+      doc.text("For support, contact: bizleap1@gmail.com", 105, 285, { align: "center" });
       
       doc.save(`Bizleap_${invoiceNumber}.pdf`);
     } catch (err) {
@@ -144,6 +146,7 @@ export default function CartPage() {
   };
 
   const processSuccessfulPayment = async (paymentId) => {
+    setIsProcessing(true);
     const orderId = paymentId || 'mock_' + Math.random().toString(36).substr(2, 9);
     
     // Call backend to send email receipt
@@ -171,25 +174,13 @@ export default function CartPage() {
 
     await checkout(orderId);
     
-    const duration = 3 * 1000;
-    const animationEnd = Date.now() + duration;
-    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 99999 };
-
-    const randomInRange = (min, max) => Math.random() * (max - min) + min;
-
-    const interval = setInterval(function() {
-      const timeLeft = animationEnd - Date.now();
-      if (timeLeft <= 0) return clearInterval(interval);
-
-      const particleCount = 50 * (timeLeft / duration);
-      confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } });
-      confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } });
-    }, 250);
-
+    setIsProcessing(false);
+    
     generateInvoicePDF(orderId);
 
-    toast.success("Purchase successful! Receipt sent to your email.");
-    navigate('/my-templates');
+    toast.success("Purchase successful! Receipt sent to your email. (Check spam folder if not found)", { duration: 6000 });
+    
+    navigate('/my-templates', { state: { showConfetti: true } });
   };
 
   const handleCheckout = async () => {
@@ -251,6 +242,14 @@ export default function CartPage() {
   }, []);
 
   return (
+    <>
+    {isProcessing && (
+      <div className="fixed inset-0 z-[9999] bg-black/60 backdrop-blur-sm flex flex-col items-center justify-center text-white">
+        <div className="w-16 h-16 border-4 border-white/20 border-t-white rounded-full animate-spin mb-6"></div>
+        <h2 className="text-2xl font-black mb-2">Processing Payment...</h2>
+        <p className="text-white/70">Please do not close or refresh this window.</p>
+      </div>
+    )}
     <div className={`min-h-screen font-sans pb-24 transition-colors duration-1000 ${isDark ? 'bg-transparent text-white' : 'bg-gray-50 dark:bg-gray-900 text-black dark:text-white'}`}>
       {/* Mini Nav */}
       <nav className={`h-[80px] w-full px-8 md:px-16 flex items-center justify-between border-b sticky top-0 z-50 ${isDark ? 'bg-transparent border-white/10' : 'bg-white dark:bg-black border-gray-200 dark:border-gray-800'}`}>
@@ -352,5 +351,6 @@ export default function CartPage() {
         )}
       </div>
     </div>
+    </>
   );
 }

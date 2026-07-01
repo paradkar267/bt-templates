@@ -98,9 +98,10 @@ export default function ContactPage() {
                   <Mail className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="font-bold mb-1">Email Us</h3>
-                  <p className="text-gray-500 dark:text-gray-400 text-sm mb-1">Our friendly team is here to help.</p>
-                  <a href="mailto:hello@bizleap.com" className="font-bold text-blue-600 dark:text-blue-400 hover:underline">hello@bizleap.com</a>
+                  <div className="flex flex-col">
+                  <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Email Us</span>
+                  <a href="mailto:bizleap1@gmail.com" className="font-bold text-blue-600 dark:text-blue-400 hover:underline">bizleap1@gmail.com</a>
+                  </div>
                 </div>
               </div>
 

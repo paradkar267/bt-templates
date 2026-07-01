@@ -179,7 +179,7 @@ export default function SettingsPage() {
                     {avatarUrl ? (
                       <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
                     ) : (
-                      profile?.full_name ? profile.full_name.charAt(0).toUpperCase() : user.email.charAt(0).toUpperCase()
+                      profile?.full_name ? String(profile.full_name).charAt(0).toUpperCase() : String(user?.email || 'U').charAt(0).toUpperCase()
                     )}
                     <label className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 cursor-pointer transition-opacity">
                       <Camera className="w-6 h-6 text-white mb-1" />

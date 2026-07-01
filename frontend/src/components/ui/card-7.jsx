@@ -12,12 +12,13 @@ export function InteractiveProductCard({
 }) {
   const navigate = useNavigate();
   const { requireAuth } = useAuth();
-  const { addToCart, cartItems } = useCart();
+  const { addToCart, cartItems, purchasedTemplates } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
   const cardRef = React.useRef(null);
   const [tiltStyle, setTiltStyle] = React.useState({});
   const [hovered, setHovered] = React.useState(false);
   const inCart = cartItems.some(item => item.id === template.id);
+  const isOwned = purchasedTemplates?.some(item => item.id === template.id);
   const isWishlisted = isInWishlist(template.id);
 
   const handleMouseMove = (e) => {
@@ -104,10 +105,12 @@ export function InteractiveProductCard({
             <Eye className="w-4 h-4" /> View
           </button>
           <button
-            onClick={e => { e.preventDefault(); e.stopPropagation(); requireAuth(() => addToCart(template)); }}
-            className={`p-2.5 rounded-full hover:scale-105 transition-all shadow-xl ${inCart ? 'bg-green-500 text-white' : 'bg-violet-600 hover:bg-violet-700 text-white'}`}
+            onClick={e => { e.preventDefault(); e.stopPropagation(); if (!isOwned) requireAuth(() => addToCart(template)); }}
+            disabled={isOwned}
+            title={isOwned ? "Already Owned" : inCart ? "Added to Cart" : "Add to Cart"}
+            className={`p-2.5 rounded-full transition-all shadow-xl ${isOwned ? 'bg-emerald-500 text-white cursor-default' : inCart ? 'bg-green-500 text-white hover:scale-105' : 'bg-violet-600 hover:bg-violet-700 text-white hover:scale-105'}`}
           >
-            <ShoppingCart className="w-4 h-4" />
+            {isOwned ? <ShoppingCart className="w-4 h-4 opacity-50" /> : <ShoppingCart className="w-4 h-4" />}
           </button>
         </div>
       </div>

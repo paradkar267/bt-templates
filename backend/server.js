@@ -113,7 +113,7 @@ app.post('/api/send-receipt', async (req, res) => {
 
   try {
     const info = await transporter.sendMail({
-      from: `"Bizleap Marketplace" <${process.env.SMTP_FROM || process.env.SMTP_USER}>`,
+      from: `"Bizleap Marketplace" <bizleap1@gmail.com>`,
       to: to,
       subject: `Your Receipt from Bizleap - Order #${orderId}`,
       html: htmlContent,
@@ -152,8 +152,8 @@ app.post('/api/contact', async (req, res) => {
 
   try {
     const info = await transporter.sendMail({
-      from: `"Bizleap Contact Form" <${process.env.SMTP_FROM || process.env.SMTP_USER}>`,
-      to: process.env.CONTACT_EMAIL || process.env.SMTP_USER, // Send to site admin
+      from: `"Bizleap Contact Form" <bizleap1@gmail.com>`,
+      to: 'bizleap1@gmail.com', // Send to site admin
       replyTo: email,
       subject: `New Message: ${subject || 'General Inquiry'} from ${firstName} ${lastName}`,
       html: htmlContent,

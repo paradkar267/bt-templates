@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Download, LayoutTemplate, ArrowLeft, Loader2, CheckCircle2, Trash2 } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import confetti from 'canvas-confetti';
+import { Download, LayoutTemplate, ArrowLeft, Loader2, CheckCircle2, Trash2, Eye } from 'lucide-react';
 import { useCart } from './CartContext';
 import UserMenu from './UserMenu';
 import { toast } from 'sonner';
@@ -9,10 +10,32 @@ import { Logo } from './components/ui/Logo';
 export default function MyTemplatesPage() {
   const { purchasedTemplates, removePurchasedTemplate } = useCart();
   const [downloading, setDownloading] = useState({});
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+    
+    if (location.state?.showConfetti) {
+      const duration = 3 * 1000;
+      const animationEnd = Date.now() + duration;
+      const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 99999 };
+  
+      const randomInRange = (min, max) => Math.random() * (max - min) + min;
+  
+      const interval = setInterval(function() {
+        const timeLeft = animationEnd - Date.now();
+        if (timeLeft <= 0) return clearInterval(interval);
+  
+        const particleCount = 50 * (timeLeft / duration);
+        confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } });
+        confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } });
+      }, 250);
+
+      // Clear the state so it doesn't run again on refresh
+      navigate('.', { replace: true, state: {} });
+    }
+  }, [location, navigate]);
 
   const handleDelete = (templateId, templateTitle) => {
     if (window.confirm(`Are you sure you want to delete ${templateTitle} from your templates? This action cannot be undone.`)) {
@@ -83,8 +106,13 @@ export default function MyTemplatesPage() {
 
               return (
                 <div key={template.id} className="glass-panel p-6 rounded-[2rem] flex flex-col group hover:shadow-2xl transition-all duration-300 border border-gray-200 dark:border-white/10 bg-white dark:bg-gray-900/50 relative overflow-hidden">
-                   <div className="w-full aspect-[16/10] bg-gray-100 dark:bg-gray-800 rounded-xl overflow-hidden mb-6 relative">
+                   <div className="w-full aspect-[16/10] bg-gray-100 dark:bg-gray-800 rounded-xl overflow-hidden mb-6 relative group/img cursor-pointer">
                       <img src={template.image} alt={template.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                      <Link to={`/product/${template.id}`} className="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
+                        <span className="bg-white text-black px-4 py-2 rounded-full font-bold flex items-center gap-2 shadow-lg scale-90 group-hover/img:scale-100 transition-transform">
+                          <Eye className="w-4 h-4"/> View Template
+                        </span>
+                      </Link>
                    </div>
                    <div className="flex-1">
                       <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">{template.category}</p>

@@ -49,8 +49,11 @@ export function AuthProvider({ children }) {
     if (!currentUser) return;
     setUser(currentUser);
     
+    const rawFullName = currentUser?.user_metadata?.full_name;
+    const cleanFullName = typeof rawFullName === 'object' && rawFullName !== null ? rawFullName.full_name : rawFullName;
+
     const authProfile = {
-      full_name: currentUser?.user_metadata?.full_name || currentUser?.email?.split('@')[0],
+      full_name: cleanFullName || currentUser?.email?.split('@')[0],
       avatar_url: currentUser?.user_metadata?.avatar_url
     };
     setProfile(prev => ({ ...prev, ...authProfile }));
@@ -206,7 +209,7 @@ export function AuthProvider({ children }) {
     }
   };
 
-  const isAdmin = user?.email === 'yashparadkar63@gmail.com';
+  const isAdmin = user?.email?.toLowerCase() === 'bizleap1@gmail.com';
 
   return (
     <AuthContext.Provider value={{ user, profile, setProfile, isAdmin, loading, signInWithGoogle, signInWithGithub, signInWithFigma, signIn, signUp, verifyOtp, resetPassword, updatePassword, signOut, openAuthModal, closeAuthModal, requireAuth }}>

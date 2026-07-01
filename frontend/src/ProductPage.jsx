@@ -17,7 +17,7 @@ import { Logo } from './components/ui/Logo';
 export default function ProductPage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { addToCart, cartItems } = useCart();
+  const { addToCart, cartItems, purchasedTemplates } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
   const { theme } = useTheme();
   const isDark = theme === 'dark';
@@ -45,6 +45,7 @@ export default function ProductPage() {
   const template = templates.find(t => t.id === parseInt(id));
 
   const inCart = template ? cartItems.some(item => item.id === template.id) : false;
+  const isOwned = template ? purchasedTemplates?.some(item => item.id === template.id) : false;
   const similarTemplates = template ? templates.filter(t => t.category === template.category && t.id !== template.id).slice(0, 3) : [];
 
   if (!template) {
@@ -152,14 +153,20 @@ export default function ProductPage() {
                </div>
 
                <button 
-                  onClick={() => requireAuth(() => addToCart(template))}
+                  onClick={() => {
+                    if (isOwned) return;
+                    requireAuth(() => addToCart(template));
+                  }}
+                  disabled={isOwned}
                   className={`w-full py-5 rounded-2xl font-black text-lg flex items-center justify-center gap-3 transition-all duration-300 shadow-[0_10px_30px_rgba(0,0,0,0.1)] ${
-                    inCart 
+                    isOwned
+                    ? 'bg-emerald-500 text-white shadow-emerald-500/20 cursor-default opacity-90'
+                    : inCart 
                     ? 'bg-green-500 text-white shadow-green-500/20' 
                     : 'bg-black dark:bg-white text-white dark:text-black hover:scale-[1.02] hover:shadow-black/20 dark:hover:shadow-white/20'
                   }`}
                >
-                  {inCart ? 'Added to Cart' : <><ShoppingCart className="w-6 h-6" /> Add to Cart</>}
+                  {isOwned ? <><Check className="w-6 h-6" /> Already Owned</> : inCart ? 'Added to Cart' : <><ShoppingCart className="w-6 h-6" /> Add to Cart</>}
                </button>
 
                <div className="flex gap-4 mt-4">
@@ -186,7 +193,6 @@ export default function ProductPage() {
         </div>
       </div>
 
-      <FAQSection />
       <ReviewsSection templateId={template.id} />
       
       <div className="max-w-[1200px] mx-auto px-6 md:px-12 py-16 border-t border-gray-100 dark:border-white/10">
@@ -197,6 +203,8 @@ export default function ProductPage() {
           ))}
         </div>
       </div>
+
+      <FAQSection />
 
       <LivePreviewModal isOpen={isPreviewOpen} onClose={() => setIsPreviewOpen(false)} template={template} />
     </div>
