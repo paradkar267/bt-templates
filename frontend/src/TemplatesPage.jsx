@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { ShoppingCart, Search, ArrowLeft, Filter, X } from 'lucide-react';
+import { ShoppingCart, Search, ArrowLeft, Filter, X, LayoutTemplate } from 'lucide-react';
 import { useCart } from './CartContext';
 import { useTemplates } from './useTemplates';
 import { DenseCard } from './Home';
@@ -10,6 +10,9 @@ import { motion, AnimatePresence } from "motion/react";
 import { useTheme } from './ThemeContext';
 import { useAuth } from './AuthContext';
 import { Logo } from './components/ui/Logo';
+import { CenterNav } from './components/ui/CenterNav';
+import SEO from './components/SEO';
+import { useCurrency } from './CurrencyContext';
 
 export default function TemplatesPage() {
   const { cartItems } = useCart();
@@ -18,9 +21,11 @@ export default function TemplatesPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const isDark = theme === 'dark';
+  const { formatPrice, convertPrice, currency } = useCurrency();
   
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTechs, setSelectedTechs] = useState([]);
+  const [selectedTag, setSelectedTag] = useState("");
   const [priceRange, setPriceRange] = useState("all");
   const [sortOrder, setSortOrder] = useState("newest");
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
@@ -30,9 +35,16 @@ export default function TemplatesPage() {
   }, []);
 
   useEffect(() => {
-    const tech = new URLSearchParams(location.search).get('tech');
+    const params = new URLSearchParams(location.search);
+    const tech = params.get('tech');
+    const tag = params.get('tag');
     if (tech) {
       setSelectedTechs([tech]);
+    }
+    if (tag) {
+      setSelectedTag(tag);
+    } else {
+      setSelectedTag(""); // reset if tag is removed
     }
   }, [location.search]);
 
@@ -51,37 +63,40 @@ export default function TemplatesPage() {
     );
   };
 
-  const filteredTemplates = templates.filter(t => {
-    // Tech filter
-    const matchesTech = selectedTechs.length === 0 || selectedTechs.includes(t.category);
-    
-    // Price filter
-    const price = parseFloat(t.price);
-    let matchesPrice = true;
-    if (priceRange === "free") matchesPrice = price === 0;
-    else if (priceRange === "under6000") matchesPrice = price > 0 && price < 6000;
-    else if (priceRange === "6000to8000") matchesPrice = price >= 6000 && price <= 8000;
-    else if (priceRange === "over8000") matchesPrice = price > 8000;
+  const filteredTemplates = useMemo(() => {
+    return templates.filter(t => {
+      // Tech filter
+      const matchesTech = selectedTechs.length === 0 || selectedTechs.includes(t.category);
+      
+      // Tag filter (business categories)
+      const matchesTag = !selectedTag || t.tag === selectedTag;
+      
+      // Price filter (compare in converted currency)
+      const convertedPrice = convertPrice(parseFloat(t.price));
+      const low = convertPrice(6000);
+      const high = convertPrice(8000);
+      let matchesPrice = true;
+      if (priceRange === "free") matchesPrice = convertedPrice === 0;
+      else if (priceRange === "under6000") matchesPrice = convertedPrice > 0 && convertedPrice < low;
+      else if (priceRange === "6000to8000") matchesPrice = convertedPrice >= low && convertedPrice <= high;
+      else if (priceRange === "over8000") matchesPrice = convertedPrice > high;
 
-    // Search filter
-    const searchLower = searchQuery.toLowerCase();
-    const matchesSearch = !searchQuery || 
-                          t.title?.toLowerCase().includes(searchLower) || 
-                          t.author?.toLowerCase().includes(searchLower) ||
-                          t.description?.toLowerCase().includes(searchLower) ||
-                          t.category?.toLowerCase().includes(searchLower) ||
-                          t.tag?.toLowerCase().includes(searchLower) ||
-                          (t.keywords && t.keywords.some(k => k?.toLowerCase().includes(searchLower)));
-                          
-    return matchesTech && matchesPrice && matchesSearch;
-  }).sort((a, b) => {
-    if (sortOrder === 'price-low') return parseFloat(a.price) - parseFloat(b.price);
-    if (sortOrder === 'price-high') return parseFloat(b.price) - parseFloat(a.price);
-    if (sortOrder === 'popular') return (b.sales * b.rating) - (a.sales * a.rating);
-    return b.id - a.id;
-  });
+      // Search filter
+      const searchTerms = searchQuery.toLowerCase().split(' ').filter(Boolean);
+      const searchableText = `${t.title || ''} ${t.author || ''} ${t.description || ''} ${t.category || ''} ${t.tag || ''} ${(t.keywords || []).join(' ')}`.toLowerCase();
+      
+      const matchesSearch = searchTerms.length === 0 || searchTerms.every(term => searchableText.includes(term));
+                            
+      return matchesTech && matchesTag && matchesPrice && matchesSearch;
+    }).sort((a, b) => {
+      if (sortOrder === 'price-low') return parseFloat(a.price) - parseFloat(b.price);
+      if (sortOrder === 'price-high') return parseFloat(b.price) - parseFloat(a.price);
+      if (sortOrder === 'popular') return (b.sales * b.rating) - (a.sales * a.rating);
+      return b.id - a.id;
+    });
+  }, [templates, selectedTechs, selectedTag, priceRange, searchQuery, sortOrder, currency]);
 
-  const SidebarContent = () => (
+  const sidebarContent = (
     <div className="space-y-8">
       {/* Search */}
       <div>
@@ -124,9 +139,9 @@ export default function TemplatesPage() {
           {[
             { id: "all", label: "Any Price" },
             { id: "free", label: "Free" },
-            { id: "under6000", label: "Under ₹6000" },
-            { id: "6000to8000", label: "₹6000 to ₹8000" },
-            { id: "over8000", label: "₹8000 & Above" },
+            { id: "under6000", label: `Under ${formatPrice(6000)}` },
+            { id: "6000to8000", label: `${formatPrice(6000)} to ${formatPrice(8000)}` },
+            { id: "over8000", label: `${formatPrice(8000)} & Above` },
           ].map(range => (
             <label key={range.id} className="flex items-center gap-3 cursor-pointer group py-1">
               <div className={`w-5 h-5 rounded-full border flex items-center justify-center transition-colors ${priceRange === range.id ? (isDark ? 'border-white' : 'border-black') : (isDark ? 'border-white/20 group-hover:border-white/50' : 'border-gray-300 group-hover:border-black')}`}>
@@ -145,10 +160,18 @@ export default function TemplatesPage() {
 
   return (
     <div className={`min-h-screen flex flex-col font-sans pb-32 transition-colors duration-1000 ${isDark ? 'bg-transparent text-white' : 'bg-gray-50 text-black'}`}>
+      <SEO 
+        title="All Templates" 
+        description="Browse our complete collection of premium digital templates and UI kits."
+        url="/templates"
+      />
       
       {/* Navigation */}
       <nav className={`h-[80px] w-full px-4 md:px-8 lg:px-16 flex items-center justify-between border-b sticky top-0 z-50 shadow-sm transition-colors duration-1000 ${isDark ? 'bg-black/20 border-white/10 text-white backdrop-blur-md' : 'bg-white border-gray-200 text-black'}`}>
         <Logo />
+        
+        <CenterNav />
+
         <div className="flex items-center gap-4 md:gap-6">
           <button onClick={() => requireAuth(() => navigate('/cart'))} className={`relative p-2 rounded-full transition-colors cursor-pointer ${isDark ? 'hover:bg-gray-800' : 'hover:bg-gray-100'}`}>
             <ShoppingCart className="w-5 h-5 md:w-6 md:h-6" />
@@ -169,9 +192,23 @@ export default function TemplatesPage() {
           <ArrowLeft className="w-4 h-4 md:w-5 md:h-5" /> Back to Home
         </Link>
 
-        <div className="flex flex-col mb-8">
-           <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-4">All Templates</h1>
-           <p className="text-lg md:text-xl text-gray-500 font-medium">Browse our collection of premium digital assets.</p>
+        {/* Hero Section */}
+        <div 
+          className="w-full py-16 px-4 border-b border-black/5 dark:border-white/10 relative overflow-hidden bg-cover bg-center rounded-3xl mb-8"
+          style={{ backgroundImage: "url('/bground.png')" }}
+        >
+          <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl pointer-events-none mix-blend-screen" />
+          <div className="max-w-7xl mx-auto flex flex-col items-center text-center relative z-10">
+            <div className="w-16 h-16 bg-black dark:bg-white text-white dark:text-black rounded-2xl flex items-center justify-center shadow-xl shadow-black/10 mb-6">
+              <LayoutTemplate className="w-8 h-8" />
+            </div>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-4">
+              All Templates
+            </h1>
+            <p className="text-lg md:text-xl text-gray-500 dark:text-gray-400 font-medium max-w-2xl">
+              Browse our collection of premium digital assets.
+            </p>
+          </div>
         </div>
 
         {/* Mobile Filter & Sort */}
@@ -191,10 +228,10 @@ export default function TemplatesPage() {
               onChange={(e) => setSortOrder(e.target.value)}
               className={`px-3 py-2 rounded-lg font-bold text-sm border outline-none ${isDark ? 'bg-black border-white/20 text-white' : 'bg-white border-gray-300 text-black'}`}
             >
-              <option value="newest">Newest Arrivals</option>
-              <option value="popular">Most Popular</option>
-              <option value="price-low">Price: Low to High</option>
-              <option value="price-high">Price: High to Low</option>
+              <option value="newest" className="bg-white dark:bg-black text-black dark:text-white">Newest Arrivals</option>
+              <option value="popular" className="bg-white dark:bg-black text-black dark:text-white">Most Popular</option>
+              <option value="price-low" className="bg-white dark:bg-black text-black dark:text-white">Price: Low to High</option>
+              <option value="price-high" className="bg-white dark:bg-black text-black dark:text-white">Price: High to Low</option>
             </select>
           </div>
         </div>
@@ -203,7 +240,7 @@ export default function TemplatesPage() {
           
           {/* Desktop Sidebar */}
           <aside className="hidden lg:block w-64 flex-shrink-0 sticky top-32">
-             <SidebarContent />
+             {sidebarContent}
           </aside>
 
           {/* Mobile Sidebar Overlay */}
@@ -230,7 +267,7 @@ export default function TemplatesPage() {
                       <X className="w-5 h-5" />
                     </button>
                   </div>
-                  <SidebarContent />
+                  {sidebarContent}
                 </motion.aside>
               </>
             )}
@@ -247,15 +284,15 @@ export default function TemplatesPage() {
                   onChange={(e) => setSortOrder(e.target.value)}
                   className={`px-3 py-2 rounded-lg font-bold text-sm border outline-none cursor-pointer ${isDark ? 'bg-black border-white/20 text-white' : 'bg-white border-gray-300 text-black'}`}
                 >
-                  <option value="newest">Newest Arrivals</option>
-                  <option value="popular">Most Popular</option>
-                  <option value="price-low">Price: Low to High</option>
-                  <option value="price-high">Price: High to Low</option>
+                  <option value="newest" className="bg-white dark:bg-black text-black dark:text-white">Newest Arrivals</option>
+                  <option value="popular" className="bg-white dark:bg-black text-black dark:text-white">Most Popular</option>
+                  <option value="price-low" className="bg-white dark:bg-black text-black dark:text-white">Price: Low to High</option>
+                  <option value="price-high" className="bg-white dark:bg-black text-black dark:text-white">Price: High to Low</option>
                 </select>
               </div>
             </div>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
                {loading ? (
                  Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)
                ) : (

@@ -1,39 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Users, DollarSign, Activity, CreditCard, ArrowUpRight, ArrowDownRight, Package, LayoutGrid, BarChart3, Settings, Bell, Search, MoreHorizontal, CheckCircle2, Download, ChevronDown, FileText, FileSpreadsheet, Loader2, Check } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell } from 'recharts';
 import { motion } from 'framer-motion';
 import UserMenu from './UserMenu';
 import { useTheme } from './ThemeContext';
 import { useAuth } from './AuthContext';
+import { useTemplates } from './useTemplates';
+import { useCurrency } from './CurrencyContext';
 import { Logo } from './components/ui/Logo';
 import { supabase } from './lib/supabase';
-import { marketplaceTemplates } from './data';
+import { marketplaceTemplates as initialTemplates } from './data';
 
-// Using static data for charts since we don't have enough history for real charts yet.
-const defaultRevenueData = [
-  { name: 'Mon', revenue: 4000, visitors: 2400 },
-  { name: 'Tue', revenue: 3000, visitors: 1398 },
-  { name: 'Wed', revenue: 9800, visitors: 9800 },
-  { name: 'Thu', revenue: 3908, visitors: 3908 },
-  { name: 'Fri', revenue: 4800, visitors: 4800 },
-  { name: 'Sat', revenue: 3800, visitors: 3800 },
-  { name: 'Sun', revenue: 4300, visitors: 4300 },
-];
-
-const defaultCategoryData = [
-  { name: 'UI Kits', value: 400 },
-  { name: 'Dashboards', value: 300 },
-  { name: 'Landing Pages', value: 300 },
-  { name: 'Mobile Apps', value: 200 },
-];
+// Data initialized from actual fetching
 const COLORS = ['#8b5cf6', '#3b82f6', '#ec4899', '#10b981'];
 
 export default function DashboardPage() {
   const { theme } = useTheme();
+  const navigate = useNavigate();
   const { isAdmin } = useAuth();
+  const { templates: marketplaceTemplates } = useTemplates();
+  const { formatPrice, currency } = useCurrency();
   const isDark = theme === 'dark';
 
   const [stats, setStats] = useState({
@@ -43,8 +32,8 @@ export default function DashboardPage() {
     templates: marketplaceTemplates.length
   });
   const [transactions, setTransactions] = useState([]);
-  const [chartRevenueData, setChartRevenueData] = useState(defaultRevenueData);
-  const [chartCategoryData, setChartCategoryData] = useState(defaultCategoryData);
+  const [chartRevenueData, setChartRevenueData] = useState([]);
+  const [chartCategoryData, setChartCategoryData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [currentTime, setCurrentTime] = useState(new Date());
   const [activeTab, setActiveTab] = useState('Analytics');
@@ -101,10 +90,10 @@ export default function DashboardPage() {
         
         doc.setFontSize(12);
         doc.setTextColor(80, 80, 80);
-        doc.text(`Gross Revenue: INR ${stats.revenue.toLocaleString()}`, 20, 75);
+        doc.text(`Gross Revenue: ${currency} ${convertPrice ? convertPrice(stats.revenue).toLocaleString() : stats.revenue.toLocaleString()}`, 20, 75);
         doc.text(`Total Sales: ${stats.sales}`, 20, 85);
         doc.text(`Active Users: ${stats.users}`, 20, 95);
-        doc.text(`Average Order Value: INR ${Math.round(stats.aov || 0).toLocaleString()}`, 20, 105);
+        doc.text(`Average Order Value: ${currency} ${convertPrice ? Math.round(convertPrice(stats.aov || 0)).toLocaleString() : Math.round(stats.aov || 0).toLocaleString()}`, 20, 105);
         
         // Add Transactions Table
         const tableColumn = ["Date", "Customer", "Product", "Amount", "Status"];
@@ -115,7 +104,7 @@ export default function DashboardPage() {
             t.date,
             t.user,
             t.template,
-            `INR ${t.amount}`,
+            `${currency} ${convertPrice ? convertPrice(t.amount).toLocaleString() : t.amount.toLocaleString()}`,
             t.status
           ];
           tableRows.push(rowData);
@@ -215,39 +204,16 @@ export default function DashboardPage() {
         });
       } 
       
-      // Merge with historical mock data so the dashboard always looks populated
-      // We will only add mock transactions if filter is 'all' or no real purchases exist yet to avoid empty state,
-      // but the user wants real data. We will keep mock data for now to ensure dashboard is not empty,
-      // but adjust it based on dateFilter.
-      if (dateFilter === 'all') {
-        totalRevenue += 845200;
-      }
-      let mockTransactions = [
-        { id: 'pay_Mi9B3x', user: 'Amit Sharma', amount: 5520, status: 'Completed', date: new Date(Date.now() - 100000).toLocaleString(), template: 'Nexus Admin Dashboard', avatar: 'A', rawDate: new Date(Date.now() - 100000) },
-        { id: 'pay_Mi2C1y', user: 'Priya Patel', amount: 6320, status: 'Completed', date: new Date(Date.now() - 3600000).toLocaleString(), template: 'Aura Landing Page', avatar: 'P', rawDate: new Date(Date.now() - 3600000) },
-        { id: 'pay_Mh8X9z', user: 'Rahul Verma', amount: 7920, status: 'Completed', date: new Date(Date.now() - 7200000).toLocaleString(), template: 'Fintech Mobile', avatar: 'R', rawDate: new Date(Date.now() - 7200000) },
-        { id: 'pay_Mh4T5w', user: 'Neha Gupta', amount: 8720, status: 'Completed', date: new Date(Date.now() - 86400000).toLocaleString(), template: 'Creator Studio', avatar: 'N', rawDate: new Date(Date.now() - 86400000) },
-        { id: 'pay_Mg9K2v', user: 'Sanjay Kumar', amount: 7120, status: 'Completed', date: new Date(Date.now() - 172800000).toLocaleString(), template: 'Crypto Exchange', avatar: 'S', rawDate: new Date(Date.now() - 172800000) }
-      ];
-      
-      if (dateFilter === '7days') {
-         mockTransactions = mockTransactions.filter(t => t.rawDate > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000));
-      } else if (dateFilter === '30days') {
-         mockTransactions = mockTransactions.filter(t => t.rawDate > new Date(Date.now() - 30 * 24 * 60 * 60 * 1000));
-      }
-      
-      formattedTransactions = [...formattedTransactions, ...mockTransactions];
-      
       // Calculate derived stats
-      const salesCount = formattedTransactions.length + (dateFilter === 'all' ? 140 : 0);
-      const uniqueUsers = new Set(formattedTransactions.map(t => t.user)).size + (dateFilter === 'all' ? 40 : 0);
+      const salesCount = formattedTransactions.length;
+      const uniqueUsers = new Set(formattedTransactions.map(t => t.user)).size;
       
       setStats({
-        revenue: totalRevenue + mockTransactions.reduce((acc, t) => acc + t.amount, 0),
+        revenue: totalRevenue,
         sales: salesCount,
-        users: uniqueUsers,
+        users: usersCount || 0,
         templates: marketplaceTemplates.length,
-        aov: salesCount > 0 ? (totalRevenue + mockTransactions.reduce((acc, t) => acc + t.amount, 0)) / salesCount : 0
+        aov: salesCount > 0 ? totalRevenue / salesCount : 0
       });
       
       // Calculate Real-Time Chart Data
@@ -258,7 +224,7 @@ export default function DashboardPage() {
           dateObj: d,
           name: d.toLocaleDateString('en-US', { weekday: 'short' }),
           revenue: 0,
-          visitors: Math.floor(Math.random() * 3000) + 1000 // mock visitors
+          visitors: 0 // real visitors data not tracked yet
         };
       });
 
@@ -291,9 +257,7 @@ export default function DashboardPage() {
         .sort((a, b) => b.value - a.value)
         .slice(0, 4); // Keep top 4 for pie chart
 
-      if (newCategoryData.length > 0) {
-        setChartCategoryData(newCategoryData);
-      }
+      setChartCategoryData(newCategoryData);
 
       setTransactions(formattedTransactions.slice(0, 10)); // Top 10 recent
     } catch (err) {
@@ -388,11 +352,11 @@ export default function DashboardPage() {
               <select 
                 value={dateFilter}
                 onChange={(e) => setDateFilter(e.target.value)}
-                className="px-4 py-2.5 bg-white dark:bg-[#111] border border-gray-200 dark:border-white/10 rounded-xl font-bold text-sm outline-none cursor-pointer"
+                className="px-4 py-2.5 bg-white dark:bg-[#111] border border-gray-200 dark:border-white/10 rounded-xl font-bold text-sm outline-none cursor-pointer text-gray-900 dark:text-white"
               >
-                <option value="all">All Time</option>
-                <option value="30days">Last 30 Days</option>
-                <option value="7days">Last 7 Days</option>
+                <option value="all" className="bg-white dark:bg-[#111] text-gray-900 dark:text-white">All Time</option>
+                <option value="30days" className="bg-white dark:bg-[#111] text-gray-900 dark:text-white">Last 30 Days</option>
+                <option value="7days" className="bg-white dark:bg-[#111] text-gray-900 dark:text-white">Last 7 Days</option>
               </select>
               <button 
                 onClick={fetchDashboardData}
@@ -489,7 +453,7 @@ export default function DashboardPage() {
             >
               <PremiumStatCard 
                 title="Gross Revenue" 
-                value={`₹${stats.revenue.toLocaleString()}`} 
+                value={formatPrice(stats.revenue)} 
                 icon={<DollarSign className="w-6 h-6" />} 
                 trend="+24.5%" 
                 isPositive={true}
@@ -516,7 +480,7 @@ export default function DashboardPage() {
               />
               <PremiumStatCard 
                 title="Avg Order Value" 
-                value={`₹${Math.round(stats.aov || 0).toLocaleString()}`} 
+                value={formatPrice(stats.aov || 0)} 
                 icon={<CreditCard className="w-6 h-6" />} 
                 trend="+8.1%" 
                 isPositive={true}
@@ -539,9 +503,9 @@ export default function DashboardPage() {
                     <p className="text-[13px] font-medium text-gray-500">Visualizing income over the last 7 days.</p>
                   </div>
                   <select className={`rounded-xl px-4 py-2 text-sm font-semibold outline-none cursor-pointer transition-colors border ${isDark ? 'bg-[#111] border-white/10 text-white hover:bg-white/5' : 'bg-gray-50 border-gray-200 text-gray-900 hover:bg-gray-100'}`}>
-                    <option>Last 7 Days</option>
-                    <option>This Month</option>
-                    <option>This Year</option>
+                    <option className="bg-white dark:bg-[#111] text-gray-900 dark:text-white">Last 7 Days</option>
+                    <option className="bg-white dark:bg-[#111] text-gray-900 dark:text-white">This Month</option>
+                    <option className="bg-white dark:bg-[#111] text-gray-900 dark:text-white">This Year</option>
                   </select>
                 </div>
                 <div className="h-[350px] relative z-10">
@@ -568,7 +532,7 @@ export default function DashboardPage() {
                         axisLine={false} 
                         tickLine={false} 
                         tick={{ fill: isDark ? '#6b7280' : '#9ca3af', fontSize: 11, fontWeight: 600 }}
-                        tickFormatter={(value) => `₹${value}`}
+                        tickFormatter={(value) => formatPrice(value)}
                         dx={-15}
                       />
                       <Tooltip 
@@ -583,6 +547,11 @@ export default function DashboardPage() {
                         }}
                         itemStyle={{ color: isDark ? '#fff' : '#000', fontSize: '13px', fontWeight: 700 }}
                         labelStyle={{ color: '#6b7280', fontSize: '12px', fontWeight: 600, marginBottom: '4px' }}
+                        formatter={(value, name) => {
+                          if (name === 'revenue') return [formatPrice(value), 'Revenue'];
+                          if (name === 'visitors') return [value.toLocaleString(), 'Visitors'];
+                          return [value, name];
+                        }}
                       />
                       <Area type="monotone" dataKey="visitors" stroke={isDark ? "#8b5cf6" : "#7c3aed"} strokeWidth={2.5} fillOpacity={1} fill="url(#colorVisitors)" />
                       <Area type="monotone" dataKey="revenue" stroke={isDark ? "#3b82f6" : "#2563eb"} strokeWidth={2.5} fillOpacity={1} fill="url(#colorRevenue)" />
@@ -596,46 +565,73 @@ export default function DashboardPage() {
                 <motion.div variants={itemVariants} className={`flex-1 flex flex-col p-8 rounded-3xl border transition-all duration-500 overflow-hidden relative ${isDark ? 'bg-white/[0.02] border-white/[0.05] hover:border-white/[0.1] hover:bg-white/[0.04]' : 'bg-white border-black/[0.05] shadow-sm hover:shadow-md hover:border-black/[0.1]'}`}>
                   <h3 className={`text-xl font-medium tracking-tight mb-1 ${isDark ? 'text-white' : 'text-gray-900'}`}>Sales by Category</h3>
                   <p className="text-[13px] font-medium text-gray-500 mb-6">Distribution of template types.</p>
-                  <div className="flex-1 flex items-center justify-center relative z-10 min-h-[200px]">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <PieChart>
-                        <Pie
-                          data={chartCategoryData}
-                          cx="50%"
-                          cy="50%"
-                          innerRadius={65}
-                          outerRadius={85}
-                          paddingAngle={8}
-                          dataKey="value"
-                          stroke="none"
-                          cornerRadius={8}
-                        >
-                          {chartCategoryData.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                          ))}
-                        </Pie>
-                        <Tooltip 
-                          contentStyle={{ 
-                            backgroundColor: isDark ? 'rgba(0,0,0,0.8)' : 'rgba(255,255,255,0.9)', 
-                            backdropFilter: 'blur(16px)', 
-                            borderRadius: '16px', 
-                            border: isDark ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,0,0,0.1)', 
-                            boxShadow: '0 20px 40px rgba(0,0,0,0.1)',
-                            padding: '12px 16px'
-                          }}
-                          itemStyle={{ color: isDark ? '#fff' : '#000', fontSize: '13px', fontWeight: 700 }}
-                        />
-                      </PieChart>
-                    </ResponsiveContainer>
-                  </div>
-                  <div className="grid grid-cols-2 gap-4 mt-6">
-                    {chartCategoryData.map((category, index) => (
-                      <div key={index} className="flex items-center gap-2">
-                        <div className="w-3 h-3 rounded-full" style={{ backgroundColor: COLORS[index % COLORS.length] }}></div>
-                        <span className="text-[11px] font-bold text-gray-500 uppercase tracking-widest">{category.name}</span>
-                      </div>
-                    ))}
-                  </div>
+                  {(() => {
+                    const totalCategorySales = chartCategoryData.reduce((acc, curr) => acc + curr.value, 0);
+                    return (
+                      <>
+                        <div className="flex-1 flex items-center justify-center relative z-10 min-h-[220px]">
+                          {/* Centered Total */}
+                          <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none mt-2">
+                            <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-0.5">Total Sales</span>
+                            <span className={`text-lg font-black ${isDark ? 'text-white' : 'text-gray-900'}`}>{formatPrice(totalCategorySales)}</span>
+                          </div>
+                          
+                          <ResponsiveContainer width="100%" height="100%">
+                            <PieChart>
+                              <Pie
+                                data={chartCategoryData}
+                                cx="50%"
+                                cy="50%"
+                                innerRadius={70}
+                                outerRadius={90}
+                                paddingAngle={4}
+                                dataKey="value"
+                                stroke="none"
+                                cornerRadius={4}
+                              >
+                                {chartCategoryData.map((entry, index) => (
+                                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                ))}
+                              </Pie>
+                              <Tooltip 
+                                contentStyle={{ 
+                                  backgroundColor: isDark ? 'rgba(0,0,0,0.8)' : 'rgba(255,255,255,0.9)', 
+                                  backdropFilter: 'blur(16px)', 
+                                  borderRadius: '16px', 
+                                  border: isDark ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,0,0,0.1)', 
+                                  boxShadow: '0 20px 40px rgba(0,0,0,0.1)',
+                                  padding: '12px 16px'
+                                }}
+                                itemStyle={{ color: isDark ? '#fff' : '#000', fontSize: '13px', fontWeight: 700 }}
+                                formatter={(value, name) => {
+                                  const percentage = totalCategorySales > 0 ? ((value / totalCategorySales) * 100).toFixed(1) : 0;
+                                  return [`${formatPrice(value)} (${percentage}%)`, name];
+                                }}
+                              />
+                            </PieChart>
+                          </ResponsiveContainer>
+                        </div>
+                        
+                        <div className="grid grid-cols-2 gap-y-5 gap-x-2 mt-8">
+                          {chartCategoryData.map((category, index) => {
+                            const percentage = totalCategorySales > 0 ? Math.round((category.value / totalCategorySales) * 100) : 0;
+                            return (
+                              <div key={index} className="flex flex-col gap-1">
+                                <div className="flex items-center gap-2">
+                                  <div className="w-2.5 h-2.5 rounded-full shadow-sm" style={{ backgroundColor: COLORS[index % COLORS.length] }}></div>
+                                  <span className="text-[11px] font-bold text-gray-500 uppercase tracking-widest truncate">{category.name}</span>
+                                </div>
+                                <div className="pl-4 flex items-baseline gap-1.5">
+                                  <span className={`text-sm font-black ${isDark ? 'text-gray-200' : 'text-gray-800'}`}>{percentage}%</span>
+                                  <span className="text-[11px] text-gray-400 font-semibold">({formatPrice(category.value)})</span>
+                                </div>
+                              </div>
+                            )
+                          })}
+                        </div>
+                      </>
+                    );
+                  })()}
                 </motion.div>
               </div>
             </div>
@@ -690,7 +686,7 @@ export default function DashboardPage() {
                              <span className="text-[13px] font-medium">{trx.template}</span>
                            </div>
                          </td>
-                         <td className={`py-4 text-[14px] font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>₹{trx.amount.toLocaleString()}</td>
+                         <td className={`py-4 text-[14px] font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>{formatPrice(trx.amount)}</td>
                          <td className="py-4">
                            <div className="flex items-center gap-2">
                              <div className={`w-1.5 h-1.5 rounded-full ${trx.status === 'Completed' ? 'bg-emerald-500' : 'bg-amber-500'}`}></div>
@@ -747,7 +743,7 @@ export default function DashboardPage() {
                        </div>
                        <div className={`pt-4 border-t flex justify-between items-center ${isDark ? 'border-white/5' : 'border-gray-100'}`}>
                          <span className="text-[12px] font-semibold text-gray-500 uppercase tracking-wider">Lifetime Value</span>
-                         <span className={`font-bold text-[14px] ${isDark ? 'text-emerald-400' : 'text-emerald-600'}`}>₹{totalSpent.toLocaleString()}</span>
+                         <span className={`font-bold text-[14px] ${isDark ? 'text-emerald-400' : 'text-emerald-600'}`}>{formatPrice(totalSpent)}</span>
                        </div>
                     </div>
                   )
@@ -784,7 +780,7 @@ export default function DashboardPage() {
                  <div className="grid grid-cols-2 gap-4 mb-8">
                    <div className={`p-5 rounded-2xl border ${isDark ? 'bg-white/[0.02] border-white/5' : 'bg-gray-50 border-gray-100'}`}>
                      <p className="text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-2">Total Spent</p>
-                     <p className={`text-xl font-semibold ${isDark ? 'text-emerald-400' : 'text-emerald-600'}`}>₹{selectedCustomer.totalSpent.toLocaleString()}</p>
+                     <p className={`text-xl font-semibold ${isDark ? 'text-emerald-400' : 'text-emerald-600'}`}>{formatPrice(selectedCustomer.totalSpent)}</p>
                    </div>
                    <div className={`p-5 rounded-2xl border ${isDark ? 'bg-white/[0.02] border-white/5' : 'bg-gray-50 border-gray-100'}`}>
                      <p className="text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-2">Total Orders</p>

@@ -18,10 +18,15 @@ import ContactPage from './ContactPage.jsx'
 import UiKitsPage from './UiKitsPage.jsx'
 import ResetPasswordPage from './ResetPasswordPage.jsx'
 import TermsPage from './TermsPage.jsx'
+import AdminDashboard from './AdminDashboard.jsx'
+import PrivacyPage from './PrivacyPage.jsx'
+import CookiePage from './CookiePage.jsx'
 
 import { ThemeProvider } from './ThemeContext'
 import { AuthProvider } from './AuthContext'
 import { WishlistProvider } from './WishlistContext'
+import { CurrencyProvider } from './CurrencyContext'
+import { HelmetProvider } from 'react-helmet-async'
 import { GradientBackground } from '@/components/ui/gradient-background-4'
 import SmoothScroll from './SmoothScroll'
 import { CommandPalette } from './components/ui/CommandPalette'
@@ -35,31 +40,38 @@ createRoot(document.getElementById('root')).render(
         <ThemeProvider>
           <GradientBackground />
           <AuthProvider>
-            <CartProvider>
-              <WishlistProvider>
-                <SmoothScroll>
-                  <SocialProofToast />
-                  <Toaster position="top-center" richColors />
-                  <CommandPalette />
-                  <Routes>
-                    <Route path="/" element={<App />} />
-                    <Route path="/product/:id" element={<ProductPage />} />
-                    <Route path="/cart" element={<CartPage />} />
-                    <Route path="/templates" element={<TemplatesPage />} />
-                    <Route path="/featured" element={<FeaturedPage />} />
-                    <Route path="/my-templates" element={<MyTemplatesPage />} />
-                    <Route path="/wishlist" element={<WishlistPage />} />
-                    <Route path="/profile" element={<ProfilePage />} />
-                    <Route path="/settings" element={<SettingsPage />} />
-                    <Route path="/dashboard" element={<DashboardPage />} />
-                    <Route path="/contact" element={<ContactPage />} />
-                    <Route path="/ui-kits" element={<UiKitsPage />} />
-                    <Route path="/reset-password" element={<ResetPasswordPage />} />
-                    <Route path="/terms" element={<TermsPage />} />
-                  </Routes>
-                </SmoothScroll>
-              </WishlistProvider>
-            </CartProvider>
+            <CurrencyProvider>
+              <CartProvider>
+                <WishlistProvider>
+                  <HelmetProvider>
+                    <SmoothScroll>
+                    <SocialProofToast />
+                    <Toaster position="top-center" richColors />
+                    <CommandPalette />
+                    <Routes>
+                      <Route path="/" element={<App />} />
+                      <Route path="/product/:id" element={<ProductPage />} />
+                      <Route path="/cart" element={<CartPage />} />
+                      <Route path="/templates" element={<TemplatesPage />} />
+                      <Route path="/featured" element={<FeaturedPage />} />
+                      <Route path="/my-templates" element={<MyTemplatesPage />} />
+                      <Route path="/wishlist" element={<WishlistPage />} />
+                      <Route path="/profile" element={<ProfilePage />} />
+                      <Route path="/settings" element={<SettingsPage />} />
+                      <Route path="/dashboard" element={<DashboardPage />} />
+                      <Route path="/contact" element={<ContactPage />} />
+                      <Route path="/ui-kits" element={<UiKitsPage />} />
+                      <Route path="/reset-password" element={<ResetPasswordPage />} />
+                      <Route path="/terms" element={<TermsPage />} />
+                      <Route path="/privacy" element={<PrivacyPage />} />
+                      <Route path="/cookies" element={<CookiePage />} />
+                      <Route path="/admin" element={<AdminDashboard />} />
+                    </Routes>
+                    </SmoothScroll>
+                  </HelmetProvider>
+                </WishlistProvider>
+              </CartProvider>
+            </CurrencyProvider>
           </AuthProvider>
         </ThemeProvider>
       </ErrorBoundary>

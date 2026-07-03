@@ -154,7 +154,7 @@ export function AuthModal({ isOpen, onClose }) {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 20, scale: 0.95 }}
           transition={{ duration: 0.3, ease: 'easeOut' }}
-          className="relative w-full max-w-md bg-white/95 dark:bg-black/95 backdrop-blur-2xl border border-white/20 dark:border-white/10 rounded-[2.5rem] shadow-[0_0_50px_rgba(0,0,0,0.1)] dark:shadow-[0_0_50px_rgba(0,0,0,0.5)] overflow-hidden my-8"
+          className="relative w-full max-w-md bg-white/95 dark:bg-[#0a0a0a]/90 backdrop-blur-3xl border border-black/10 dark:border-white/10 rounded-[2.5rem] shadow-2xl dark:shadow-[0_0_80px_rgba(0,0,0,0.8)] overflow-hidden my-8"
         >
           {/* Background Blobs */}
           <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500/30 rounded-full blur-3xl pointer-events-none mix-blend-screen" />
@@ -169,7 +169,7 @@ export function AuthModal({ isOpen, onClose }) {
 
           <div className="p-8 sm:p-10 relative z-10">
             <div className="mb-8 text-center">
-              <div className="mx-auto w-14 h-14 bg-black dark:bg-white rounded-2xl shadow-xl flex items-center justify-center mb-5 transform rotate-3">
+              <div className="mx-auto w-14 h-14 bg-gradient-to-br from-black to-gray-800 dark:from-white dark:to-gray-300 rounded-2xl shadow-xl flex items-center justify-center mb-5 transform rotate-3 hover:rotate-6 transition-transform">
                 <span className="text-2xl font-black text-white dark:text-black transform -rotate-3">BT</span>
               </div>
               <h2 className="text-3xl font-black mb-2 text-black dark:text-white tracking-tight">
@@ -192,7 +192,7 @@ export function AuthModal({ isOpen, onClose }) {
                 <button
                   onClick={handleGoogleSignIn}
                   disabled={loadingGoogle || loadingEmail}
-                  className="group relative flex-1 flex items-center justify-center py-3.5 px-4 border border-black/10 dark:border-white/10 rounded-2xl text-sm font-bold text-gray-900 bg-white hover:bg-gray-50 dark:bg-[#1A1A1A] dark:text-white dark:hover:bg-[#252525] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black dark:focus:ring-white transition-all disabled:opacity-70 shadow-sm"
+                  className="group relative flex-1 flex items-center justify-center py-3.5 px-4 border border-black/10 dark:border-white/10 rounded-2xl text-sm font-bold text-gray-900 bg-white hover:bg-gray-50 dark:bg-white/5 dark:text-white dark:hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black dark:focus:ring-white transition-all disabled:opacity-70 shadow-sm hover:scale-[1.02] active:scale-[0.98]"
                 >
                   {loadingGoogle ? (
                     <Loader2 className="w-5 h-5 animate-spin text-gray-500" />
@@ -207,7 +207,7 @@ export function AuthModal({ isOpen, onClose }) {
                 <button
                   onClick={handleGithubSignIn}
                   disabled={loadingGoogle || loadingEmail}
-                  className="group relative flex-1 flex items-center justify-center py-3.5 px-4 border border-black/10 dark:border-white/10 rounded-2xl text-sm font-bold text-gray-900 bg-white hover:bg-gray-50 dark:bg-[#1A1A1A] dark:text-white dark:hover:bg-[#252525] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black dark:focus:ring-white transition-all disabled:opacity-70 shadow-sm"
+                  className="group relative flex-1 flex items-center justify-center py-3.5 px-4 border border-black/10 dark:border-white/10 rounded-2xl text-sm font-bold text-gray-900 bg-white hover:bg-gray-50 dark:bg-white/5 dark:text-white dark:hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black dark:focus:ring-white transition-all disabled:opacity-70 shadow-sm hover:scale-[1.02] active:scale-[0.98]"
                 >
                   {loadingGoogle ? (
                     <Loader2 className="w-5 h-5 animate-spin text-gray-500" />
@@ -222,7 +222,7 @@ export function AuthModal({ isOpen, onClose }) {
                 <button
                   onClick={handleFigmaSignIn}
                   disabled={loadingGoogle || loadingEmail}
-                  className="group relative flex-1 flex items-center justify-center py-3.5 px-4 border border-black/10 dark:border-white/10 rounded-2xl text-sm font-bold text-gray-900 bg-white hover:bg-gray-50 dark:bg-[#1A1A1A] dark:text-white dark:hover:bg-[#252525] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black dark:focus:ring-white transition-all disabled:opacity-70 shadow-sm"
+                  className="group relative flex-1 flex items-center justify-center py-3.5 px-4 border border-black/10 dark:border-white/10 rounded-2xl text-sm font-bold text-gray-900 bg-white hover:bg-gray-50 dark:bg-white/5 dark:text-white dark:hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black dark:focus:ring-white transition-all disabled:opacity-70 shadow-sm hover:scale-[1.02] active:scale-[0.98]"
                 >
                   {loadingGoogle ? (
                     <Loader2 className="w-5 h-5 animate-spin text-gray-500" />
@@ -242,7 +242,7 @@ export function AuthModal({ isOpen, onClose }) {
                   <div className="w-full border-t border-gray-200 dark:border-gray-800"></div>
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-3 bg-white dark:bg-[#0A0A0A] text-gray-500 dark:text-gray-400 font-medium">
+                  <span className="px-3 bg-white/95 dark:bg-[#0a0a0a]/90 text-gray-500 dark:text-gray-400 font-medium">
                     Or continue with email
                   </span>
                 </div>
@@ -285,7 +285,7 @@ export function AuthModal({ isOpen, onClose }) {
                           required
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
-                          className="block w-full pl-11 pr-4 py-3 bg-gray-50/50 dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-2xl leading-5 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20 transition-all sm:text-sm font-medium"
+                          className="block w-full pl-11 pr-4 py-3 bg-gray-50/50 dark:bg-black/50 border border-black/5 dark:border-white/10 rounded-2xl leading-5 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20 dark:focus:bg-white/5 transition-all sm:text-sm font-medium"
                           placeholder="you@example.com"
                         />
                       </div>
@@ -304,7 +304,7 @@ export function AuthModal({ isOpen, onClose }) {
                               required
                               value={fullName}
                               onChange={(e) => setFullName(e.target.value)}
-                              className="block w-full pl-11 pr-4 py-3 bg-gray-50/50 dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-2xl leading-5 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20 transition-all sm:text-sm font-medium"
+                              className="block w-full pl-11 pr-4 py-3 bg-gray-50/50 dark:bg-black/50 border border-black/5 dark:border-white/10 rounded-2xl leading-5 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20 dark:focus:bg-white/5 transition-all sm:text-sm font-medium"
                               placeholder="John Doe"
                             />
                           </div>
@@ -322,7 +322,7 @@ export function AuthModal({ isOpen, onClose }) {
                             required
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            className="block w-full pl-11 pr-4 py-3 bg-gray-50/50 dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-2xl leading-5 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20 transition-all sm:text-sm font-medium"
+                            className="block w-full pl-11 pr-4 py-3 bg-gray-50/50 dark:bg-black/50 border border-black/5 dark:border-white/10 rounded-2xl leading-5 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20 dark:focus:bg-white/5 transition-all sm:text-sm font-medium"
                             placeholder="you@example.com"
                           />
                         </div>
@@ -332,7 +332,7 @@ export function AuthModal({ isOpen, onClose }) {
                         <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-1.5 ml-1 flex justify-between">
                           <span>Password</span>
                           {view === 'login' && (
-                            <button type="button" onClick={() => setView('forgot-password')} className="text-indigo-600 dark:text-indigo-400 hover:underline">
+                            <button type="button" onClick={() => setView('forgot-password')} className="text-gray-500 hover:text-black dark:text-gray-400 dark:hover:text-white transition-colors hover:underline">
                               Forgot password?
                             </button>
                           )}
@@ -346,7 +346,7 @@ export function AuthModal({ isOpen, onClose }) {
                             required
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="block w-full pl-11 pr-12 py-3 bg-gray-50/50 dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-2xl leading-5 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20 transition-all sm:text-sm font-medium"
+                            className="block w-full pl-11 pr-12 py-3 bg-gray-50/50 dark:bg-black/50 border border-black/5 dark:border-white/10 rounded-2xl leading-5 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20 dark:focus:bg-white/5 transition-all sm:text-sm font-medium"
                             placeholder="••••••••"
                           />
                           <button
@@ -370,7 +370,7 @@ export function AuthModal({ isOpen, onClose }) {
               <button
                 type="submit"
                 disabled={loadingGoogle || loadingEmail}
-                className="group relative w-full flex items-center justify-center py-3.5 px-4 border border-transparent rounded-2xl text-sm font-bold text-white bg-black hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black transition-all disabled:opacity-70 mt-4 overflow-hidden"
+                className="group relative w-full flex items-center justify-center py-3.5 px-4 border border-transparent rounded-2xl text-sm font-bold text-white bg-black hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black transition-all disabled:opacity-70 mt-4 overflow-hidden hover:scale-[1.01] active:scale-[0.99] hover:shadow-lg dark:hover:shadow-[0_0_20px_rgba(255,255,255,0.3)]"
               >
                 {loadingEmail ? (
                   <Loader2 className="w-5 h-5 animate-spin" />

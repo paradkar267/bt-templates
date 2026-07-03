@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IronForge Gym - Elite Fitness Center</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-zinc-950 text-white">
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 bg-zinc-950/80 backdrop-blur-md border-b border-zinc-800">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="text-2xl font-black text-rose-600 tracking-tighter">IRONFORGE</div>
+            <div class="hidden md:flex space-x-8 text-sm font-semibold uppercase tracking-wider text-zinc-400">
+                <a href="#" class="hover:text-white transition">Classes</a>
+                <a href="#" class="hover:text-white transition">Trainers</a>
+                <a href="#" class="hover:text-white transition">Membership</a>
+            </div>
+            <button class="bg-rose-600 hover:bg-rose-700 text-white px-6 py-2.5 rounded text-sm font-bold uppercase tracking-wider transition">Join Now</button>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="relative h-screen flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1920&q=80')] bg-cover bg-center opacity-40"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/60 to-transparent"></div>
+        
+        <div class="relative z-10 text-center px-6 max-w-4xl mx-auto mt-20">
+            <h1 class="text-5xl md:text-8xl font-black uppercase tracking-tighter mb-6 leading-none">Forge Your <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-orange-500">Legacy</span></h1>
+            <p class="text-lg md:text-2xl text-zinc-300 font-light mb-10 max-w-2xl mx-auto">Join the elite fitness community. State-of-the-art equipment, world-class trainers, and a culture of relentless progress.</p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <button class="bg-rose-600 hover:bg-rose-700 text-white px-10 py-4 rounded text-lg font-bold uppercase tracking-wider transition transform hover:scale-105">Start Free Trial</button>
+                <button class="border-2 border-zinc-700 hover:border-zinc-500 text-white px-10 py-4 rounded text-lg font-bold uppercase tracking-wider transition">View Schedule</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="py-24 bg-zinc-950 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                <!-- Feature 1 -->
+                <div class="group border border-zinc-800 p-8 rounded-xl hover:bg-zinc-900 transition hover:border-rose-600/50">
+                    <div class="text-rose-600 mb-6">
+                        <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    </div>
+                    <h3 class="text-2xl font-bold uppercase mb-4">High Intensity</h3>
+                    <p class="text-zinc-400 leading-relaxed">Push your limits with our signature HIIT classes designed to torch calories and build endurance.</p>
+                </div>
+                <!-- Feature 2 -->
+                <div class="group border border-zinc-800 p-8 rounded-xl hover:bg-zinc-900 transition hover:border-rose-600/50">
+                    <div class="text-rose-600 mb-6">
+                        <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"></path></svg>
+                    </div>
+                    <h3 class="text-2xl font-bold uppercase mb-4">Strength Training</h3>
+                    <p class="text-zinc-400 leading-relaxed">Premium free weights, power racks, and Olympic platforms for serious strength athletes.</p>
+                </div>
+                <!-- Feature 3 -->
+                <div class="group border border-zinc-800 p-8 rounded-xl hover:bg-zinc-900 transition hover:border-rose-600/50">
+                    <div class="text-rose-600 mb-6">
+                        <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                    </div>
+                    <h3 class="text-2xl font-bold uppercase mb-4">Recovery Zone</h3>
+                    <p class="text-zinc-400 leading-relaxed">Saunas, cold plunges, and massage therapy to help you recover faster and perform better.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

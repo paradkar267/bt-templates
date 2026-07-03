@@ -3,12 +3,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Search, Star, MoveRight, Layers, Zap, Infinity, ArrowUpRight, ShoppingCart, Code, LayoutTemplate, Palette, User, Smartphone, Box, Headset } from 'lucide-react';
 import { NavBar } from './components/ui/tubelight-navbar';
 import { useCart } from './CartContext';
-import { marketplaceTemplates } from './data';
+import { useTemplates } from './useTemplates';
 import { useAuth } from './AuthContext';
 
 import { ExploreCategories } from './components/ui/ExploreCategories';
 import { InteractiveProductCard } from './components/ui/card-7';
-import Spline from '@splinetool/react-spline';
+import { CenterNav } from './components/ui/CenterNav';
 import { BlurFade } from '@/components/ui/blur-fade';
 import UserMenu from './UserMenu';
 import { Floating3DWrapper } from '@/components/ui/3d-card';
@@ -18,42 +18,10 @@ import { Footerdemo } from '@/components/ui/footer-section';
 import SocialCards from '@/components/ui/card-fan-carousel';
 import { motion } from "motion/react";
 import { HeroGeometricBackground } from '@/components/ui/shape-landing-hero';
-import { Button as NeonButton } from '@/components/ui/neon-button';
-import { AnimatedThemeToggle } from '@/components/ui/animated-theme-toggle';
+import { FAQSection } from './components/ui/FAQSection';
+
 import { Logo } from './components/ui/Logo';
 
-const HeroCard = ({ tag, title, price, image, className }) => (
-  <div className={`absolute p-4 rounded-[2rem] bg-white/80 dark:bg-black/80 backdrop-blur-xl border border-white text-black dark:text-white shadow-[0_20px_40px_rgba(0,0,0,0.06)] hover:-translate-y-2 transition-transform duration-500 cursor-pointer ${className}`}>
-    <div className={`w-full h-32 rounded-2xl overflow-hidden mb-4 relative group bg-gray-100 dark:bg-gray-800`}>
-      <img src={image} alt={title} className="w-full h-full object-cover group-hover:scale-110 transition-all duration-700 ease-out" />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-    </div>
-    <div className="flex justify-between items-center px-1">
-      <div>
-        <p className={`text-[10px] font-bold tracking-[0.2em] uppercase mb-1.5 flex items-center gap-1 text-gray-400`}>
-          <Star className="w-3 h-3 fill-current text-black dark:text-white" /> {tag}
-        </p>
-        <h4 className={`font-bold text-lg tracking-tight text-gray-900 dark:text-gray-100`}>{title}</h4>
-      </div>
-    </div>
-  </div>
-);
-
-// Spline component isolated with its own lazy-load fade-in state
-const SplineRobot = () => {
-  const [isLoaded, setIsLoaded] = useState(false);
-  return (
-    <div className={`w-full h-full transition-opacity duration-[1500ms] ease-in-out relative overflow-hidden ${isLoaded ? 'opacity-100' : 'opacity-0'} pointer-events-none flex items-center justify-center`}>
-      <div className="w-full h-full transform scale-[1.15] md:scale-[1.25]">
-        <Spline
-          scene="https://prod.spline.design/bE20pt4os2xtpKLK/scene.splinecode"
-          onLoad={() => setIsLoaded(true)}
-          style={{ width: '100%', height: '100%', pointerEvents: 'none' }}
-        />
-      </div>
-    </div>
-  );
-};
 
 // DenseCard delegates to InteractiveProductCard
 export const DenseCard = ({ template }) => (
@@ -68,15 +36,8 @@ export default function Home({ mountSpline }) {
   const filters = ["All", "Figma", "Next.js", "React", "Webflow", "Tailwind", "HTML", "Shopify", "React Native", "Framer"];
   const [activeFilter, setActiveFilter] = useState("All");
 
-  // 5 Massive Cards Data
-  const bigOrbits = [
-    { id: 1, tag: "UI KIT", title: "Nexus Dashboard", price: "49", image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800", angle: 0, y: 0 },
-    { id: 2, tag: "WEB", title: "Aura Landing Page", price: "29", image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800", angle: 72, y: 150 },
-    { id: 3, tag: "MOBILE", title: "Fintech App", price: "39", image: "https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&q=80&w=800", angle: 144, y: 50 },
-    { id: 4, tag: "SAAS", title: "Creator Studio", price: "59", image: "https://images.unsplash.com/photo-1618761714954-0b8cd0026356?auto=format&fit=crop&q=80&w=800", angle: 216, y: 180 },
-    { id: 5, tag: "DASHBOARD", title: "Dev Tools UI", price: "45", image: "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?auto=format&fit=crop&q=80&w=800", angle: 288, y: -20 }
-  ];
 
+  const { templates: marketplaceTemplates, loading } = useTemplates();
   const filteredTemplates = activeFilter === "All" 
     ? marketplaceTemplates 
     : marketplaceTemplates.filter(t => t.category === activeFilter);
@@ -90,27 +51,7 @@ export default function Home({ mountSpline }) {
         <Logo />
 
         {/* CENTER LINKS - TUBELIGHT NAVBAR */}
-        <div className="hidden lg:flex items-center absolute left-1/2 -translate-x-1/2 mt-2">
-           <NavBar 
-             activeTab={
-               activeFilter === "All" ? "TEMPLATES" :
-               activeFilter === "Figma" ? "UI KITS" :
-               activeFilter === "Framer" ? "FRAMER" : "TEMPLATES"
-             }
-             onChange={(name) => {
-               if (name === "TEMPLATES") return navigate("/templates");
-               else if (name === "UI KITS") return navigate("/ui-kits");
-               else if (name === "FRAMER") return navigate("/templates?tech=Framer");
-               else if (name === "REACT") return navigate("/templates?tech=React");
-             }}
-             items={[
-               { name: "TEMPLATES", url: "/templates", icon: LayoutTemplate },
-               { name: "UI KITS", url: "/ui-kits", icon: Layers },
-               { name: "FRAMER", url: "/templates?tech=Framer", icon: Zap },
-               { name: "REACT", url: "/templates?tech=React", icon: Code },
-             ]} 
-           />
-        </div>
+        <CenterNav />
         
         {/* RIGHT ACTIONS */}
         <div className="flex items-center gap-2 md:gap-3">
@@ -123,7 +64,7 @@ export default function Home({ mountSpline }) {
           >
             <Search className="w-4 h-4" />
           </div>
-          <AnimatedThemeToggle className="rounded-full w-10 h-10 border border-black/[0.03] dark:border-gray-700 shadow-sm bg-gray-50 dark:bg-gray-900 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300 dark:hover:text-white" />
+
           <button onClick={() => requireAuth(() => navigate('/cart'))} className="relative flex items-center justify-center h-10 w-10 bg-gray-50 dark:bg-gray-900 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-full transition-colors hidden md:flex cursor-pointer text-gray-600 dark:text-gray-300 hover:text-black dark:text-white dark:hover:text-white shadow-sm border border-black/[0.03] dark:border-gray-700">
             <ShoppingCart className="w-4 h-4" />
             {cartItems.length > 0 && (
@@ -166,31 +107,17 @@ export default function Home({ mountSpline }) {
             </div>
           </div>
 
-          {/* RIGHT SIDE: 3D Robot & 5 Massive Orbiting HeroCards */}
-          <div className="w-full lg:w-[55%] h-full relative z-20 flex items-center justify-center pb-0 pr-10" style={{ perspective: '2000px' }}>
-            <div className="absolute w-full h-full flex items-center justify-center translate-x-12 lg:translate-x-24" style={{ transformStyle: 'preserve-3d' }}>
-              {/* SPLINE ROBOT MOUNTS LAZILY */}
-              <div className="hero-robot-container absolute w-full h-full max-w-[1000px] flex items-center justify-center pointer-events-auto" style={{ transform: 'translateZ(1px)' }}>
-                {mountSpline && <SplineRobot />}
-              </div>
-
-              <div className="orbit-master absolute w-full h-full pointer-events-none animate-orbit" style={{ transformStyle: 'preserve-3d', willChange: 'transform' }}>
-                {bigOrbits.map((orbit) => (
-                  <div key={orbit.id} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" style={{ transformStyle: 'preserve-3d', transform: `rotateY(${orbit.angle}deg) translateY(${orbit.y}px)` }}>
-                    <div className="orbit-distance" style={{ transformStyle: 'preserve-3d', willChange: 'transform' }}>
-                      <div className={`orbit-card-counter-${orbit.id} animate-orbit-counter`} style={{ '--initial-rotation': `-${orbit.angle}deg`, transform: `rotateY(-${orbit.angle}deg)`, willChange: 'transform' }}>
-                        <HeroCard
-                          tag={orbit.tag}
-                          title={orbit.title}
-                          price={orbit.price}
-                          image={orbit.image}
-                          className="relative -ml-[110px] -mt-[85px] pointer-events-auto"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
+          {/* RIGHT SIDE: Video */}
+          <div className="w-full lg:w-[55%] h-full relative z-20 flex items-center justify-center pb-0 pr-10">
+            <div className="absolute inset-0 w-full h-full flex items-center justify-end" style={{ maskImage: 'linear-gradient(to right, transparent, black 20%)', WebkitMaskImage: 'linear-gradient(to right, transparent, black 20%)' }}>
+              <video 
+                autoPlay 
+                loop 
+                muted 
+                playsInline 
+                className="w-full h-full object-cover object-left lg:object-center z-0"
+                src="/bg.mp4"
+              ></video>
             </div>
           </div>
         </div>
@@ -205,12 +132,12 @@ export default function Home({ mountSpline }) {
                   <h2 className="text-5xl md:text-6xl font-black tracking-tight mb-4 text-gray-900 dark:text-gray-100">Featured Themes</h2>
                   <p className="text-gray-500 font-medium text-xl">Our highest-rated and meticulously crafted templates.</p>
                </div>
-               <Link to="/featured" className={`hidden md:flex items-center gap-2 font-bold hover:gap-4 transition-all px-6 py-3 rounded-full bg-gray-50 dark:bg-gray-900 hover:bg-gray-100 dark:bg-gray-800 text-black dark:text-white border border-black/[0.05]`}>
+               <Link to="/templates" className={`hidden md:flex items-center gap-2 font-bold hover:gap-4 transition-all px-6 py-3 rounded-full bg-gray-50 dark:bg-gray-900 hover:bg-gray-100 dark:bg-gray-800 text-black dark:text-white border border-black/[0.05]`}>
                   View all featured <MoveRight className="w-5 h-5" />
                </Link>
             </div>
-             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                {[...marketplaceTemplates].sort((a, b) => (b.sales * b.rating) - (a.sales * a.rating)).slice(0, 3).map(template => (
+             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {[...marketplaceTemplates].sort((a, b) => (b.sales * b.rating) - (a.sales * a.rating)).slice(0, 4).map(template => (
                    <DenseCard key={template.id} template={template} />
                 ))}
              </div>
@@ -230,7 +157,7 @@ export default function Home({ mountSpline }) {
          </div>
 
          {/* C. CATALOG FILTER & TEMPLATES GRID */}
-         <div id="catalog" className={`py-20 md:py-24 px-8 md:px-16 w-full max-w-[1600px] mx-auto border-b border-black/[0.03] relative`}>
+         <div id="catalog" className={`pt-20 md:pt-24 pb-8 md:pb-10 px-8 md:px-16 w-full max-w-[1600px] mx-auto border-b border-black/[0.03] relative`}>
             
             {/* Soft Aurora Glow behind catalog */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-indigo-100/60 dark:bg-indigo-900/20 aurora-blob pointer-events-none"></div>
@@ -242,8 +169,8 @@ export default function Home({ mountSpline }) {
                </Link>
             </div>
 
-             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 relative z-10">
-                {filteredTemplates.slice(0, 6).map(template => (
+             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 relative z-10">
+                {filteredTemplates.slice(0, 10).map(template => (
                    <DenseCard key={`new-${template.id}`} template={template} />
                ))}
                
@@ -254,7 +181,7 @@ export default function Home({ mountSpline }) {
                )}
             </div>
             
-            <div className="mt-20 flex justify-center">
+            <div className="mt-10 flex justify-center">
                <Link to="/templates" className={`px-12 py-5 border border-black/[0.1] font-black rounded-full transition-all text-lg shadow-sm cursor-pointer inline-flex items-center bg-white dark:bg-black text-black dark:text-white hover:bg-gray-50 dark:bg-gray-900 hover:shadow-md`}>
                  Load More Templates
                </Link>
@@ -262,7 +189,7 @@ export default function Home({ mountSpline }) {
          </div>
 
          {/* D. VALUE PROPOSITION — Creative Bento Grid */}
-         <div className={`py-20 md:py-24 w-full border-y border-black/[0.04] bg-white dark:bg-black relative overflow-hidden`}>
+         <div className={`pt-10 md:pt-12 pb-20 md:pb-24 w-full border-y border-black/[0.04] bg-white dark:bg-black relative overflow-hidden`}>
             <div className="max-w-[1600px] mx-auto px-8 md:px-16 relative z-10">
                {/* Header */}
                <div className="mb-16">
@@ -275,53 +202,64 @@ export default function Home({ mountSpline }) {
                   </h2>
                </div>
 
-               {/* Simplified Features Grid */}
-               <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+               {/* Premium Features Grid */}
+               <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24">
                   {/* Feature 1 */}
-                  <div className="p-8 rounded-3xl border border-black/[0.08] dark:border-white/[0.08] hover:border-violet-500/30 transition-all bg-gray-50/50 dark:bg-white/[0.02]">
-                     <div className="w-12 h-12 rounded-xl bg-violet-100 dark:bg-violet-900/30 flex items-center justify-center mb-6">
-                        <Layers className="w-6 h-6 text-violet-600 dark:text-violet-400" />
+                  <div className="group p-8 md:p-10 rounded-[2.5rem] border border-black/5 dark:border-white/5 hover:border-violet-500/30 transition-all duration-500 bg-white/50 dark:bg-[#0a0a0a]/50 backdrop-blur-xl hover:shadow-2xl hover:shadow-violet-500/10 relative overflow-hidden">
+                     <div className="absolute top-0 right-0 w-32 h-32 bg-violet-500/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                     <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-500/10 to-fuchsia-500/10 dark:from-violet-500/20 dark:to-fuchsia-500/20 flex items-center justify-center mb-8 transform group-hover:scale-110 transition-transform duration-500">
+                        <Layers className="w-7 h-7 text-violet-600 dark:text-violet-400" />
                      </div>
-                     <h3 className="text-2xl font-bold mb-3 text-gray-900 dark:text-gray-100">Pixel Perfect</h3>
-                     <p className="text-gray-500 leading-relaxed text-sm">Every layer is meticulously organized. Components are built with strict design systems to ensure flawless aesthetics at every breakpoint.</p>
+                     <h3 className="text-2xl font-black mb-4 text-gray-900 dark:text-gray-100 tracking-tight">Pixel Perfect</h3>
+                     <p className="text-gray-500 dark:text-gray-400 leading-relaxed text-sm md:text-base font-medium">Every layer is meticulously organized. Components are built with strict design systems to ensure flawless aesthetics at every breakpoint.</p>
                   </div>
 
                   {/* Feature 2 */}
-                  <div className="p-8 rounded-3xl border border-black/[0.08] dark:border-white/[0.08] hover:border-violet-500/30 transition-all bg-gray-50/50 dark:bg-white/[0.02]">
-                     <div className="w-12 h-12 rounded-xl bg-violet-100 dark:bg-violet-900/30 flex items-center justify-center mb-6">
-                        <Zap className="w-6 h-6 text-violet-600 dark:text-violet-400" />
+                  <div className="group p-8 md:p-10 rounded-[2.5rem] border border-black/5 dark:border-white/5 hover:border-cyan-500/30 transition-all duration-500 bg-white/50 dark:bg-[#0a0a0a]/50 backdrop-blur-xl hover:shadow-2xl hover:shadow-cyan-500/10 relative overflow-hidden">
+                     <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                     <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500/10 to-blue-500/10 dark:from-cyan-500/20 dark:to-blue-500/20 flex items-center justify-center mb-8 transform group-hover:scale-110 transition-transform duration-500">
+                        <Zap className="w-7 h-7 text-cyan-600 dark:text-cyan-400" />
                      </div>
-                     <h3 className="text-2xl font-bold mb-3 text-gray-900 dark:text-gray-100">Production Ready</h3>
-                     <p className="text-gray-500 leading-relaxed text-sm">Stop translating designs to code. Our kits ship with clean, responsive React & Tailwind code — ready to deploy.</p>
+                     <h3 className="text-2xl font-black mb-4 text-gray-900 dark:text-gray-100 tracking-tight">Production Ready</h3>
+                     <p className="text-gray-500 dark:text-gray-400 leading-relaxed text-sm md:text-base font-medium">Stop translating designs to code. Our kits ship with clean, responsive React & Tailwind code — ready to deploy instantly.</p>
                   </div>
 
                   {/* Feature 3 */}
-                  <div className="p-8 rounded-3xl border border-black/[0.08] dark:border-white/[0.08] hover:border-violet-500/30 transition-all bg-gray-50/50 dark:bg-white/[0.02]">
-                     <div className="w-12 h-12 rounded-xl bg-violet-100 dark:bg-violet-900/30 flex items-center justify-center mb-6">
-                        <Infinity className="w-6 h-6 text-violet-600 dark:text-violet-400" />
+                  <div className="group p-8 md:p-10 rounded-[2.5rem] border border-black/5 dark:border-white/5 hover:border-pink-500/30 transition-all duration-500 bg-white/50 dark:bg-[#0a0a0a]/50 backdrop-blur-xl hover:shadow-2xl hover:shadow-pink-500/10 relative overflow-hidden">
+                     <div className="absolute top-0 right-0 w-32 h-32 bg-pink-500/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                     <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-pink-500/10 to-rose-500/10 dark:from-pink-500/20 dark:to-rose-500/20 flex items-center justify-center mb-8 transform group-hover:scale-110 transition-transform duration-500">
+                        <Infinity className="w-7 h-7 text-pink-600 dark:text-pink-400" />
                      </div>
-                     <h3 className="text-2xl font-bold mb-3 text-gray-900 dark:text-gray-100">Lifetime Updates</h3>
-                     <p className="text-gray-500 leading-relaxed text-sm">Pay once, use forever. Future updates, new components, and continuous design upgrades — all included at no extra cost.</p>
+                     <h3 className="text-2xl font-black mb-4 text-gray-900 dark:text-gray-100 tracking-tight">Lifetime Updates</h3>
+                     <p className="text-gray-500 dark:text-gray-400 leading-relaxed text-sm md:text-base font-medium">Pay once, use forever. Future updates, new components, and continuous design upgrades — all included at no extra cost.</p>
                   </div>
                </div>
 
-               {/* Simplified Stats strip */}
-               <div className="border-t border-black/5 dark:border-white/5 pt-12 flex flex-wrap items-center justify-between gap-6 max-w-4xl mx-auto">
-                  <div className="text-center w-[40%] sm:w-auto">
-                     <div className="text-3xl md:text-5xl font-black text-gray-900 dark:text-gray-100 tracking-tight">2,400+</div>
-                     <div className="text-xs md:text-sm font-semibold text-gray-400 uppercase tracking-widest mt-2">Templates</div>
+               {/* Premium Stats Box */}
+               <div className="bg-gradient-to-br from-white to-gray-50 dark:from-[#0a0a0a] dark:to-[#111] p-8 md:p-12 rounded-[2.5rem] border border-black/5 dark:border-white/10 shadow-2xl flex flex-wrap items-center justify-between gap-8 md:gap-6 relative overflow-hidden">
+                  <div className="absolute top-0 right-1/4 w-96 h-96 bg-violet-500/10 rounded-full blur-3xl pointer-events-none mix-blend-screen" />
+                  
+                  <div className="text-center w-[40%] sm:w-auto relative z-10">
+                     <div className="text-4xl md:text-5xl lg:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-br from-gray-900 to-gray-500 dark:from-white dark:to-gray-400 tracking-tighter mb-2">2,400+</div>
+                     <div className="text-xs md:text-sm font-bold text-gray-400 uppercase tracking-widest">Templates</div>
                   </div>
-                  <div className="text-center w-[40%] sm:w-auto">
-                     <div className="text-3xl md:text-5xl font-black text-gray-900 dark:text-gray-100 tracking-tight">98%</div>
-                     <div className="text-xs md:text-sm font-semibold text-gray-400 uppercase tracking-widest mt-2">Satisfaction</div>
+                  <div className="hidden sm:block w-px h-16 bg-gradient-to-b from-transparent via-black/10 dark:via-white/10 to-transparent"></div>
+                  
+                  <div className="text-center w-[40%] sm:w-auto relative z-10">
+                     <div className="text-4xl md:text-5xl lg:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-br from-gray-900 to-gray-500 dark:from-white dark:to-gray-400 tracking-tighter mb-2">98%</div>
+                     <div className="text-xs md:text-sm font-bold text-gray-400 uppercase tracking-widest">Satisfaction</div>
                   </div>
-                  <div className="text-center w-[40%] sm:w-auto">
-                     <div className="text-3xl md:text-5xl font-black text-gray-900 dark:text-gray-100 tracking-tight">50K+</div>
-                     <div className="text-xs md:text-sm font-semibold text-gray-400 uppercase tracking-widest mt-2">Creators</div>
+                  <div className="hidden sm:block w-px h-16 bg-gradient-to-b from-transparent via-black/10 dark:via-white/10 to-transparent"></div>
+                  
+                  <div className="text-center w-[40%] sm:w-auto relative z-10">
+                     <div className="text-4xl md:text-5xl lg:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-br from-gray-900 to-gray-500 dark:from-white dark:to-gray-400 tracking-tighter mb-2">50K+</div>
+                     <div className="text-xs md:text-sm font-bold text-gray-400 uppercase tracking-widest">Creators</div>
                   </div>
-                  <div className="text-center w-[40%] sm:w-auto">
-                     <div className="text-3xl md:text-5xl font-black text-gray-900 dark:text-gray-100 tracking-tight">4.9 ★</div>
-                     <div className="text-xs md:text-sm font-semibold text-gray-400 uppercase tracking-widest mt-2">Avg. Rating</div>
+                  <div className="hidden sm:block w-px h-16 bg-gradient-to-b from-transparent via-black/10 dark:via-white/10 to-transparent"></div>
+                  
+                  <div className="text-center w-[40%] sm:w-auto relative z-10">
+                     <div className="text-4xl md:text-5xl lg:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-br from-gray-900 to-gray-500 dark:from-white dark:to-gray-400 tracking-tighter mb-2">4.9 ★</div>
+                     <div className="text-xs md:text-sm font-bold text-gray-400 uppercase tracking-widest">Avg. Rating</div>
                   </div>
                </div>
             </div>
@@ -329,6 +267,11 @@ export default function Home({ mountSpline }) {
 
 
 
+
+         {/* E. FAQ SECTION */}
+         <div className="py-20 md:py-24 px-8 md:px-16 w-full max-w-[1600px] mx-auto">
+           <FAQSection />
+         </div>
 
          {/* F. FOOTER */}
          <Footerdemo />

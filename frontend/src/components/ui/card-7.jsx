@@ -4,6 +4,7 @@ import { ShoppingCart, Star, Eye, Heart } from "lucide-react";
 import { useCart } from "../../CartContext";
 import { useAuth } from "../../AuthContext";
 import { useWishlist } from "../../WishlistContext";
+import { useCurrency } from "../../CurrencyContext";
 
 export function InteractiveProductCard({
   className = "",
@@ -14,6 +15,7 @@ export function InteractiveProductCard({
   const { requireAuth } = useAuth();
   const { addToCart, cartItems, purchasedTemplates } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
+  const { formatPrice } = useCurrency();
   const cardRef = React.useRef(null);
   const [tiltStyle, setTiltStyle] = React.useState({});
   const [hovered, setHovered] = React.useState(false);
@@ -121,8 +123,7 @@ export function InteractiveProductCard({
         className="flex flex-col flex-1 p-5 bg-white dark:bg-black rounded-b-[1.75rem]"
       >
         <p className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-1">{template.tag}</p>
-        <h3 className="font-black text-[15px] leading-tight text-gray-900 dark:text-gray-100 group-hover:text-violet-700 line-clamp-2 mb-1
-          transition-colors" style={{ color: hovered ? '#7c3aed' : '#111827' }}>
+        <h3 className={`font-black text-[15px] leading-tight line-clamp-2 mb-1 transition-colors ${hovered ? 'text-violet-600 dark:text-violet-400' : 'text-gray-900 dark:text-gray-100'}`}>
           {template.title}
         </h3>
         <p className="text-xs text-gray-400 mb-4">by <span className="text-gray-600 font-semibold">{template.author}</span></p>
@@ -136,7 +137,7 @@ export function InteractiveProductCard({
             </div>
             <span className="text-[10px] text-gray-400 font-medium">{(template.sales || 0).toLocaleString()} sales</span>
           </div>
-          <div className="text-xl font-black text-gray-900 dark:text-gray-100">₹{template.price}</div>
+          <div className="text-xl font-black text-gray-900 dark:text-gray-100">{formatPrice(template.price)}</div>
         </div>
       </div>
     </div>

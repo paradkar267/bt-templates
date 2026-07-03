@@ -4,23 +4,44 @@ import { X, Monitor, Smartphone, ExternalLink } from 'lucide-react';
 
 export function LivePreviewModal({ isOpen, onClose, template }) {
   const [device, setDevice] = useState('desktop'); // 'desktop' | 'mobile'
+  const [urlExists, setUrlExists] = useState(false);
+  const [isChecking, setIsChecking] = useState(false);
 
   // Lock body scroll when modal is open
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
+      
+      // Check if preview URL actually exists on the server
+      const checkUrl = async () => {
+        if (!template?.previewUrl) {
+           setUrlExists(false);
+           return;
+        }
+        setIsChecking(true);
+        try {
+          // Use GET instead of HEAD because Vite Dev Server often rejects HEAD requests for static files
+          const res = await fetch(template.previewUrl, { method: 'GET' });
+          setUrlExists(res.ok);
+        } catch (e) {
+          setUrlExists(false);
+        } finally {
+          setIsChecking(false);
+        }
+      };
+      checkUrl();
+      
     } else {
       document.body.style.overflow = 'unset';
     }
     return () => {
       document.body.style.overflow = 'unset';
     };
-  }, [isOpen]);
+  }, [isOpen, template]);
 
   if (!isOpen || !template) return null;
 
-  // We use example.com as a fallback if the template doesn't have a real preview URL
-  const previewUrl = template.previewUrl || "https://example.com";
+  const previewUrl = template.previewUrl;
 
   return (
     <AnimatePresence>
@@ -107,17 +128,27 @@ export function LivePreviewModal({ isOpen, onClose, template }) {
               <div className="absolute top-0 inset-x-0 h-6 bg-black/90 flex justify-center z-10 rounded-b-2xl w-32 mx-auto" />
             )}
 
-            {/* Warning overlay for example.com to avoid confusion */}
-            <div className="absolute inset-x-0 top-0 bg-yellow-100 text-yellow-800 text-xs font-bold text-center py-1 z-10 pointer-events-none opacity-80 border-b border-yellow-200">
-              Note: This is a placeholder preview ({previewUrl})
-            </div>
-
-            <iframe
-              src={previewUrl}
-              title={`Preview of ${template.title}`}
-              className="w-full h-full border-0 bg-white"
-              sandbox="allow-scripts allow-same-origin"
-            />
+            {isChecking ? (
+              <div className="w-full h-full flex items-center justify-center bg-gray-50">
+                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+              </div>
+            ) : urlExists && previewUrl ? (
+              <iframe
+                src={previewUrl}
+                title={`Preview of ${template.title}`}
+                className="w-full h-full border-0 bg-white"
+                sandbox="allow-scripts allow-same-origin"
+              />
+            ) : (
+              <div className="w-full h-full flex flex-col items-center justify-center bg-gray-50 text-center p-8">
+                <Monitor className="w-16 h-16 text-gray-300 mb-4" />
+                <h3 className="text-2xl font-bold text-gray-700 mb-2">No Preview Available</h3>
+                <p className="text-gray-500 max-w-sm">
+                  This template does not have a live preview link yet. 
+                  Once you add the template files to <code>{previewUrl}</code>, the preview will appear here automatically.
+                </p>
+              </div>
+            )}
           </motion.div>
         </div>
       </motion.div>

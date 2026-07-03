@@ -9,6 +9,8 @@ import UserMenu from './UserMenu';
 import { useTheme } from './ThemeContext';
 import { useAuth } from './AuthContext';
 import { Logo } from './components/ui/Logo';
+import { CenterNav } from './components/ui/CenterNav';
+import SEO from './components/SEO';
 
 export default function FeaturedPage() {
   const { cartItems } = useCart();
@@ -25,23 +27,27 @@ export default function FeaturedPage() {
   const { templates, loading } = useTemplates();
   const featuredTemplates = [...templates].sort((a, b) => (b.sales * b.rating) - (a.sales * a.rating));
 
-  const filteredTemplates = featuredTemplates.filter(t => {
-    const searchLower = searchQuery.toLowerCase();
-    const matchesSearch = t.title.toLowerCase().includes(searchLower) || 
-                          t.author.toLowerCase().includes(searchLower) ||
-                          t.description.toLowerCase().includes(searchLower) ||
-                          t.category.toLowerCase().includes(searchLower) ||
-                          t.tag.toLowerCase().includes(searchLower) ||
-                          (t.keywords && t.keywords.some(k => k.toLowerCase().includes(searchLower)));
-    return matchesSearch;
-  });
+  const filteredTemplates = React.useMemo(() => {
+    const searchTerms = searchQuery.toLowerCase().split(' ').filter(Boolean);
+    
+    return featuredTemplates.filter(t => {
+      const searchableText = `${t.title || ''} ${t.author || ''} ${t.description || ''} ${t.category || ''} ${t.tag || ''} ${(t.keywords || []).join(' ')}`.toLowerCase();
+      return searchTerms.length === 0 || searchTerms.every(term => searchableText.includes(term));
+    });
+  }, [featuredTemplates, searchQuery]);
 
   return (
     <div className={`min-h-screen flex flex-col font-sans pb-32 transition-colors duration-1000 ${isDark ? 'bg-transparent text-white' : 'bg-gray-50 dark:bg-gray-900 text-black dark:text-white'}`}>
+      <SEO 
+        title="Featured Themes" 
+        description="Discover our highest-rated and best-selling premium templates."
+        url="/featured"
+      />
       
       {/* Navigation */}
       <nav className={`h-[80px] w-full px-8 md:px-16 flex items-center justify-between border-b sticky top-0 z-50 shadow-sm transition-colors duration-1000 ${isDark ? 'bg-black/20 border-white/10 text-white backdrop-blur-md' : 'bg-white dark:bg-black border-gray-200 dark:border-gray-800 text-black dark:text-white'}`}>
         <Logo />
+        <CenterNav />
         <div className="flex items-center gap-6">
 <button onClick={() => requireAuth(() => navigate('/cart'))} className="relative p-2 hover:bg-gray-100 dark:bg-gray-800 rounded-full transition-colors cursor-pointer">
             <ShoppingCart className="w-6 h-6" />

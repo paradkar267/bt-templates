@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Trash2, Lock, ShieldCheck, User, ShoppingCart } from 'lucide-react';
+import { ArrowLeft, Trash2, Lock, ShieldCheck, User, ShoppingCart, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { toast } from 'sonner';
 import confetti from 'canvas-confetti';
 import { useCart } from './CartContext';
+import { useCurrency } from './CurrencyContext';
 import UserMenu from './UserMenu';
 import { useTheme } from './ThemeContext';
 import { useAuth } from './AuthContext';
 import { Logo } from './components/ui/Logo';
-import { AnimatedThemeToggle } from './components/ui/animated-theme-toggle';
 
 export default function CartPage() {
   const { cartItems, removeFromCart, checkout, cartTotal, isLoggedIn } = useCart();
+  const { formatPrice, convertPrice, currency } = useCurrency();
   const { theme } = useTheme();
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -102,7 +103,7 @@ export default function CartPage() {
         }
         doc.text(item.title.substring(0, 30) + (item.title.length > 30 ? '...' : ''), 25, startY);
         doc.text(item.category || "Template", 110, startY);
-        doc.text(`Rs. ${parseFloat(item.price).toFixed(2)}`, 170, startY);
+        doc.text(`${currency} ${convertPrice(item.price).toFixed(2)}`, 170, startY);
         startY += 10;
       });
       
@@ -115,13 +116,13 @@ export default function CartPage() {
       doc.setTextColor(...primaryColor);
       doc.setFont("helvetica", "bold");
       doc.text("Subtotal:", 130, startY);
-      doc.text(`Rs. ${cartTotal.toFixed(2)}`, 170, startY);
+      doc.text(`${currency} ${convertPrice(cartTotal).toFixed(2)}`, 170, startY);
       
       startY += 8;
       doc.setFont("helvetica", "normal");
       doc.setTextColor(...secondaryColor);
       doc.text("Tax (0%):", 130, startY);
-      doc.text("Rs. 0.00", 170, startY);
+      doc.text(`${currency} 0.00`, 170, startY);
       
       startY += 10;
       doc.setFillColor(10, 10, 10);
@@ -130,7 +131,7 @@ export default function CartPage() {
       doc.setFont("helvetica", "bold");
       doc.setFontSize(14);
       doc.text("Total Paid:", 130, startY + 2);
-      doc.text(`Rs. ${cartTotal.toFixed(2)}`, 165, startY + 2);
+      doc.text(`${currency} ${convertPrice(cartTotal).toFixed(2)}`, 165, startY + 2);
       
       // Footer
       doc.setTextColor(150, 150, 150);
@@ -206,8 +207,8 @@ export default function CartPage() {
 
     const options = {
       key: razorpayKey,
-      amount: Math.round(cartTotal * 100), // Convert to paise
-      currency: 'INR',
+      amount: Math.round(convertPrice(cartTotal) * 100), // Convert to smallest unit (paise/cents)
+      currency: currency,
       name: 'Bizleap Marketplace',
       description: 'Premium Templates & UI Kits',
       image: 'https://cdn-icons-png.flaticon.com/512/3176/3176366.png',
@@ -261,7 +262,7 @@ export default function CartPage() {
           </Link>
         </div>
         <div className="flex items-center gap-4 md:gap-6">
-          <AnimatedThemeToggle className="rounded-full w-9 h-9 md:w-10 md:h-10 border border-black/[0.03] dark:border-gray-700 shadow-sm bg-gray-50 dark:bg-gray-900 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300 dark:hover:text-white" />
+
           <UserMenu />
         </div>
       </nav>
@@ -304,7 +305,7 @@ export default function CartPage() {
                         <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">{item.category}</p>
                         <h3 className="text-xl font-bold mb-2">{item.title}</h3>
                         <p className="text-sm text-gray-500 mb-4">by {item.author}</p>
-                        <div className="text-2xl font-black">₹{item.price}</div>
+                        <div className="text-2xl font-black">{formatPrice(item.price)}</div>
                      </div>
                      <button 
                         onClick={() => removeFromCart(item.id)}
@@ -318,21 +319,21 @@ export default function CartPage() {
 
             {/* Right: Order Summary */}
             <div className="lg:col-span-1">
-               <div className="bg-white dark:bg-black p-8 rounded-[2rem] border border-gray-200 dark:border-gray-800 shadow-[0_20px_40px_rgba(0,0,0,0.06)] sticky top-[120px]">
+                <div className="bg-white dark:bg-black p-8 rounded-[2rem] border border-gray-200 dark:border-gray-800 shadow-[0_20px_40px_rgba(0,0,0,0.06)] sticky top-[120px]">
                   <h3 className="text-2xl font-black mb-6">Order Summary</h3>
                   
                   <div className="flex justify-between items-center mb-4 text-gray-600 font-medium">
                      <span>Subtotal ({cartItems.length} items)</span>
-                     <span>₹{cartTotal.toFixed(2)}</span>
+                     <span>{formatPrice(cartTotal)}</span>
                   </div>
                   <div className="flex justify-between items-center mb-6 text-gray-600 font-medium">
                      <span>Taxes</span>
-                     <span>₹0.00</span>
+                     <span>{formatPrice(0)}</span>
                   </div>
                   
                   <div className="flex justify-between items-center border-t border-gray-100 pt-6 mb-8">
                      <span className="text-lg font-bold">Total</span>
-                     <span className="text-3xl font-black">₹{cartTotal.toFixed(2)}</span>
+                     <span className="text-3xl font-black">{formatPrice(cartTotal)}</span>
                   </div>
 
                   <button 

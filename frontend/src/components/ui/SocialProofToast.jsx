@@ -1,52 +1,81 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ShoppingBag, X } from 'lucide-react';
 import { useTheme } from '../../ThemeContext';
 import { useAuth } from '../../AuthContext';
-
-const PURCHASES = [
-  { name: "Rahul from Mumbai", item: "Aura Landing Page", time: "2 mins ago" },
-  { name: "Sarah from New York", item: "SaaS Dashboard Kit", time: "5 mins ago" },
-  { name: "David from London", item: "E-commerce UI Pack", time: "12 mins ago" },
-  { name: "Priya from Delhi", item: "Finance Mobile App Kit", time: "1 min ago" },
-  { name: "Alex from Toronto", item: "Agency Website Template", time: "Just now" }
-];
+import { supabase } from '../../lib/supabase';
+import { marketplaceTemplates } from '../../data';
 
 export function SocialProofToast() {
   const { isAdmin } = useAuth();
   const [currentPurchase, setCurrentPurchase] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [realPurchases, setRealPurchases] = useState([]);
+  const timerRef = useRef(null);
   const { theme } = useTheme();
   const isDark = theme === 'dark';
 
   useEffect(() => {
     if (!isAdmin) return;
     
-    // Start showing popups after an initial delay
+    const fetchRealPurchases = async () => {
+      try {
+        const { data: purchasesData } = await supabase
+          .from('purchases')
+          .select('*')
+          .order('created_at', { ascending: false })
+          .limit(10);
+          
+        if (purchasesData && purchasesData.length > 0) {
+          const { data: profilesData } = await supabase.from('profiles').select('id, full_name');
+          
+          const formatted = purchasesData.map(p => {
+            const tmpl = marketplaceTemplates.find(t => t.id === p.template_id);
+            const prof = profilesData?.find(pr => pr.id === p.user_id);
+            
+            const diff = Math.floor((new Date() - new Date(p.created_at)) / 60000);
+            let timeStr = diff < 1 ? "Just now" : diff < 60 ? `${diff} mins ago` : diff < 1440 ? `${Math.floor(diff/60)} hours ago` : `${Math.floor(diff/1440)} days ago`;
+
+            return {
+              name: prof?.full_name || "A User",
+              item: tmpl?.title || "A Template",
+              time: timeStr
+            };
+          });
+          setRealPurchases(formatted);
+        }
+      } catch (err) {
+        console.error("Error fetching toast purchases", err);
+      }
+    };
+    
+    fetchRealPurchases();
+  }, [isAdmin]);
+
+  useEffect(() => {
+    if (!isAdmin || realPurchases.length === 0) return;
+    
+    const showRandomPurchase = () => {
+      const randomPurchase = realPurchases[Math.floor(Math.random() * realPurchases.length)];
+      setCurrentPurchase(randomPurchase);
+      setIsVisible(true);
+
+      setTimeout(() => {
+        setIsVisible(false);
+        const nextDelay = Math.floor(Math.random() * (30000 - 15000 + 1) + 15000);
+        timerRef.current = setTimeout(showRandomPurchase, nextDelay);
+      }, 5000);
+    };
+
     const initialTimer = setTimeout(() => {
       showRandomPurchase();
     }, 5000);
 
-    return () => clearTimeout(initialTimer);
-  }, [isAdmin]);
-
-  const showRandomPurchase = () => {
-    if (!isAdmin) return;
-    const randomPurchase = PURCHASES[Math.floor(Math.random() * PURCHASES.length)];
-    setCurrentPurchase(randomPurchase);
-    setIsVisible(true);
-
-    // Hide it after 5 seconds
-    setTimeout(() => {
-      setIsVisible(false);
-      
-      // Schedule the next one randomly between 15 to 30 seconds
-      const nextDelay = Math.floor(Math.random() * (30000 - 15000 + 1) + 15000);
-      setTimeout(() => {
-        showRandomPurchase();
-      }, nextDelay);
-    }, 5000);
-  };
+    return () => {
+      clearTimeout(initialTimer);
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, [isAdmin, realPurchases]);
 
   if (!isAdmin) return null;
 

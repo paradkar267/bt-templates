@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import confetti from 'canvas-confetti';
-import { Download, LayoutTemplate, ArrowLeft, Loader2, CheckCircle2, Trash2, Eye } from 'lucide-react';
+import { Download, LayoutTemplate, ArrowLeft, Loader2, CheckCircle2, Eye } from 'lucide-react';
 import { useCart } from './CartContext';
+import { supabase } from './lib/supabase';
 import UserMenu from './UserMenu';
 import { toast } from 'sonner';
 import { Logo } from './components/ui/Logo';
 
 export default function MyTemplatesPage() {
-  const { purchasedTemplates, removePurchasedTemplate } = useCart();
+  const { purchasedTemplates } = useCart();
   const [downloading, setDownloading] = useState({});
   const location = useLocation();
   const navigate = useNavigate();
@@ -37,33 +38,75 @@ export default function MyTemplatesPage() {
     }
   }, [location, navigate]);
 
-  const handleDelete = (templateId, templateTitle) => {
-    if (window.confirm(`Are you sure you want to delete ${templateTitle} from your templates? This action cannot be undone.`)) {
-      removePurchasedTemplate(templateId);
-    }
-  };
 
-  const handleDownload = (templateId, templateTitle) => {
+
+  const handleDownload = async (templateId, templateTitle) => {
     if (downloading[templateId]) return;
 
     setDownloading(prev => ({ ...prev, [templateId]: { progress: 0, done: false, link: null } }));
     toast.info(`Authenticating & generating secure token for ${templateTitle}...`);
-
+    
+    // Fake progress animation for UX
     let progress = 0;
-    const interval = setInterval(() => {
+    const progressInterval = setInterval(() => {
       progress += Math.floor(Math.random() * 20) + 10;
-      if (progress >= 100) {
-        progress = 100;
-        clearInterval(interval);
-        setDownloading(prev => ({ ...prev, [templateId]: { progress: 100, done: true, link: `https://download.bizleap.com/secure/${Math.random().toString(36).substring(2,15)}` } }));
-        
-        toast.success(`Secure temporary link generated!`, {
-          icon: <CheckCircle2 className="w-5 h-5 text-green-500" />
-        });
-      } else {
+      if (progress < 90) {
         setDownloading(prev => ({ ...prev, [templateId]: { progress, done: false, link: null } }));
       }
     }, 400);
+
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) throw new Error("Not authenticated");
+
+      const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
+      const response = await fetch(`${backendUrl}/api/generate-download`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.access_token}`
+        },
+        body: JSON.stringify({ templateId })
+      });
+
+      const data = await response.json();
+      
+      clearInterval(progressInterval);
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to generate download link");
+      }
+
+      setDownloading(prev => ({ 
+        ...prev, 
+        [templateId]: { progress: 100, done: true, link: data.downloadUrl } 
+      }));
+      
+      toast.success(`Secure temporary link generated!`, {
+        icon: <CheckCircle2 className="w-5 h-5 text-green-500" />
+      });
+
+      // Automatically reset the link right before it expires (55 seconds)
+      setTimeout(() => {
+        setDownloading(prev => {
+          const newState = { ...prev };
+          if (newState[templateId]?.done) {
+             delete newState[templateId]; // reset entirely
+          }
+          return newState;
+        });
+        toast.info(`The secure link for ${templateTitle} has expired. Please generate a new one if needed.`);
+      }, 55000);
+      
+    } catch (error) {
+      clearInterval(progressInterval);
+      setDownloading(prev => {
+        const newState = { ...prev };
+        delete newState[templateId];
+        return newState;
+      });
+      toast.error(error.message || "Failed to download template. Please try again.");
+    }
   };
 
   return (
@@ -132,14 +175,16 @@ export default function MyTemplatesPage() {
                         {isDone ? (
                           <div className="flex-1 flex flex-col gap-2">
                             <a 
-                              href="#"
-                              onClick={(e) => { e.preventDefault(); toast.success("Download started via secure signed URL."); }}
+                              href={downloading[template.id].link}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={() => toast.success("Download started via secure signed URL.")}
                               className="w-full py-3 rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-md bg-green-500 text-white hover:bg-green-600"
                             >
                               <CheckCircle2 className="w-5 h-5" /> Download Ready
                             </a>
                             <p className="text-[10px] text-gray-500 dark:text-gray-400 text-center font-medium">
-                              Link expires in 15m. Bound to your IP.
+                              Link expires in 60 seconds.
                             </p>
                           </div>
                         ) : (
@@ -160,15 +205,7 @@ export default function MyTemplatesPage() {
                           </button>
                         )}
                         
-                        {!isDone && (
-                          <button 
-                            onClick={() => handleDelete(template.id, template.title)}
-                            className="w-14 shrink-0 flex items-center justify-center rounded-xl bg-red-50 text-red-500 hover:bg-red-500 hover:text-white transition-colors"
-                            title="Delete Template"
-                          >
-                            <Trash2 className="w-5 h-5" />
-                          </button>
-                        )}
+
                       </div>
                    </div>
                 </div>

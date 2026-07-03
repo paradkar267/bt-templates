@@ -49,17 +49,17 @@ export function CommandPalette() {
     };
   }, [isOpen]);
 
-  const results = query
-    ? templates.filter((item) => {
-        const searchLower = query.toLowerCase();
-        return (
-          item.title.toLowerCase().includes(searchLower) ||
-          item.category.toLowerCase().includes(searchLower) ||
-          item.tag.toLowerCase().includes(searchLower) ||
-          (item.keywords && item.keywords.some((k) => k.toLowerCase().includes(searchLower)))
-        );
-      })
-    : templates.slice(0, 6);
+  const results = React.useMemo(() => {
+    if (!query) return templates.slice(0, 6);
+    
+    const searchTerms = query.toLowerCase().split(' ').filter(Boolean);
+    
+    return templates.filter((item) => {
+      const searchableText = `${item.title || ''} ${item.category || ''} ${item.tag || ''} ${(item.keywords || []).join(' ')} ${item.description || ''}`.toLowerCase();
+      // All search terms must be found somewhere in the searchable text
+      return searchTerms.every(term => searchableText.includes(term));
+    });
+  }, [query, templates]);
 
   if (!isOpen) return null;
 

@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { toast } from 'sonner';
 import { useAuth } from './AuthContext';
 import { supabase } from './lib/supabase';
-import { marketplaceTemplates } from './data';
+import { useTemplates } from './useTemplates';
 
 const WishlistContext = createContext();
 
@@ -11,17 +11,18 @@ export const useWishlist = () => useContext(WishlistContext);
 export const WishlistProvider = ({ children }) => {
   const [wishlistItems, setWishlistItems] = useState([]);
   const { user, requireAuth } = useAuth();
+  const { templates } = useTemplates();
 
   // Load wishlist from User Metadata
   useEffect(() => {
-    if (user) {
+    if (user && templates.length > 0) {
       const savedIds = user.user_metadata?.wishlist_templates || [];
-      const fetchedTemplates = marketplaceTemplates.filter(t => savedIds.includes(t.id));
-      setWishlistItems(fetchedTemplates);
-    } else {
+      const newSavedObjects = templates.filter(t => savedIds.includes(t.id));
+      setWishlistItems(newSavedObjects);
+    } else if (!user) {
       setWishlistItems([]);
     }
-  }, [user]);
+  }, [user, templates]);
 
   const toggleWishlist = (product) => {
     requireAuth(async () => {

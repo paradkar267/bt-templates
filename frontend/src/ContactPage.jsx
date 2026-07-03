@@ -158,7 +158,6 @@ export default function ContactPage() {
                   <option>General Inquiry</option>
                   <option>Support</option>
                   <option>Custom Template</option>
-                  <option>Billing</option>
                 </select>
               </div>
 

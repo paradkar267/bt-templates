@@ -144,17 +144,7 @@ export default function SettingsPage() {
               <User className="w-5 h-5" />
               Profile
             </button>
-            <button
-              onClick={() => setActiveTab('preferences')}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-semibold transition-all ${
-                activeTab === 'preferences' 
-                  ? 'bg-black text-white dark:bg-white dark:text-black shadow-lg' 
-                  : 'bg-white text-gray-600 hover:bg-gray-100 dark:bg-white/5 dark:text-gray-400 dark:hover:bg-white/10'
-              }`}
-            >
-              {theme === 'dark' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
-              Preferences
-            </button>
+
             <button
               onClick={signOut}
               className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-semibold text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 transition-all mt-4"
@@ -251,42 +241,7 @@ export default function SettingsPage() {
               </motion.div>
             )}
 
-            {activeTab === 'preferences' && (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-[2rem] p-8 shadow-sm backdrop-blur-xl"
-              >
-                <h2 className="text-xl font-bold mb-6">App Preferences</h2>
 
-                <div className="max-w-md">
-                  <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-black/50 border border-black/5 dark:border-white/10 rounded-2xl">
-                    <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 bg-white dark:bg-white/10 rounded-full flex items-center justify-center shadow-sm">
-                        {theme === 'dark' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
-                      </div>
-                      <div>
-                        <p className="font-bold">Theme Mode</p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">Switch between light and dark</p>
-                      </div>
-                    </div>
-                    
-                    <button
-                      onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                      className="relative w-14 h-8 rounded-full bg-gray-200 dark:bg-white/20 transition-colors focus:outline-none"
-                    >
-                      <motion.div
-                        layout
-                        initial={false}
-                        animate={{ x: theme === 'dark' ? 26 : 4 }}
-                        transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                        className="absolute top-1 left-0 w-6 h-6 rounded-full bg-white shadow-md flex items-center justify-center"
-                      />
-                    </button>
-                  </div>
-                </div>
-              </motion.div>
-            )}
           </div>
         </div>
       </main>

@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { toast } from 'sonner';
 import { useAuth } from './AuthContext';
 import { supabase } from './lib/supabase';
-import { marketplaceTemplates } from './data';
+import { useTemplates } from './useTemplates';
 
 const CartContext = createContext();
 
@@ -13,19 +13,20 @@ export const CartProvider = ({ children }) => {
   const [purchasedTemplates, setPurchasedTemplates] = useState([]);
   const [hasPlayedIntro, setHasPlayedIntro] = useState(window.location.pathname !== '/');
   const { user, requireAuth } = useAuth();
+  const { templates } = useTemplates();
 
   const isLoggedIn = !!user;
 
   // Load purchases from User Metadata
   useEffect(() => {
-    if (user) {
+    if (user && templates.length > 0) {
       const purchasedIds = user.user_metadata?.purchased_templates || [];
-      const fetchedTemplates = marketplaceTemplates.filter(t => purchasedIds.includes(t.id));
+      const fetchedTemplates = templates.filter(t => purchasedIds.includes(t.id));
       setPurchasedTemplates(fetchedTemplates);
-    } else {
+    } else if (!user) {
       setPurchasedTemplates([]);
     }
-  }, [user]);
+  }, [user, templates]);
 
   const addToCart = (product) => {
     requireAuth(() => {
@@ -58,13 +59,13 @@ export const CartProvider = ({ children }) => {
     
     const newPurchaseIds = cartItems.map(item => item.id);
     const existingIds = user.user_metadata?.purchased_templates || [];
-    
-    // Merge and remove duplicates
     const finalIds = [...new Set([...existingIds, ...newPurchaseIds])];
     
     // Save to Supabase User Metadata (works without creating custom tables)
     const { error: metadataError } = await supabase.auth.updateUser({
-      data: { purchased_templates: finalIds }
+      data: { 
+        purchased_templates: finalIds
+      }
     });
       
     if (metadataError) {
@@ -89,7 +90,7 @@ export const CartProvider = ({ children }) => {
     }
     
     // Update local state
-    const newPurchasedObjects = marketplaceTemplates.filter(t => finalIds.includes(t.id));
+    const newPurchasedObjects = templates.filter(t => finalIds.includes(t.id));
     setPurchasedTemplates(newPurchasedObjects);
     setCartItems([]);
   };
@@ -110,7 +111,7 @@ export const CartProvider = ({ children }) => {
       return;
     }
     
-    const newPurchasedObjects = marketplaceTemplates.filter(t => finalIds.includes(t.id));
+    const newPurchasedObjects = templates.filter(t => finalIds.includes(t.id));
     setPurchasedTemplates(newPurchasedObjects);
     toast.success("Template removed from your collection.");
   };

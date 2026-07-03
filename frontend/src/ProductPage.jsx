@@ -4,6 +4,7 @@ import { ArrowLeft, Star, ShoppingCart, Check, ShieldCheck, Zap, Search, Heart, 
 import { useTemplates } from './useTemplates';
 import { useCart } from './CartContext';
 import { useWishlist } from './WishlistContext';
+import { useCurrency } from './CurrencyContext';
 import { ReviewsSection } from './ReviewsSection';
 import UserMenu from './UserMenu';
 import { useTheme } from './ThemeContext';
@@ -13,6 +14,8 @@ import { FAQSection } from './components/ui/FAQSection';
 import { LivePreviewModal } from './components/ui/LivePreviewModal';
 import { InteractiveProductCard } from './components/ui/card-7';
 import { Logo } from './components/ui/Logo';
+import { motion } from 'framer-motion';
+import SEO from './components/SEO';
 
 export default function ProductPage() {
   const { id } = useParams();
@@ -23,6 +26,7 @@ export default function ProductPage() {
   const isDark = theme === 'dark';
   const { templates, loading } = useTemplates();
   const { requireAuth } = useAuth();
+  const { formatPrice } = useCurrency();
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
 
   // Scroll to top on mount
@@ -61,6 +65,13 @@ export default function ProductPage() {
 
   return (
     <div className={`min-h-screen font-sans transition-colors duration-1000 ${isDark ? 'bg-black text-white' : 'bg-gray-50 text-black'}`}>
+      <SEO 
+        title={template.title}
+        description={template.description}
+        keywords={template.keywords?.join(', ')}
+        image={template.image}
+        url={`/product/${template.id}`}
+      />
       <nav className="flex items-center justify-between p-6 md:px-16 border-b border-gray-200 dark:border-white/10">
         <Logo />
         <div className="flex items-center gap-6">
@@ -103,53 +114,95 @@ export default function ProductPage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           {/* Left Column: Image & Details */}
-          <div className="lg:col-span-2">
-            <div className="w-full h-[350px] lg:h-[450px] bg-gray-200 rounded-[2rem] overflow-hidden shadow-sm mb-12 border border-gray-200 dark:border-gray-800">
-              <img src={template.image} alt={template.title} className="w-full h-full object-cover" />
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="lg:col-span-2 space-y-8"
+          >
+            {/* Main Image Container */}
+            <div className="w-full relative aspect-[16/10] sm:aspect-video lg:h-[500px] rounded-[2.5rem] overflow-hidden group">
+              {/* Subtle background glow when loading or if transparent */}
+              <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-purple-500/10 to-pink-500/10 dark:from-indigo-500/20 dark:via-purple-500/20 dark:to-pink-500/20 animate-gradient-xy"></div>
+              
+              <img 
+                src={template.image} 
+                alt={template.title} 
+                className="w-full h-full object-cover relative z-10 transition-transform duration-700 group-hover:scale-105" 
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                  e.target.nextSibling.style.display = 'flex';
+                }}
+              />
+              {/* Fallback state if image fails */}
+              <div className="absolute inset-0 hidden items-center justify-center bg-gray-100 dark:bg-gray-800/50 backdrop-blur-sm z-20">
+                 <span className="text-gray-400 font-medium">Image Preview Unavailable</span>
+              </div>
+              
+              {/* Overlay shadow for depth */}
+              <div className="absolute inset-0 ring-1 ring-inset ring-black/10 dark:ring-white/10 rounded-[2.5rem] z-30 pointer-events-none"></div>
             </div>
 
-            <div className="glass-panel p-10 rounded-[2rem]">
-              <h2 className="text-3xl font-black tracking-tight mb-6">Product Overview</h2>
-              <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed mb-8">
+            {/* Product Overview Card */}
+            <div className="bg-white/80 dark:bg-[#0F0F11]/80 backdrop-blur-xl p-8 sm:p-12 rounded-[2.5rem] border border-gray-100 dark:border-white/5 shadow-sm">
+              <h2 className="text-3xl font-black tracking-tight mb-6 text-gray-900 dark:text-white">Overview</h2>
+              <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed mb-10">
                 {template.description}
               </p>
               
-              <h3 className="text-xl font-bold mb-4">Features</h3>
-              <ul className="space-y-3 text-gray-600 dark:text-gray-300 font-medium">
-                <li className="flex items-center gap-3"><Check className="w-5 h-5 text-black dark:text-white" /> Fully responsive design layout</li>
-                <li className="flex items-center gap-3"><Check className="w-5 h-5 text-black dark:text-white" /> Modular and clean component architecture</li>
-                <li className="flex items-center gap-3"><Check className="w-5 h-5 text-black dark:text-white" /> Easy to customize variables and tokens</li>
-                <li className="flex items-center gap-3"><Check className="w-5 h-5 text-black dark:text-white" /> Premium email support for 6 months</li>
-              </ul>
+              <div className="grid sm:grid-cols-2 gap-6">
+                 <div className="p-6 rounded-2xl bg-gray-50/50 dark:bg-white/[0.02] border border-gray-100 dark:border-white/5">
+                    <h3 className="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-4">Highlights</h3>
+                    <ul className="space-y-4 text-gray-600 dark:text-gray-400 font-medium text-sm">
+                      <li className="flex items-start gap-3"><Check className="w-5 h-5 text-indigo-500 shrink-0" /> Fully responsive design layout</li>
+                      <li className="flex items-start gap-3"><Check className="w-5 h-5 text-indigo-500 shrink-0" /> Modular component architecture</li>
+                    </ul>
+                 </div>
+                 <div className="p-6 rounded-2xl bg-gray-50/50 dark:bg-white/[0.02] border border-gray-100 dark:border-white/5">
+                    <h3 className="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-4">Support</h3>
+                    <ul className="space-y-4 text-gray-600 dark:text-gray-400 font-medium text-sm">
+                      <li className="flex items-start gap-3"><Check className="w-5 h-5 text-indigo-500 shrink-0" /> Easy to customize variables</li>
+                      <li className="flex items-start gap-3"><Check className="w-5 h-5 text-indigo-500 shrink-0" /> Premium email support</li>
+                    </ul>
+                 </div>
+              </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* Right Column: Checkout Box */}
-          <div className="lg:col-span-1">
-            <div className="glass-panel p-8 rounded-[2rem] sticky top-[120px]">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="lg:col-span-1"
+          >
+            <div className="bg-white/90 dark:bg-[#0F0F11]/90 backdrop-blur-2xl p-8 rounded-[2.5rem] shadow-[0_0_50px_-12px_rgba(0,0,0,0.1)] dark:shadow-none border border-gray-100 dark:border-white/10 ring-1 ring-black/5 dark:ring-white/5 sticky top-[120px]">
                <div className="mb-6">
-                 <p className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-2">{template.category} • {template.tag}</p>
-                 <h1 className="text-4xl font-black tracking-tight leading-tight mb-2">{template.title}</h1>
-                 <p className="text-gray-500 font-medium">by <span className="text-black dark:text-white font-bold cursor-pointer hover:underline">{template.author}</span></p>
+                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-100 dark:border-indigo-500/20 mb-4">
+                    <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">{template.category}</span>
+                    <span className="w-1 h-1 rounded-full bg-indigo-300 dark:bg-indigo-500/50"></span>
+                    <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">{template.tag}</span>
+                 </div>
+                 <h1 className="text-4xl font-black tracking-tight leading-tight mb-3 text-gray-900 dark:text-white">{template.title}</h1>
+                 <p className="text-gray-500 font-medium">by <span className="text-indigo-600 dark:text-indigo-400 font-bold cursor-pointer hover:underline">{template.author}</span></p>
                </div>
 
                <div className="flex items-center gap-4 mb-8">
-                  <div className="flex text-black dark:text-white">
+                  <div className="flex text-amber-400">
                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className={`w-4 h-4 ${i < Math.floor(template.rating) ? 'fill-current' : 'text-gray-300 dark:text-gray-600'}`} />
+                        <Star key={i} className={`w-4 h-4 ${i < Math.floor(template.rating) ? 'fill-current' : 'text-gray-200 dark:text-gray-700'}`} />
                      ))}
                   </div>
-                  <span className="text-sm font-bold text-gray-600 dark:text-gray-300">{template.sales.toLocaleString()} Sales</span>
+                  <span className="text-sm font-bold text-gray-500 dark:text-gray-400">{template.sales.toLocaleString()} Sales</span>
                </div>
 
-               <div className="text-5xl font-black text-black dark:text-white mb-8 border-y border-gray-100 dark:border-white/10 py-6">
-                 ₹{template.price}
+               <div className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-br from-gray-900 to-gray-600 dark:from-white dark:to-gray-400 mb-8 border-y border-gray-100 dark:border-white/10 py-8">
+                 {formatPrice(template.price)}
                </div>
 
-
-               <div className="space-y-4 mb-8 text-sm font-medium text-gray-600 dark:text-gray-300">
-                  <div className="flex items-center gap-3"><ShieldCheck className="w-5 h-5 text-black dark:text-white" /> Quality checked by Bizleap</div>
-                  <div className="flex items-center gap-3"><Zap className="w-5 h-5 text-black dark:text-white" /> Instant download access</div>
+               <div className="space-y-4 mb-8 text-sm font-medium text-gray-600 dark:text-gray-400 bg-gray-50/50 dark:bg-white/[0.02] p-5 rounded-2xl border border-gray-100 dark:border-white/5">
+                  <div className="flex items-center gap-3"><ShieldCheck className="w-5 h-5 text-emerald-500" /> Quality checked by Bizleap</div>
+                  <div className="flex items-center gap-3"><Zap className="w-5 h-5 text-amber-500" /> Instant download access</div>
                </div>
 
                <button 
@@ -158,37 +211,45 @@ export default function ProductPage() {
                     requireAuth(() => addToCart(template));
                   }}
                   disabled={isOwned}
-                  className={`w-full py-5 rounded-2xl font-black text-lg flex items-center justify-center gap-3 transition-all duration-300 shadow-[0_10px_30px_rgba(0,0,0,0.1)] ${
+                  className={`w-full py-5 rounded-2xl font-bold text-lg flex items-center justify-center gap-3 transition-all duration-300 relative overflow-hidden group ${
                     isOwned
-                    ? 'bg-emerald-500 text-white shadow-emerald-500/20 cursor-default opacity-90'
+                    ? 'bg-gray-100 dark:bg-white/5 text-gray-400 dark:text-gray-500 cursor-not-allowed'
                     : inCart 
-                    ? 'bg-green-500 text-white shadow-green-500/20' 
-                    : 'bg-black dark:bg-white text-white dark:text-black hover:scale-[1.02] hover:shadow-black/20 dark:hover:shadow-white/20'
+                    ? 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/20 shadow-[0_0_20px_-5px_rgba(16,185,129,0.3)]' 
+                    : 'bg-black dark:bg-white text-white dark:text-black hover:scale-[1.02] hover:shadow-[0_15px_30px_-10px_rgba(0,0,0,0.3)] dark:hover:shadow-[0_15px_30px_-10px_rgba(255,255,255,0.3)]'
                   }`}
                >
+                  {/* Subtle shine effect on primary button */}
+                  {!isOwned && !inCart && (
+                    <div className="absolute inset-0 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/20 dark:via-black/10 to-transparent"></div>
+                  )}
                   {isOwned ? <><Check className="w-6 h-6" /> Already Owned</> : inCart ? 'Added to Cart' : <><ShoppingCart className="w-6 h-6" /> Add to Cart</>}
                </button>
 
-               <div className="flex gap-4 mt-4">
+               <div className="flex flex-col sm:flex-row gap-3 mt-4">
                  <button
                     onClick={() => toggleWishlist(template)}
-                    className="flex-1 flex items-center justify-center gap-2 py-4 rounded-xl border border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:bg-gray-900 transition-all"
+                    className={`flex-1 flex items-center justify-center gap-2 py-4 rounded-xl border transition-all duration-300 font-bold ${
+                      isInWishlist(template.id)
+                        ? 'border-red-200 dark:border-red-500/20 bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400'
+                        : 'border-gray-200 dark:border-white/10 hover:border-gray-300 dark:hover:border-white/20 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5'
+                    }`}
                     title="Add to Wishlist"
                  >
-                    <Heart className={`w-6 h-6 ${isInWishlist(template.id) ? 'fill-red-500 text-red-500' : 'text-gray-400'}`} />
-                    <span className="font-bold text-black dark:text-white">{isInWishlist(template.id) ? 'Wishlisted' : 'Add to Wishlist'}</span>
+                    <Heart className={`w-5 h-5 ${isInWishlist(template.id) ? 'fill-current' : ''}`} />
+                    <span className="text-sm">{isInWishlist(template.id) ? 'Wishlisted' : 'Wishlist'}</span>
                  </button>
                  <button
                     onClick={() => setIsPreviewOpen(true)}
-                    className="flex-1 flex items-center justify-center gap-2 py-4 rounded-xl border border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:bg-gray-900 transition-all"
+                    className="flex-1 flex items-center justify-center gap-2 py-4 rounded-xl border border-gray-200 dark:border-white/10 hover:border-gray-300 dark:hover:border-white/20 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5 transition-all duration-300 font-bold"
                     title="Live Preview"
                  >
-                    <Eye className="w-6 h-6 text-gray-400" />
-                    <span className="font-bold text-black dark:text-white">Live Preview</span>
+                    <Eye className="w-5 h-5" />
+                    <span className="text-sm">Preview</span>
                  </button>
                </div>
             </div>
-          </div>
+          </motion.div>
         </div>
         </div>
       </div>

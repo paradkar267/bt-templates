@@ -6,81 +6,41 @@ export function useTemplates() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    async function fetchTemplates() {
-      try {
-        const { data, error } = await supabase
-          .from('templates')
-          .select('*')
-          .order('id', { ascending: true });
+  const fetchTemplates = async () => {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('templates')
+        .select('*')
+        .order('id', { ascending: true });
 
-        if (error) throw error;
+      if (error) throw error;
 
-        // Ensure all prices from database are above 5000
-        const adjustedData = data?.map(t => {
-          let currentPrice = parseInt(t.price, 10);
-          if (currentPrice < 5000) {
-            currentPrice += 5000;
-          }
-          return { ...t, price: currentPrice.toString() };
-        }) || [];
+      const adjustedData = data?.map(t => {
+        let currentPrice = parseInt(t.price, 10);
+
         
-        const luxuryMockTemplates = [
-          {
-            id: 9001,
-            title: 'Aura Luxury UI Kit',
-            author: 'Bizleap Studio',
-            price: 9920,
-            category: 'Figma',
-            rating: 5,
-            reviews: 124,
-            image: 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&q=80',
-            description: 'A premium, high-end UI kit designed for luxury brands, real estate, and exclusive services.',
-            tag: 'Bestseller',
-            technologies: ['Figma', 'UI Kit'],
-            features: ['100+ Premium Screens', 'Dark & Light Mode', 'Global Styleguide', 'Auto Layout v5']
-          },
-          {
-            id: 9002,
-            title: 'Velvet E-Commerce Kit',
-            author: 'Premium Design',
-            price: 7920,
-            category: 'UI Kit',
-            rating: 4.9,
-            reviews: 89,
-            image: 'https://images.unsplash.com/photo-1600607686527-6fb886090705?auto=format&fit=crop&q=80',
-            description: 'Elegant e-commerce screens tailored for fashion, jewelry, and high-end retail applications.',
-            tag: 'New',
-            technologies: ['Figma', 'Sketch', 'UI Kit'],
-            features: ['Product Pages', 'Checkout Flows', 'High-Res Assets', 'Minimalist Design']
-          },
-          {
-            id: 9003,
-            title: 'Lumina Dashboard',
-            author: 'Bizleap Studio',
-            price: 12920,
-            category: 'Figma',
-            rating: 5,
-            reviews: 210,
-            image: 'https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&q=80',
-            description: 'A sophisticated dark-mode dashboard UI kit for fintech, luxury analytics, and exclusive platforms.',
-            tag: 'Featured',
-            technologies: ['Figma', 'React', 'UI Kit'],
-            features: ['70+ Widgets', 'Interactive Charts', 'Dark Theme Only', 'Component Library']
-          }
-        ];
-        
-        setTemplates([...adjustedData, ...luxuryMockTemplates]);
-      } catch (err) {
-        console.error('Error fetching templates:', err.message);
-        setError(err);
-      } finally {
-        setLoading(false);
-      }
+        const slug = t.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+        const previewUrl = t.previewUrl || `/previews/${slug}/index.html`;
+
+        let category = t.category;
+        if (t.id === 1 || t.id === 2) category = 'HTML';
+
+        return { ...t, price: currentPrice.toString(), previewUrl, category };
+      }) || [];
+      
+      setTemplates(adjustedData);
+    } catch (err) {
+      console.error('Error fetching templates:', err.message);
+      setError(err);
+    } finally {
+      setLoading(false);
     }
+  };
 
+  useEffect(() => {
     fetchTemplates();
   }, []);
 
-  return { templates, loading, error };
+  return { templates, loading, error, refetch: fetchTemplates };
 }

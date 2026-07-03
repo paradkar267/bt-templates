@@ -3,7 +3,7 @@ import { motion } from "framer-motion"
 import { Link } from "react-router-dom"
 import { cn } from "@/lib/utils"
 
-export function NavBar({ items, className, activeTab: externalActiveTab, onChange }) {
+export function NavBar({ items, className, activeTab: externalActiveTab, onChange, children }) {
   const [internalActiveTab, setInternalActiveTab] = useState(items[0].name)
   const [isMobile, setIsMobile] = useState(false)
   const activeTab = externalActiveTab !== undefined ? externalActiveTab : internalActiveTab;
@@ -72,6 +72,7 @@ export function NavBar({ items, className, activeTab: externalActiveTab, onChang
           </div>
         )
       })}
+      {children}
     </div>
   )
 }

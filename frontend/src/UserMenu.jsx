@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { User, LogOut, Settings, LayoutDashboard, ShoppingBag, Activity, Heart } from 'lucide-react';
 import { useAuth } from './AuthContext';
+import { CurrencySelector } from './components/ui/CurrencySelector';
 
 export default function UserMenu() {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,7 +15,8 @@ export default function UserMenu() {
   }
 
   return (
-    <>
+    <div className="flex items-center gap-3">
+      <CurrencySelector />
       <div className="relative">
         {user ? (
           <button
@@ -49,10 +51,16 @@ export default function UserMenu() {
             
             <div className="p-2 space-y-1">
               {isAdmin && (
-                <Link to="/dashboard" onClick={() => setIsOpen(false)} className="w-full flex items-center gap-3 px-3 py-2.5 text-sm text-gray-600 dark:text-gray-300 hover:bg-black/5 dark:hover:bg-white/5 hover:text-black dark:hover:text-white rounded-xl transition-colors">
-                  <Activity className="w-4 h-4" />
-                  <span>Dashboard</span>
-                </Link>
+                <>
+                  <Link to="/admin" onClick={() => setIsOpen(false)} className="w-full flex items-center gap-3 px-3 py-2.5 text-sm text-indigo-600 dark:text-indigo-400 font-bold hover:bg-indigo-50 dark:hover:bg-indigo-500/10 rounded-xl transition-colors">
+                    <LayoutDashboard className="w-4 h-4" />
+                    <span>Admin Panel</span>
+                  </Link>
+                  <Link to="/dashboard" onClick={() => setIsOpen(false)} className="w-full flex items-center gap-3 px-3 py-2.5 text-sm text-gray-600 dark:text-gray-300 hover:bg-black/5 dark:hover:bg-white/5 hover:text-black dark:hover:text-white rounded-xl transition-colors">
+                    <Activity className="w-4 h-4" />
+                    <span>Vendor Dashboard</span>
+                  </Link>
+                </>
               )}
               <Link to="/profile" onClick={() => setIsOpen(false)} className="w-full flex items-center gap-3 px-3 py-2.5 text-sm text-gray-600 dark:text-gray-300 hover:bg-black/5 dark:hover:bg-white/5 hover:text-black dark:hover:text-white rounded-xl transition-colors">
                 <User className="w-4 h-4" />
@@ -87,7 +95,6 @@ export default function UserMenu() {
           </div>
         )}
       </div>
-
-    </>
+    </div>
   );
 }

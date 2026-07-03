@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { ShoppingCart, Search, Filter, X, Layers } from 'lucide-react';
 import { useCart } from './CartContext';
 import { useTemplates } from './useTemplates';
@@ -10,13 +10,19 @@ import { motion, AnimatePresence } from "motion/react";
 import { useTheme } from './ThemeContext';
 import { useAuth } from './AuthContext';
 import { Logo } from './components/ui/Logo';
+import { CenterNav } from './components/ui/CenterNav';
+import SEO from './components/SEO';
 
 export default function UiKitsPage() {
   const { cartItems } = useCart();
   const { theme } = useTheme();
   const { requireAuth } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const isDark = theme === 'dark';
+  
+  const searchParams = new URLSearchParams(location.search);
+  const selectedTag = searchParams.get('tag') || "";
   
   const [searchQuery, setSearchQuery] = useState("");
   const [priceRange, setPriceRange] = useState("all");
@@ -43,13 +49,16 @@ export default function UiKitsPage() {
     else if (priceRange === "6000to8000") matchesPrice = price >= 6000 && price <= 8000;
     else if (priceRange === "over8000") matchesPrice = price > 8000;
 
+    // Tag filter
+    const matchesTag = !selectedTag || t.tag === selectedTag;
+
     // Search filter
     const searchLower = searchQuery.toLowerCase();
     const matchesSearch = !searchQuery || 
                           t.title?.toLowerCase().includes(searchLower) || 
                           t.description?.toLowerCase().includes(searchLower);
                           
-    return matchesPrice && matchesSearch;
+    return matchesPrice && matchesSearch && matchesTag;
   });
 
   const SidebarContent = () => (
@@ -101,8 +110,11 @@ export default function UiKitsPage() {
       {/* Navigation */}
       <nav className={`h-[80px] w-full px-4 md:px-8 lg:px-16 flex items-center justify-between border-b sticky top-0 z-50 shadow-sm transition-colors duration-1000 ${isDark ? 'bg-black/20 border-white/10 text-white backdrop-blur-md' : 'bg-white border-gray-200 text-black'}`}>
         <Logo />
+        
+        <CenterNav />
+
         <div className="flex items-center gap-4 md:gap-6">
-<button onClick={() => requireAuth(() => navigate('/cart'))} className={`relative p-2 rounded-full transition-colors cursor-pointer ${isDark ? 'hover:bg-gray-800' : 'hover:bg-gray-100'}`}>
+          <button onClick={() => requireAuth(() => navigate('/cart'))} className={`relative p-2 rounded-full transition-colors cursor-pointer ${isDark ? 'hover:bg-gray-800' : 'hover:bg-gray-100'}`}>
             <ShoppingCart className="w-5 h-5 md:w-6 md:h-6" />
             {cartItems.length > 0 && (
               <span className="absolute -top-1 -right-1 w-4 h-4 md:w-5 md:h-5 bg-black text-white text-[10px] md:text-[11px] font-bold rounded-full flex items-center justify-center shadow-md">
@@ -111,20 +123,27 @@ export default function UiKitsPage() {
             )}
           </button>
           <UserMenu />
-          
         </div>
       </nav>
 
       {/* Hero Section */}
-      <div className="w-full bg-gradient-to-br from-blue-50 to-purple-50 dark:from-[#0a0a0a] dark:to-[#111] py-16 px-4 border-b border-black/5 dark:border-white/10 relative overflow-hidden">
+      <div 
+        className="w-full py-16 px-4 border-b border-black/5 dark:border-white/10 relative overflow-hidden bg-cover bg-center"
+        style={{ backgroundImage: "url('/bground.png')" }}
+      >
         <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl pointer-events-none mix-blend-screen" />
         <div className="max-w-7xl mx-auto flex flex-col items-center text-center relative z-10">
           <div className="w-16 h-16 bg-black dark:bg-white text-white dark:text-black rounded-2xl flex items-center justify-center shadow-xl shadow-black/10 mb-6">
              <Layers className="w-8 h-8" />
           </div>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-4">Premium UI Kits</h1>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-4">
+            {selectedTag ? `${selectedTag} UI Kits` : "Premium UI Kits"}
+          </h1>
           <p className="text-lg text-gray-500 dark:text-gray-400 max-w-2xl">
-            Accelerate your design workflow with high-quality, pixel-perfect UI kits for Figma and beyond. Build beautiful interfaces faster.
+            {selectedTag 
+              ? `Explore our collection of high-quality ${selectedTag} UI kits to accelerate your design workflow.`
+              : "Accelerate your design workflow with high-quality, pixel-perfect UI kits for Figma and beyond. Build beautiful interfaces faster."
+            }
           </p>
         </div>
       </div>
@@ -178,7 +197,7 @@ export default function UiKitsPage() {
               <h2 className="text-2xl font-black">Showing {filteredTemplates.length} UI Kits</h2>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
               {loading ? (
                 <>
                   <SkeletonCard /><SkeletonCard /><SkeletonCard /><SkeletonCard /><SkeletonCard /><SkeletonCard />

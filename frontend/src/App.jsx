@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import gsap from 'gsap';
 import Home from './Home';
 import { useCart } from './CartContext';
+import SEO from './components/SEO';
 
 export default function App() {
   const [mountSpline, setMountSpline] = useState(false); // Delay mounting 3D scene until intro is done
@@ -17,9 +18,7 @@ export default function App() {
       document.body.style.overflow = 'auto';
       setMountSpline(true);
       gsap.set(".scene-7-hero", { clearProps: "all", pointerEvents: "auto" });
-      gsap.set(".hero-watermark", { opacity: 0.8, scale: 1.5 });
-      gsap.set(".hero-nav, .info-stagger, .hero-robot-container", { opacity: 1, y: 0 });
-      gsap.set(".orbit-distance", { z: 300, scale: 0.8, opacity: 1 });
+      gsap.set(".hero-nav, .info-stagger", { opacity: 1, y: 0 });
       if (window.location.hash === '#catalog') {
         setTimeout(() => {
           const el = document.getElementById('catalog');
@@ -60,11 +59,8 @@ export default function App() {
       .to(".text-idea-word", { opacity: 0, scale: 0.95, duration: 0.8, ease: "power3.inOut" }, "reveal-=0.6")
       .to(".scene-7-hero", { opacity: 1, pointerEvents: "auto", duration: 1.5, ease: "power3.inOut", onComplete: () => gsap.set(".scene-7-hero", { clearProps: "all" }) }, "reveal")
       
-      .fromTo(".hero-watermark", { opacity: 0, scale: 1.1 }, { opacity: 0.8, scale: 1.5, duration: 4, ease: "power2.out" }, "reveal+=0.4")
       .fromTo(".hero-nav", { y: -40, opacity: 0 }, { y: 0, opacity: 1, duration: 1.2, ease: "power3.out" }, "reveal+=0.6")
-      .fromTo(".info-stagger", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 1.2, stagger: 0.15, ease: "power3.out" }, "reveal+=0.8")
-      .fromTo(".hero-robot-container", { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 1.8, ease: "power3.out" }, "reveal+=0.6")
-      .fromTo(".orbit-distance", { z: 0, scale: 0.8, opacity: 0 }, { z: 300, scale: 0.8, opacity: 1, duration: 1.5, stagger: 0.15, ease: "power3.out" }, "reveal+=0.5");
+      .fromTo(".info-stagger", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 1.2, stagger: 0.15, ease: "power3.out" }, "reveal+=0.8");
 
     return () => {
       tl.kill();
@@ -74,6 +70,7 @@ export default function App() {
 
   return (
     <div className="bg-white dark:bg-black text-black dark:text-white selection:bg-black selection:text-white dark:selection:bg-gray-200 dark:selection:text-black dark:text-white min-h-screen relative overflow-hidden">
+      <SEO />
       <div className="fixed inset-0 bg-white dark:bg-black -z-20"></div>
 
       {introVisible && (

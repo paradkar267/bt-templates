@@ -177,21 +177,6 @@ export default function ProfilePage() {
               </form>
             </div>
 
-            {/* Section 2: Appearance */}
-            <div className="bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-white/10 rounded-3xl p-8 shadow-sm">
-              <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
-                {theme === 'dark' ? <Moon className="w-5 h-5 text-gray-400" /> : <Sun className="w-5 h-5 text-gray-400" />} 
-                Appearance
-              </h3>
-              <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-black rounded-2xl border border-gray-100 dark:border-gray-900">
-                <div>
-                  <p className="font-bold">Dark Mode</p>
-                  <p className="text-sm text-gray-500">Toggle dark/light theme across the app.</p>
-                </div>
-                <Toggle enabled={theme === 'dark'} onChange={toggleTheme} />
-              </div>
-            </div>
-
             {/* Section 3: Notifications */}
             <div className="bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-white/10 rounded-3xl p-8 shadow-sm">
               <h3 className="text-xl font-bold mb-6 flex items-center gap-2"><Bell className="w-5 h-5 text-gray-400" /> Notifications</h3>
@@ -220,24 +205,6 @@ export default function ProfilePage() {
               </div>
             </div>
 
-            {/* Section 4: Billing & Payment */}
-            <div className="bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-white/10 rounded-3xl p-8 shadow-sm">
-              <h3 className="text-xl font-bold mb-6 flex items-center gap-2"><CreditCard className="w-5 h-5 text-gray-400" /> Billing & Payment</h3>
-              <div className="p-5 bg-gradient-to-br from-gray-900 to-black dark:from-gray-800 dark:to-gray-900 text-white rounded-2xl relative overflow-hidden mb-6">
-                 <div className="absolute top-0 right-0 p-4 opacity-10">
-                    <CreditCard className="w-24 h-24" />
-                 </div>
-                 <p className="text-gray-400 text-sm mb-4">Default Payment Method</p>
-                 <div className="flex items-center gap-4 mb-2">
-                    <div className="w-12 h-8 bg-white/20 rounded flex items-center justify-center font-bold text-xs">VISA</div>
-                    <p className="font-mono text-lg tracking-widest">**** **** **** 4242</p>
-                 </div>
-                 <p className="text-sm text-gray-400">Expires 12/28</p>
-              </div>
-              <button className="text-sm font-bold border border-gray-200 dark:border-gray-800 px-4 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-                Add New Card
-              </button>
-            </div>
 
             {/* Section 5: Security */}
             <div className="bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-white/10 rounded-3xl p-8 shadow-sm">
