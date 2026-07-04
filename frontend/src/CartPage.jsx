@@ -157,6 +157,7 @@ export default function CartPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           to: user?.email || 'customer@example.com',
+          frontendUrl: window.location.origin,
           orderDetails: {
             items: cartItems,
             total: cartTotal.toFixed(2),

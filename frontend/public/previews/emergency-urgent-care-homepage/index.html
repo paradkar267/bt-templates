@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PharmaCare - Emergency & Urgent Care</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="#" class="logo">PharmaCare</a>
+        <ul class="nav-links">
+            <li><a href="#">Prescriptions</a></li>
+            <li><a href="#">Store Locator</a></li>
+            <li><a href="#" class="active">Services</a></li>
+            <li><a href="#">Health Advice</a></li>
+            <li><a href="#">Shop</a></li>
+        </ul>
+        <div class="nav-right">
+            <a href="#" class="btn-text">Refill Rx</a>
+            <a href="#" class="btn-solid">Sign In</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="badge-alert">
+                <span class="pulse-dot"></span>
+                EMERGENCY ASSISTANCE
+            </div>
+            <h1 class="hero-title">
+                Urgent Care<br>
+                <span class="text-blue">When You Need It Most</span>
+            </h1>
+            <p class="hero-subtitle">
+                Access critical pharmaceutical services, find open late-night pharmacies, and connect with licensed pharmacists instantly.
+            </p>
+
+            <div class="search-card">
+                <div class="card-header">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                        <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                    <h3>Find Open Pharmacy</h3>
+                </div>
+                <div class="search-input-group">
+                    <div class="input-wrapper">
+                        <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                        <input type="text" placeholder="Enter your ZIP or City">
+                    </div>
+                    <button class="btn-search">Search Now</button>
+                </div>
+                <div class="checkbox-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" checked>
+                        <span>Open 24 Hours</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox">
+                        <span>Home Delivery</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        
+        <div class="hero-image">
+            <div class="img-wrapper">
+                <img src="https://images.unsplash.com/photo-1576602976047-174e57a47881?q=80&w=800&auto=format&fit=crop" alt="Pharmacy System">
+                <div class="floating-card">
+                    <div class="icon-circle icon-green">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                        </svg>
+                    </div>
+                    <div class="floating-text">
+                        <h4>Pharmacist Consultation</h4>
+                        <p>Avg. wait time: <span class="text-green">2 mins</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Emergency Services Section -->
+    <section class="services-section">
+        <div class="section-header">
+            <h2>Emergency Services</h2>
+            <p>Immediate tools for your urgent healthcare needs.</p>
+        </div>
+
+        <div class="bento-grid">
+            <!-- Top Left -->
+            <div class="bento-card bg-light-blue span-2">
+                <div class="card-icon bg-blue">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="23 4 23 10 17 10"></polyline>
+                        <polyline points="1 20 1 14 7 14"></polyline>
+                        <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                    </svg>
+                </div>
+                <h3>Express Rx Refill</h3>
+                <p>Running low on critical medication? Use our express refill tool to prioritize your order for same-day pickup.</p>
+                <div class="card-actions">
+                    <button class="btn-solid">Refill Now</button>
+                    <button class="btn-outline">Scan Prescription</button>
+                </div>
+                <div class="bg-cross">
+                    <svg width="120" height="120" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Top Right -->
+            <div class="bento-card bg-light-blue span-1">
+                <div class="card-icon bg-green">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v5Z"></path>
+                        <path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"></path>
+                    </svg>
+                </div>
+                <h3>Live Pharmacist</h3>
+                <p>Chat live with a licensed professional for medication interactions or dosage questions.</p>
+                <button class="btn-solid-green mt-auto">Start Chat</button>
+            </div>
+
+            <!-- Bottom Left -->
+            <div class="bento-card bg-white span-1">
+                <div class="icon-small text-orange">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                        <path d="M12 8v4"></path>
+                        <path d="M12 16h.01"></path>
+                    </svg>
+                </div>
+                <h4>Poison & First Aid</h4>
+                <p class="text-sm">Step-by-step guidance for common household emergencies.</p>
+                <a href="#" class="link-blue mt-auto">View Guides ›</a>
+            </div>
+
+            <!-- Bottom Middle -->
+            <div class="bento-card bg-white span-1">
+                <div class="icon-small text-blue">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="6" width="6" height="12" rx="2"></rect>
+                        <line x1="12" y1="10" x2="12" y2="14"></line>
+                        <line x1="10" y1="12" x2="14" y2="12"></line>
+                        <path d="M8 6h8"></path>
+                        <path d="M12 2v4"></path>
+                        <path d="M12 18v4"></path>
+                    </svg>
+                </div>
+                <h4>Walk-in Vaccines</h4>
+                <p class="text-sm">No appointment needed for flu, COVID-19, or travel shots.</p>
+                <a href="#" class="link-blue mt-auto">Check Availability ›</a>
+            </div>
+
+            <!-- Bottom Right -->
+            <div class="bento-card bg-white span-1">
+                <div class="icon-small text-green">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="2" y="6" width="20" height="12" rx="2"></rect>
+                        <circle cx="12" cy="12" r="2"></circle>
+                        <path d="M6 12h.01M18 12h.01"></path>
+                    </svg>
+                </div>
+                <h4>Insurance & Pricing</h4>
+                <p class="text-sm">Check coverage or find low-cost generic alternatives.</p>
+                <a href="#" class="link-blue mt-auto">Calculate Cost ›</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Nearest Pharmacies Section -->
+    <section class="pharmacies-section">
+        <div class="pharmacies-container">
+            <div class="pharmacies-list">
+                <h2>Nearest Pharmacies</h2>
+                
+                <div class="pharmacy-item">
+                    <div class="item-header">
+                        <h4>Main St. PharmaCare</h4>
+                        <span class="badge-status badge-open">OPEN NOW</span>
+                    </div>
+                    <p class="item-desc">1.2 miles away • 24/7 Service</p>
+                    <button class="btn-outline-full">Get Directions</button>
+                </div>
+
+                <div class="pharmacy-item">
+                    <div class="item-header">
+                        <h4>Westside Medical Hub</h4>
+                        <span class="badge-status badge-closed">CLOSES 11PM</span>
+                    </div>
+                    <p class="item-desc">3.5 miles away • Drive-thru</p>
+                    <button class="btn-outline-full">Get Directions</button>
+                </div>
+                
+                <button class="btn-view-all">
+                    View All 15 Locations 
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="pharmacies-map">
+                <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=800&auto=format&fit=crop" alt="Map">
+                <!-- Overlay markers could be added here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Metrics & Newsletter -->
+    <section class="metrics-newsletter">
+        <div class="metrics">
+            <div class="metric">
+                <span class="metric-value">4.9/5</span>
+                <span class="metric-label">PATIENT RATING</span>
+            </div>
+            <div class="metric">
+                <span class="metric-value">15k+</span>
+                <span class="metric-label">DAILY REFILLS</span>
+            </div>
+            <div class="metric">
+                <span class="metric-value">24h</span>
+                <span class="metric-label">AVG SUPPORT</span>
+            </div>
+        </div>
+        
+        <div class="newsletter">
+            <form class="newsletter-form">
+                <input type="email" placeholder="Get health advice in your inbox">
+                <button class="btn-subscribe">Subscribe</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-left">
+                <h3 class="logo-text">PharmaCare</h3>
+                <p>Providing precision, accessibility, and trust in pharmaceutical care since 1998.</p>
+            </div>
+            
+            <div class="footer-middle">
+                <a href="#">Regulatory Certifications</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">HIPAA Compliance</a>
+                <a href="#" class="link-contact">Contact Pharmacist</a>
+            </div>
+            
+            <div class="footer-right">
+                <p>© 2024 PharmaCare. All rights reserved. Licensed<br>Pharmacy #12345.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- FAB -->
+    <div class="fab-emergency">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2L12 22M2 12L22 12M5 5L19 19M5 19L19 5" stroke="white" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+    </div>
+</body>
+</html>

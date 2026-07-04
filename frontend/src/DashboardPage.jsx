@@ -22,7 +22,7 @@ export default function DashboardPage() {
   const navigate = useNavigate();
   const { isAdmin } = useAuth();
   const { templates: marketplaceTemplates } = useTemplates();
-  const { formatPrice, currency } = useCurrency();
+  const { formatPrice, currency, convertPrice } = useCurrency();
   const isDark = theme === 'dark';
 
   const [stats, setStats] = useState({

@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AlphaFinance - ESG Investing</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,600;1,700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="#" class="logo">AlphaFinance</a>
+            <ul class="nav-links">
+                <li><a href="#">Dashboard</a></li>
+                <li><a href="#">Markets</a></li>
+                <li><a href="#">Portfolio</a></li>
+                <li><a href="#">Treasury</a></li>
+                <li><a href="#" class="active">Impact</a></li>
+            </ul>
+        </div>
+        
+        <div class="nav-right">
+            <div class="nav-icons">
+                <a href="#" class="icon-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                    </svg>
+                </a>
+                <a href="#" class="icon-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                    </svg>
+                </a>
+            </div>
+            
+            <button class="btn-outline-gray">Sign In</button>
+            <button class="btn-black">Open Account</button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="hero-content">
+            <div class="hero-text-col">
+                <span class="badge-green-text">SUSTAINABLE PERFORMANCE</span>
+                <h1 class="hero-title">
+                    Your wealth,<br>
+                    <span class="italic-green">regenerated.</span>
+                </h1>
+                <p class="hero-desc">
+                    AlphaFinance merges high-yield institutional strategies with rigorous ESG oversight. Achieve your financial goals while funding a carbon-neutral future.
+                </p>
+                <div class="hero-actions">
+                    <button class="btn-black-large">Explore Impact Funds 
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </button>
+                    <button class="btn-outline-large">View ESG Report</button>
+                </div>
+            </div>
+            
+            <div class="hero-metrics-col">
+                <div class="card-main-metric bg-white border-card">
+                    <div class="metric-header">
+                        <span class="metric-label">PORTFOLIO IMPACT SCORE</span>
+                        <span class="metric-trend text-green">+12.4% vs Index</span>
+                    </div>
+                    <div class="score-value text-green">A+</div>
+                    
+                    <div class="progress-bar-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill bg-green" style="width: 85%;"></div>
+                        </div>
+                        <div class="progress-labels">
+                            <span>REGENERATIVE</span>
+                            <span>CARBON NEUTRAL</span>
+                            <span>EXTRACTIVE</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="metrics-row">
+                    <div class="card-small-metric bg-white border-card">
+                        <div class="metric-icon text-green">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+                                <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path>
+                            </svg>
+                        </div>
+                        <div class="small-metric-val">14.2t</div>
+                        <div class="small-metric-label">Carbon Offset</div>
+                    </div>
+                    <div class="card-small-metric bg-white border-card">
+                        <div class="metric-icon text-teal">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+                                <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+                            </svg>
+                        </div>
+                        <div class="small-metric-val">2.4M</div>
+                        <div class="small-metric-label">Liters Water Saved</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Funds Section -->
+    <section class="funds-section bg-light-gray">
+        <div class="section-container">
+            <div class="section-header-row">
+                <div>
+                    <h2 class="section-title">Sustainable Select Funds</h2>
+                    <p class="section-subtitle">Our proprietary funds are vetted across 42 ethical metrics.</p>
+                </div>
+                <a href="#" class="link-green-bold">All Funds 
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                        <polyline points="15 3 21 3 21 9"></polyline>
+                        <line x1="10" y1="14" x2="21" y2="3"></line>
+                    </svg>
+                </a>
+            </div>
+            
+            <div class="funds-grid">
+                <!-- Fund 1 -->
+                <div class="fund-card bg-white border-card">
+                    <div class="fund-img-wrapper">
+                        <img src="https://images.unsplash.com/photo-1509391366360-12009a325852?q=80&w=600&auto=format&fit=crop" alt="Solar Panels">
+                        <span class="badge-image bg-neon-green">ENERGY TRANSITION</span>
+                    </div>
+                    <div class="fund-content">
+                        <div class="fund-title-row">
+                            <h3>Solar Horizon III</h3>
+                            <span class="badge-risk bg-light-green text-dark-green">Low Risk</span>
+                        </div>
+                        <p class="fund-desc">Direct equity in European solar infrastructure with a 15-year PPA profile.</p>
+                        
+                        <div class="fund-metrics-row">
+                            <div class="metric-col">
+                                <span class="metric-label">ANNUAL YIELD</span>
+                                <span class="metric-val">5.8%</span>
+                            </div>
+                            <div class="metric-col align-right">
+                                <span class="metric-label">ESG SCORE</span>
+                                <span class="metric-val text-green">98/100</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fund 2 -->
+                <div class="fund-card bg-white border-card">
+                    <div class="fund-img-wrapper">
+                        <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=600&auto=format&fit=crop" alt="Saplings">
+                        <span class="badge-image bg-neon-green">REFORESTATION</span>
+                    </div>
+                    <div class="fund-content">
+                        <div class="fund-title-row">
+                            <h3>BioGrowth Equity</h3>
+                            <span class="badge-risk bg-light-gray-tag text-dark">Moderate</span>
+                        </div>
+                        <p class="fund-desc">Scaling regenerative agriculture and biodiversity credit markets globally.</p>
+                        
+                        <div class="fund-metrics-row">
+                            <div class="metric-col">
+                                <span class="metric-label">ANNUAL YIELD</span>
+                                <span class="metric-val">8.2%</span>
+                            </div>
+                            <div class="metric-col align-right">
+                                <span class="metric-label">ESG SCORE</span>
+                                <span class="metric-val text-green">94/100</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fund 3 -->
+                <div class="fund-card bg-white border-card">
+                    <div class="fund-img-wrapper">
+                        <img src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=600&auto=format&fit=crop" alt="Green Building">
+                        <span class="badge-image bg-neon-green">PROPTECH</span>
+                    </div>
+                    <div class="fund-content">
+                        <div class="fund-title-row">
+                            <h3>Urban Bloom REIT</h3>
+                            <span class="badge-risk bg-light-green text-dark-green">Low Risk</span>
+                        </div>
+                        <p class="fund-desc">Institutional grade green commercial real estate in high-growth hub cities.</p>
+                        
+                        <div class="fund-metrics-row">
+                            <div class="metric-col">
+                                <span class="metric-label">ANNUAL YIELD</span>
+                                <span class="metric-val">4.5%</span>
+                            </div>
+                            <div class="metric-col align-right">
+                                <span class="metric-label">ESG SCORE</span>
+                                <span class="metric-val text-green">91/100</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Section -->
+    <section class="trust-section bg-white">
+        <div class="section-container">
+            <div class="trust-grid">
+                <!-- Left Col -->
+                <div class="trust-text-col">
+                    <h2 class="section-title">Transparency<br>& Trust</h2>
+                    <p class="section-subtitle mt-16 mb-32">Access real-time data on how your investments are changing the world. Every dollar is tracked to its destination.</p>
+                    
+                    <div class="doc-card border-card">
+                        <div class="doc-icon text-green">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10 9 9 9 8 9"></polyline>
+                            </svg>
+                        </div>
+                        <div class="doc-info">
+                            <h4>Q4 Sustainability Report</h4>
+                            <span>PDF • 12.4 MB</span>
+                        </div>
+                    </div>
+                    
+                    <div class="doc-card border-card mt-16">
+                        <div class="doc-icon text-green">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg>
+                        </div>
+                        <div class="doc-info">
+                            <h4>Third-Party Audit 2023</h4>
+                            <span>Verified by GreenTrack</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Middle Col -->
+                <div class="trust-card-black bg-black text-white">
+                    <span class="card-badge-small text-gray">COMMUNITY IMPACT</span>
+                    <h3 class="card-title-large">Micro-Loan Success</h3>
+                    <p class="card-desc">Over $40M deployed to women-led agriculture startups in Southeast Asia this quarter.</p>
+                    <button class="btn-white mt-auto">Read Case Study</button>
+                </div>
+                
+                <!-- Right Col -->
+                <div class="trust-card-green bg-bright-green text-dark">
+                    <span class="card-badge-small text-dark-green">VOTING POWER</span>
+                    <h3 class="card-title-large">Shareholder Activism</h3>
+                    <p class="card-desc">You voted on 12 key climate resolutions this month. Your voice shaped corporate policy.</p>
+                    <button class="btn-outline-dark-green mt-auto">Go to Ballot</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer bg-light-gray">
+        <div class="footer-container">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <h3 class="logo">AlphaFinance</h3>
+                    <p class="footer-desc">Empowering institutions and individuals to invest in a world that thrives. Ethical metrics are not a feature; they are our foundation.</p>
+                    <div class="footer-icons">
+                        <a href="#"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></a>
+                        <a href="#"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></a>
+                        <a href="#"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4"></circle><line x1="4.93" y1="4.93" x2="9.17" y2="9.17"></line><line x1="14.83" y1="14.83" x2="19.07" y2="19.07"></line><line x1="14.83" y1="9.17" x2="19.07" y2="4.93"></line><line x1="14.83" y1="9.17" x2="18.36" y2="5.64"></line><line x1="4.93" y1="19.07" x2="9.17" y2="14.83"></line></svg></a>
+                    </div>
+                </div>
+                
+                <div class="footer-links">
+                    <div class="footer-col">
+                        <h4>Resources</h4>
+                        <a href="#">Impact Framework</a>
+                        <a href="#">Methodology</a>
+                        <a href="#">API Status</a>
+                        <a href="#">Regulatory Disclosures</a>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Support</h4>
+                        <a href="#">Contact Support</a>
+                        <a href="#">Privacy Policy</a>
+                        <a href="#">Terms of Service</a>
+                        <a href="#">Cookie Settings</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>© 2024 AlphaFinance Global Markets. All rights reserved. Registered SEC/FINRA.</p>
+                <div class="footer-badges">
+                    <span class="badge-gray">SDG COMPLIANT</span>
+                    <span class="badge-gray">B-CORP PENDING</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

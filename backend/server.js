@@ -55,11 +55,13 @@ const transporter = nodemailer.createTransport({
 });
 
 app.post('/api/send-receipt', async (req, res) => {
-  const { to, orderDetails } = req.body;
+  const { to, orderDetails, frontendUrl } = req.body;
 
   if (!to || !orderDetails) {
     return res.status(400).json({ error: 'Missing recipient email or order details' });
   }
+
+  const baseUrl = frontendUrl || process.env.FRONTEND_URL || 'http://localhost:5173';
 
   const { items, total, orderId } = orderDetails;
 
@@ -180,7 +182,7 @@ app.post('/api/send-receipt', async (req, res) => {
 
           <!-- CTA Button -->
           <div style="text-align: center; padding: 0 32px 32px;">
-            <a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}/my-templates" style="display: inline-block; background: linear-gradient(135deg, #0a0a0a, #1a1a2e); color: #ffffff; padding: 14px 36px; text-decoration: none; border-radius: 12px; font-weight: 700; font-size: 14px; letter-spacing: 0.5px; box-shadow: 0 4px 14px rgba(0,0,0,0.2);">
+            <a href="${baseUrl}/my-templates" style="display: inline-block; background: linear-gradient(135deg, #0a0a0a, #1a1a2e); color: #ffffff; padding: 14px 36px; text-decoration: none; border-radius: 12px; font-weight: 700; font-size: 14px; letter-spacing: 0.5px; box-shadow: 0 4px 14px rgba(0,0,0,0.2);">
               Download Your Templates →
             </a>
           </div>

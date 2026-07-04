@@ -9,7 +9,15 @@ const CartContext = createContext();
 export const useCart = () => useContext(CartContext);
 
 export const CartProvider = ({ children }) => {
-  const [cartItems, setCartItems] = useState([]);
+  const [cartItems, setCartItems] = useState(() => {
+    try {
+      const saved = localStorage.getItem('bt_cart');
+      if (saved) return JSON.parse(saved);
+    } catch (e) {
+      console.error('Failed to parse cart from local storage', e);
+    }
+    return [];
+  });
   const [purchasedTemplates, setPurchasedTemplates] = useState([]);
   const [hasPlayedIntro, setHasPlayedIntro] = useState(window.location.pathname !== '/');
   const { user, requireAuth } = useAuth();
@@ -28,8 +36,33 @@ export const CartProvider = ({ children }) => {
     }
   }, [user, templates]);
 
+  // Sync cart with localStorage and across tabs
+  useEffect(() => {
+    localStorage.setItem('bt_cart', JSON.stringify(cartItems));
+  }, [cartItems]);
+
+  useEffect(() => {
+    const handleStorage = (e) => {
+      if (e.key === 'bt_cart') {
+        try {
+          const newCart = JSON.parse(e.newValue || '[]');
+          setCartItems(newCart);
+        } catch (err) {
+          setCartItems([]);
+        }
+      }
+    };
+    window.addEventListener('storage', handleStorage);
+    return () => window.removeEventListener('storage', handleStorage);
+  }, []);
+
   const addToCart = (product) => {
     requireAuth(() => {
+      if (product.is_sold_out) {
+        toast.error(`${product.title} is sold out!`);
+        return;
+      }
+      
       if (cartItems.find(item => item.id === product.id)) {
         toast.error(`${product.title} is already in your cart!`);
         return;
@@ -58,6 +91,27 @@ export const CartProvider = ({ children }) => {
     }
     
     const newPurchaseIds = cartItems.map(item => item.id);
+    
+    // Check if any items just became sold out
+    const { data: checkTemplates, error: checkError } = await supabase
+      .from('templates')
+      .select('id, title, is_sold_out')
+      .in('id', newPurchaseIds);
+      
+    if (checkError) {
+      toast.error("Error verifying cart availability.");
+      return;
+    }
+    
+    const soldOutItems = checkTemplates.filter(t => t.is_sold_out);
+    if (soldOutItems.length > 0) {
+      toast.error(`Sorry, ${soldOutItems[0].title} was just purchased by someone else!`);
+      // Remove sold out items from cart
+      const soldIds = soldOutItems.map(t => t.id);
+      setCartItems(prev => prev.filter(item => !soldIds.includes(item.id)));
+      return;
+    }
+
     const existingIds = user.user_metadata?.purchased_templates || [];
     const finalIds = [...new Set([...existingIds, ...newPurchaseIds])];
     
@@ -88,6 +142,13 @@ export const CartProvider = ({ children }) => {
     if (dbError) {
        console.error("Database purchase log error:", dbError);
     }
+    
+    // Note: The templates table will be automatically updated to is_sold_out = true 
+    // by the Supabase Database Trigger (trigger_mark_template_sold_out) 
+    // immediately after the purchase record is inserted above.
+    
+    // Trigger a custom event to tell useTemplates to refetch globally across components
+    window.dispatchEvent(new Event('templates_updated'));
     
     // Update local state
     const newPurchasedObjects = templates.filter(t => finalIds.includes(t.id));

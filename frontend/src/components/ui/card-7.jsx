@@ -78,11 +78,16 @@ export function InteractiveProductCard({
           style={{ transform: hovered ? 'scale(1.06)' : 'scale(1)' }}
         />
 
-        {/* Category badge — top left */}
-        <div className="absolute top-3 left-3 z-10">
-          <span className={`text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full ${catStyle} shadow-sm`}>
+        {/* Category badge & Sold Out badge — top left */}
+        <div className="absolute top-3 left-3 z-10 flex flex-col gap-2">
+          <span className={`text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full ${catStyle} shadow-sm w-fit`}>
             {template.category}
           </span>
+          {template.is_sold_out && (
+            <span className="text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full bg-red-600 text-white shadow-sm w-fit">
+              Sold Out
+            </span>
+          )}
         </div>
 
         {/* Wishlist button — top right */}
@@ -107,10 +112,22 @@ export function InteractiveProductCard({
             <Eye className="w-4 h-4" /> View
           </button>
           <button
-            onClick={e => { e.preventDefault(); e.stopPropagation(); if (!isOwned) requireAuth(() => addToCart(template)); }}
-            disabled={isOwned}
-            title={isOwned ? "Already Owned" : inCart ? "Added to Cart" : "Add to Cart"}
-            className={`p-2.5 rounded-full transition-all shadow-xl ${isOwned ? 'bg-emerald-500 text-white cursor-default' : inCart ? 'bg-green-500 text-white hover:scale-105' : 'bg-violet-600 hover:bg-violet-700 text-white hover:scale-105'}`}
+            onClick={e => { 
+              e.preventDefault(); 
+              e.stopPropagation(); 
+              if (!isOwned && !template.is_sold_out) requireAuth(() => addToCart(template)); 
+            }}
+            disabled={isOwned || template.is_sold_out}
+            title={template.is_sold_out ? "Sold Out" : isOwned ? "Already Owned" : inCart ? "Added to Cart" : "Add to Cart"}
+            className={`p-2.5 rounded-full transition-all shadow-xl ${
+              template.is_sold_out 
+                ? 'bg-red-500 text-white cursor-not-allowed opacity-50'
+                : isOwned 
+                  ? 'bg-emerald-500 text-white cursor-default' 
+                  : inCart 
+                    ? 'bg-green-500 text-white hover:scale-105' 
+                    : 'bg-violet-600 hover:bg-violet-700 text-white hover:scale-105'
+            }`}
           >
             {isOwned ? <ShoppingCart className="w-4 h-4 opacity-50" /> : <ShoppingCart className="w-4 h-4" />}
           </button>
@@ -135,9 +152,13 @@ export function InteractiveProductCard({
                 <Star key={i} className={`w-3 h-3 ${i < Math.floor(template.rating) ? 'fill-current' : 'text-gray-200'}`} />
               ))}
             </div>
-            <span className="text-[10px] text-gray-400 font-medium">{(template.sales || 0).toLocaleString()} sales</span>
+            <span className="text-[10px] text-gray-400 font-medium">
+              {template.is_sold_out ? '1/1 Edition' : `${(template.sales || 0).toLocaleString()} sales`}
+            </span>
           </div>
-          <div className="text-xl font-black text-gray-900 dark:text-gray-100">{formatPrice(template.price)}</div>
+          <div className={`text-xl font-black ${template.is_sold_out ? 'text-red-500' : 'text-gray-900 dark:text-gray-100'}`}>
+            {template.is_sold_out ? 'Sold Out' : formatPrice(template.price)}
+          </div>
         </div>
       </div>
     </div>

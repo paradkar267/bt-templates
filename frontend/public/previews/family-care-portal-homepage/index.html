@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PharmaCare - Family Care Portal</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="#" class="logo">PharmaCare</a>
+            <ul class="nav-links">
+                <li><a href="#" class="active">Prescriptions</a></li>
+                <li><a href="#">Store Locator</a></li>
+                <li><a href="#">Services</a></li>
+                <li><a href="#">Health Advice</a></li>
+                <li><a href="#">Shop</a></li>
+            </ul>
+        </div>
+        
+        <div class="nav-right">
+            <div class="search-bar">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="text" placeholder="Search medications...">
+            </div>
+            <a href="#" class="link-refill">Refill Rx</a>
+            <a href="#" class="btn-solid-teal">Sign In</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="hero-bg">
+            <!-- Using an unsplash image for family -->
+            <img src="https://images.unsplash.com/photo-1543269664-56d5d519b5d5?q=80&w=1920&auto=format&fit=crop" alt="Family">
+            <div class="hero-overlay"></div>
+        </div>
+        
+        <div class="hero-content">
+            <span class="badge-green">WELCOME TO FAMILY CARE</span>
+            <h1 class="hero-title">
+                Healthier together. Care for everyone you love.
+            </h1>
+            <p class="hero-subtitle">
+                Managing your family's health shouldn't be a chore. From kids' vitamins to granddad's prescriptions, we've got you covered in one simple portal.
+            </p>
+            <div class="hero-actions">
+                <a href="#" class="btn-solid-teal large">
+                    Book Vaccination
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                    </svg>
+                </a>
+                <a href="#" class="btn-outline-white large">View Family Profiles</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <div class="dashboard-grid">
+            
+            <!-- Family Prescriptions Card -->
+            <div class="dashboard-card card-prescriptions">
+                <div class="card-header">
+                    <h2>Family Prescriptions</h2>
+                    <a href="#" class="link-teal">Manage All</a>
+                </div>
+                
+                <div class="prescription-list">
+                    <!-- Jane Doe -->
+                    <div class="prescription-item">
+                        <div class="item-left">
+                            <div class="avatar avatar-teal">JD</div>
+                            <div class="item-info">
+                                <h4>Jane Doe (You)</h4>
+                                <p>2 prescriptions active</p>
+                            </div>
+                        </div>
+                        <div class="item-right">
+                            <span class="status-badge status-instock">In Stock</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Leo Doe -->
+                    <div class="prescription-item border-top">
+                        <div class="item-left">
+                            <div class="avatar avatar-orange">LD</div>
+                            <div class="item-info">
+                                <h4>Leo Doe (Son)</h4>
+                                <p>1 prescription ready for refill</p>
+                            </div>
+                        </div>
+                        <div class="item-right">
+                            <button class="btn-solid-teal small">Refill Now</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Arthur Doe -->
+                    <div class="prescription-item border-top">
+                        <div class="item-left">
+                            <div class="avatar avatar-blue">AD</div>
+                            <div class="item-info">
+                                <h4>Arthur Doe (Father)</h4>
+                                <p>Shipped • Arrives tomorrow</p>
+                            </div>
+                        </div>
+                        <div class="item-right">
+                            <svg class="icon-truck" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="1" y="3" width="15" height="13"></rect>
+                                <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                                <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                                <circle cx="18.5" cy="18.5" r="2.5"></circle>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Daily Essentials Card -->
+            <div class="dashboard-card card-essentials">
+                <div class="card-header">
+                    <h2>Daily Essentials</h2>
+                </div>
+                <p class="essentials-desc">Stock up on wellness for the whole house.</p>
+                
+                <div class="products-grid">
+                    <div class="product-item">
+                        <div class="product-img">
+                            <img src="https://images.unsplash.com/photo-1577401239170-897942555fb3?q=80&w=400&auto=format&fit=crop" alt="Multivitamins">
+                        </div>
+                        <h4>Multivitamins</h4>
+                        <span class="price">$18.99</span>
+                    </div>
+                    
+                    <div class="product-item">
+                        <div class="product-img">
+                            <img src="https://images.unsplash.com/photo-1603398938378-e54eab446dde?q=80&w=400&auto=format&fit=crop" alt="First Aid Kit">
+                        </div>
+                        <h4>First Aid Kit</h4>
+                        <span class="price">$24.50</span>
+                    </div>
+                </div>
+                
+                <button class="btn-outline-blue full-width">Shop All Store</button>
+            </div>
+            
+        </div>
+    </main>
+
+    <!-- Little Ones, Big Care Section -->
+    <section class="kids-section">
+        <div class="kids-banner">
+            <div class="kids-content">
+                <h2>Little Ones, Big Care.</h2>
+                <p>Dedicated health tracking, pediatric advice, and immunization reminders tailored for your children's developmental milestones.</p>
+                
+                <div class="kids-features">
+                    <div class="feature">
+                        <div class="feature-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+                                <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                                <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                            </svg>
+                        </div>
+                        <div class="feature-text">
+                            <h3>Growth Tracking</h3>
+                            <p>Log height and weight for pediatrician visits.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="feature">
+                        <div class="feature-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="9" y="4" width="6" height="16" rx="2"></rect>
+                                <line x1="12" y1="2" x2="12" y2="4"></line>
+                                <line x1="12" y1="20" x2="12" y2="22"></line>
+                                <line x1="9" y1="8" x2="15" y2="8"></line>
+                            </svg>
+                        </div>
+                        <div class="feature-text">
+                            <h3>Vaccine Schedule</h3>
+                            <p>Automatic reminders for upcoming school immunizations.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="btn-mint">Go to Kids' Corner</button>
+            </div>
+            
+            <div class="kids-image">
+                <img src="https://images.unsplash.com/photo-1519689680058-324335c77eba?q=80&w=800&auto=format&fit=crop" alt="Child">
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Row -->
+    <section class="services-row">
+        
+        <!-- Service 1 -->
+        <div class="service-card">
+            <div class="service-icon text-teal">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                    <path d="M12 14v4M10 16h4"></path>
+                </svg>
+            </div>
+            <h3>Seasonal Flu</h3>
+            <p>Protect your whole family this winter. Appointments available now.</p>
+            <button class="btn-light-blue">Book Flu Shot</button>
+        </div>
+        
+        <!-- Service 2 -->
+        <div class="service-card">
+            <div class="service-icon text-teal">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="7"></circle>
+                    <line x1="12" y1="3" x2="12" y2="5"></line>
+                    <line x1="12" y1="19" x2="12" y2="21"></line>
+                    <line x1="3" y1="12" x2="5" y2="12"></line>
+                    <line x1="19" y1="12" x2="21" y2="12"></line>
+                    <line x1="5.6" y1="5.6" x2="7" y2="7"></line>
+                    <line x1="17" y1="17" x2="18.4" y2="18.4"></line>
+                    <line x1="5.6" y1="18.4" x2="7" y2="17"></line>
+                    <line x1="17" y1="7" x2="18.4" y2="5.6"></line>
+                </svg>
+            </div>
+            <h3>COVID-19 Boosters</h3>
+            <p>Updated boosters for ages 5+. Keep your family immunity strong.</p>
+            <button class="btn-light-blue">Schedule Booster</button>
+        </div>
+        
+        <!-- Service 3 -->
+        <div class="service-card">
+            <div class="service-icon text-brown">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                    <path d="M12 2v20"></path>
+                    <circle cx="16" cy="7" r="1"></circle>
+                </svg>
+            </div>
+            <h3>Travel Health</h3>
+            <p>Planning a trip? Get a custom vaccine plan for your destination.</p>
+            <button class="btn-light-blue">Consult Pharmacist</button>
+        </div>
+        
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-left">
+                <h3 class="logo-text">PharmaCare</h3>
+                <p>© 2024 PharmaCare. All rights reserved.<br>Licensed Pharmacy #12345.</p>
+            </div>
+            
+            <div class="footer-right">
+                <a href="#">Regulatory Certifications</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">HIPAA Compliance</a>
+                <a href="#">Contact Pharmacist</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

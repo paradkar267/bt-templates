@@ -11,7 +11,6 @@ import { useTheme } from './ThemeContext';
 import { useAuth } from './AuthContext';
 import { ProductSkeleton } from './components/ui/Skeleton';
 import { FAQSection } from './components/ui/FAQSection';
-import { LivePreviewModal } from './components/ui/LivePreviewModal';
 import { InteractiveProductCard } from './components/ui/card-7';
 import { Logo } from './components/ui/Logo';
 import { motion } from 'framer-motion';
@@ -27,7 +26,6 @@ export default function ProductPage() {
   const { templates, loading } = useTemplates();
   const { requireAuth } = useAuth();
   const { formatPrice } = useCurrency();
-  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
 
   // Scroll to top on mount
   useEffect(() => {
@@ -183,9 +181,23 @@ export default function ProductPage() {
                     <span className="w-1 h-1 rounded-full bg-indigo-300 dark:bg-indigo-500/50"></span>
                     <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">{template.tag}</span>
                  </div>
-                 <h1 className="text-4xl font-black tracking-tight leading-tight mb-3 text-gray-900 dark:text-white">{template.title}</h1>
+                 <h1 className="text-4xl font-black tracking-tight leading-tight mb-3 text-gray-900 dark:text-white">
+                   {template.title}
+                 </h1>
                  <p className="text-gray-500 font-medium">by <span className="text-indigo-600 dark:text-indigo-400 font-bold cursor-pointer hover:underline">{template.author}</span></p>
                </div>
+               
+               {template.is_sold_out && (
+                 <div className="mb-6 p-4 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 flex items-start gap-3">
+                   <div className="w-8 h-8 rounded-full bg-red-100 dark:bg-red-800 flex items-center justify-center shrink-0">
+                     <ShieldCheck className="w-4 h-4 text-red-600 dark:text-red-400" />
+                   </div>
+                   <div>
+                     <h3 className="text-red-800 dark:text-red-300 font-bold text-sm">This template is Sold Out</h3>
+                     <p className="text-red-600 dark:text-red-400 text-xs mt-1">This is an exclusive 1-of-1 template that has already been purchased by another user and is no longer available.</p>
+                   </div>
+                 </div>
+               )}
 
                <div className="flex items-center gap-4 mb-8">
                   <div className="flex text-amber-400">
@@ -193,11 +205,13 @@ export default function ProductPage() {
                         <Star key={i} className={`w-4 h-4 ${i < Math.floor(template.rating) ? 'fill-current' : 'text-gray-200 dark:text-gray-700'}`} />
                      ))}
                   </div>
-                  <span className="text-sm font-bold text-gray-500 dark:text-gray-400">{template.sales.toLocaleString()} Sales</span>
+                  <span className="text-sm font-bold text-gray-500 dark:text-gray-400">
+                    {template.is_sold_out ? '1/1 Edition' : `${template.sales.toLocaleString()} Sales`}
+                  </span>
                </div>
 
-               <div className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-br from-gray-900 to-gray-600 dark:from-white dark:to-gray-400 mb-8 border-y border-gray-100 dark:border-white/10 py-8">
-                 {formatPrice(template.price)}
+               <div className={`text-5xl font-black mb-8 border-y border-gray-100 dark:border-white/10 py-8 ${template.is_sold_out ? 'text-red-500' : 'text-transparent bg-clip-text bg-gradient-to-br from-gray-900 to-gray-600 dark:from-white dark:to-gray-400'}`}>
+                 {template.is_sold_out ? 'Sold Out' : formatPrice(template.price)}
                </div>
 
                <div className="space-y-4 mb-8 text-sm font-medium text-gray-600 dark:text-gray-400 bg-gray-50/50 dark:bg-white/[0.02] p-5 rounded-2xl border border-gray-100 dark:border-white/5">
@@ -207,12 +221,14 @@ export default function ProductPage() {
 
                <button 
                   onClick={() => {
-                    if (isOwned) return;
+                    if (isOwned || template.is_sold_out) return;
                     requireAuth(() => addToCart(template));
                   }}
-                  disabled={isOwned}
+                  disabled={isOwned || template.is_sold_out}
                   className={`w-full py-5 rounded-2xl font-bold text-lg flex items-center justify-center gap-3 transition-all duration-300 relative overflow-hidden group ${
-                    isOwned
+                    template.is_sold_out
+                    ? 'bg-red-50 dark:bg-red-900/20 text-red-400 cursor-not-allowed border border-red-200 dark:border-red-800'
+                    : isOwned
                     ? 'bg-gray-100 dark:bg-white/5 text-gray-400 dark:text-gray-500 cursor-not-allowed'
                     : inCart 
                     ? 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/20 shadow-[0_0_20px_-5px_rgba(16,185,129,0.3)]' 
@@ -220,10 +236,10 @@ export default function ProductPage() {
                   }`}
                >
                   {/* Subtle shine effect on primary button */}
-                  {!isOwned && !inCart && (
+                  {!isOwned && !inCart && !template.is_sold_out && (
                     <div className="absolute inset-0 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/20 dark:via-black/10 to-transparent"></div>
                   )}
-                  {isOwned ? <><Check className="w-6 h-6" /> Already Owned</> : inCart ? 'Added to Cart' : <><ShoppingCart className="w-6 h-6" /> Add to Cart</>}
+                  {template.is_sold_out ? 'Sold Out' : isOwned ? <><Check className="w-6 h-6" /> Already Owned</> : inCart ? 'Added to Cart' : <><ShoppingCart className="w-6 h-6" /> Add to Cart</>}
                </button>
 
                <div className="flex flex-col sm:flex-row gap-3 mt-4">
@@ -239,14 +255,15 @@ export default function ProductPage() {
                     <Heart className={`w-5 h-5 ${isInWishlist(template.id) ? 'fill-current' : ''}`} />
                     <span className="text-sm">{isInWishlist(template.id) ? 'Wishlisted' : 'Wishlist'}</span>
                  </button>
-                 <button
-                    onClick={() => setIsPreviewOpen(true)}
+                 <Link
+                    to={`/preview/${template.id}`}
+                    target="_blank"
                     className="flex-1 flex items-center justify-center gap-2 py-4 rounded-xl border border-gray-200 dark:border-white/10 hover:border-gray-300 dark:hover:border-white/20 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5 transition-all duration-300 font-bold"
                     title="Live Preview"
                  >
                     <Eye className="w-5 h-5" />
                     <span className="text-sm">Preview</span>
-                 </button>
+                 </Link>
                </div>
             </div>
           </motion.div>
@@ -266,8 +283,6 @@ export default function ProductPage() {
       </div>
 
       <FAQSection />
-
-      <LivePreviewModal isOpen={isPreviewOpen} onClose={() => setIsPreviewOpen(false)} template={template} />
     </div>
   );
 }

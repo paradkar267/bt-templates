@@ -40,6 +40,13 @@ export function useTemplates() {
 
   useEffect(() => {
     fetchTemplates();
+    
+    const handleUpdate = () => {
+      fetchTemplates();
+    };
+    
+    window.addEventListener('templates_updated', handleUpdate);
+    return () => window.removeEventListener('templates_updated', handleUpdate);
   }, []);
 
   return { templates, loading, error, refetch: fetchTemplates };

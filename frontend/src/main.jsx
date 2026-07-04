@@ -21,6 +21,7 @@ import TermsPage from './TermsPage.jsx'
 import AdminDashboard from './AdminDashboard.jsx'
 import PrivacyPage from './PrivacyPage.jsx'
 import CookiePage from './CookiePage.jsx'
+import PreviewPage from './PreviewPage.jsx'
 
 import { ThemeProvider } from './ThemeContext'
 import { AuthProvider } from './AuthContext'
@@ -66,6 +67,7 @@ createRoot(document.getElementById('root')).render(
                       <Route path="/privacy" element={<PrivacyPage />} />
                       <Route path="/cookies" element={<CookiePage />} />
                       <Route path="/admin" element={<AdminDashboard />} />
+                      <Route path="/preview/:id" element={<PreviewPage />} />
                     </Routes>
                     </SmoothScroll>
                   </HelmetProvider>
