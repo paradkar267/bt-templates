@@ -3,48 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AlphaFinance - ESG Investing</title>
+    <title>AlphaFinance - Premium ESG & Sustainable Investing</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,600;1,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,500;1,600&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- Navbar -->
-    <nav class="navbar">
-        <div class="nav-left">
-            <a href="#" class="logo">AlphaFinance</a>
-            <ul class="nav-links">
-                <li><a href="#">Dashboard</a></li>
-                <li><a href="#">Markets</a></li>
-                <li><a href="#">Portfolio</a></li>
-                <li><a href="#">Treasury</a></li>
-                <li><a href="#" class="active">Impact</a></li>
-            </ul>
-        </div>
-        
-        <div class="nav-right">
-            <div class="nav-icons">
-                <a href="#" class="icon-btn">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-                    </svg>
-                </a>
-                <a href="#" class="icon-btn">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="12" r="3"></circle>
-                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-                    </svg>
-                </a>
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <a href="#" class="logo">Alpha<span class="logo-accent">Finance</span></a>
+                <ul class="nav-links">
+                    <li><a href="#" class="nav-link" data-section="hero">Dashboard</a></li>
+                    <li><a href="#simulator" class="nav-link" data-section="simulator">Simulator</a></li>
+                    <li><a href="#funds" class="nav-link" data-section="funds">Funds</a></li>
+                    <li><a href="#trust" class="nav-link" data-section="trust">Impact</a></li>
+                </ul>
             </div>
             
-            <button class="btn-outline-gray">Sign In</button>
-            <button class="btn-black">Open Account</button>
+            <div class="nav-right">
+                <div class="nav-icons">
+                    <button class="icon-btn" onclick="showToast('No new notifications')" aria-label="Notifications">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                        </svg>
+                    </button>
+                    <button class="icon-btn" onclick="openModal('authModal')" aria-label="Settings">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                        </svg>
+                    </button>
+                </div>
+                <button class="btn btn-outline" onclick="openModal('authModal')">Sign In</button>
+                <button class="btn btn-black" onclick="openModal('authModal')">Open Account</button>
+                
+                <button class="hamburger" id="hamburger" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
         </div>
     </nav>
 
+    <!-- Mobile Navigation Drawer -->
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+    <div class="mobile-drawer" id="mobileDrawer">
+        <div class="drawer-header">
+            <a href="#" class="logo">Alpha<span class="logo-accent">Finance</span></a>
+            <button class="drawer-close" id="drawerClose" aria-label="Close menu">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        <nav class="drawer-nav">
+            <a href="#" class="drawer-link active">Dashboard</a>
+            <a href="#simulator" class="drawer-link">Impact Simulator</a>
+            <a href="#funds" class="drawer-link">Sustainable Select Funds</a>
+            <a href="#trust" class="drawer-link">Transparency & Trust</a>
+        </nav>
+        <div class="drawer-actions">
+            <button class="btn btn-outline btn-full" onclick="openModal('authModal')">Sign In</button>
+            <button class="btn btn-black btn-full" onclick="openModal('authModal')">Open Account</button>
+        </div>
+    </div>
+
     <!-- Hero Section -->
-    <header class="hero">
-        <div class="hero-content">
+    <header class="hero" id="hero">
+        <div class="hero-bg">
+            <div class="hero-gradient"></div>
+            <div class="hero-particles" id="heroParticles"></div>
+        </div>
+        
+        <div class="hero-container">
             <div class="hero-text-col">
                 <span class="badge-green-text">SUSTAINABLE PERFORMANCE</span>
                 <h1 class="hero-title">
@@ -55,13 +90,14 @@
                     AlphaFinance merges high-yield institutional strategies with rigorous ESG oversight. Achieve your financial goals while funding a carbon-neutral future.
                 </p>
                 <div class="hero-actions">
-                    <button class="btn-black-large">Explore Impact Funds 
+                    <a href="#funds" class="btn btn-black-large">
+                        Explore Impact Funds 
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <line x1="5" y1="12" x2="19" y2="12"></line>
                             <polyline points="12 5 19 12 12 19"></polyline>
                         </svg>
-                    </button>
-                    <button class="btn-outline-large">View ESG Report</button>
+                    </a>
+                    <button class="btn btn-outline-large" onclick="openModal('reportModal')">View ESG Report</button>
                 </div>
             </div>
             
@@ -86,7 +122,7 @@
                 </div>
                 
                 <div class="metrics-row">
-                    <div class="card-small-metric bg-white border-card">
+                    <div class="card-small-metric bg-white border-card" data-count="14.2" data-suffix="t">
                         <div class="metric-icon text-green">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="none">
                                 <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path>
@@ -95,7 +131,7 @@
                         <div class="small-metric-val">14.2t</div>
                         <div class="small-metric-label">Carbon Offset</div>
                     </div>
-                    <div class="card-small-metric bg-white border-card">
+                    <div class="card-small-metric bg-white border-card" data-count="2.4" data-suffix="M">
                         <div class="metric-icon text-teal">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="none">
                                 <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
@@ -109,15 +145,114 @@
         </div>
     </header>
 
+    <!-- ESG Impact Simulator Section -->
+    <section class="simulator-section bg-light-gray" id="simulator">
+        <div class="section-container">
+            <div class="section-header-center">
+                <span class="badge-green-text">PROJECTED IMPACT</span>
+                <h2 class="section-title">ESG Portfolio Simulator</h2>
+                <p class="section-subtitle">Forecast the growth of your capital alongside its environmental footprint.</p>
+            </div>
+            
+            <div class="simulator-grid mt-32">
+                <!-- Control Panel Card -->
+                <div class="simulator-controls bg-white border-card">
+                    <h3>Configure Your Investment</h3>
+                    
+                    <div class="sim-control-group mt-16">
+                        <div class="slider-header">
+                            <label for="investAmount">Investment Amount</label>
+                            <span class="slider-value" id="investAmountVal">$50,000</span>
+                        </div>
+                        <input type="range" id="investAmount" min="5000" max="1000000" step="5000" value="50000" class="sim-slider">
+                        <div class="slider-ticks">
+                            <span>$5K</span>
+                            <span>$250K</span>
+                            <span>$500K</span>
+                            <span>$750K</span>
+                            <span>$1M</span>
+                        </div>
+                    </div>
+
+                    <div class="sim-control-group mt-16">
+                        <label>Risk Tolerance</label>
+                        <div class="risk-selector">
+                            <button class="risk-btn" data-risk="low">Low Risk</button>
+                            <button class="risk-btn active" data-risk="moderate">Moderate</button>
+                            <button class="risk-btn" data-risk="high">High Yield</button>
+                        </div>
+                    </div>
+
+                    <div class="sim-control-group mt-16">
+                        <label for="esgFocus">Primary Sustainability Focus</label>
+                        <select id="esgFocus" class="sim-select">
+                            <option value="energy">Clean Energy Transition</option>
+                            <option value="reforestation">Biodiversity & Reforestation</option>
+                            <option value="water">Clean Water Infrastructure</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Projections & Results Card -->
+                <div class="simulator-results bg-black text-white">
+                    <div class="res-header">
+                        <div>
+                            <span class="card-badge-small text-gray">ESTIMATED 5-YEAR OUTLOOK</span>
+                            <div class="projected-balance" id="projBalance">$67,000</div>
+                        </div>
+                        <div class="res-yield-badge">
+                            <span class="yield-lbl">ANNUAL YIELD</span>
+                            <span class="yield-val" id="projYield">6.8%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="impact-metrics-grid mt-32">
+                        <div class="impact-metric-item">
+                            <div class="impact-metric-icon bg-green-dim text-neon">
+                                🌿
+                            </div>
+                            <div class="impact-metric-info">
+                                <div class="impact-val" id="impactCarbon">125 Tons</div>
+                                <div class="impact-lbl">CO2 Carbon Offset</div>
+                            </div>
+                        </div>
+                        
+                        <div class="impact-metric-item">
+                            <div class="impact-metric-icon bg-teal-dim text-teal">
+                                💧
+                            </div>
+                            <div class="impact-metric-info">
+                                <div class="impact-val" id="impactWater">850,000 L</div>
+                                <div class="impact-lbl">Water Resources Purified</div>
+                            </div>
+                        </div>
+
+                        <div class="impact-metric-item">
+                            <div class="impact-metric-icon bg-purple-dim text-purple">
+                                🌳
+                            </div>
+                            <div class="impact-metric-info">
+                                <div class="impact-val" id="impactTrees">2,400 Trees</div>
+                                <div class="impact-lbl">Reforestation Saplings</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-white btn-full mt-32" onclick="openModal('authModal')">Deploy Capital Instantly</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Funds Section -->
-    <section class="funds-section bg-light-gray">
+    <section class="funds-section bg-white" id="funds">
         <div class="section-container">
             <div class="section-header-row">
                 <div>
                     <h2 class="section-title">Sustainable Select Funds</h2>
                     <p class="section-subtitle">Our proprietary funds are vetted across 42 ethical metrics.</p>
                 </div>
-                <a href="#" class="link-green-bold">All Funds 
+                <a href="#" class="link-green-bold" onclick="showToast('Redirecting to secure investor marketplace')">All Funds 
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
                         <polyline points="15 3 21 3 21 9"></polyline>
@@ -128,7 +263,7 @@
             
             <div class="funds-grid">
                 <!-- Fund 1 -->
-                <div class="fund-card bg-white border-card">
+                <div class="fund-card bg-white border-card" onclick="openFundModal('solar')">
                     <div class="fund-img-wrapper">
                         <img src="https://images.unsplash.com/photo-1509391366360-12009a325852?q=80&w=600&auto=format&fit=crop" alt="Solar Panels">
                         <span class="badge-image bg-neon-green">ENERGY TRANSITION</span>
@@ -154,7 +289,7 @@
                 </div>
 
                 <!-- Fund 2 -->
-                <div class="fund-card bg-white border-card">
+                <div class="fund-card bg-white border-card" onclick="openFundModal('biogrowth')">
                     <div class="fund-img-wrapper">
                         <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=600&auto=format&fit=crop" alt="Saplings">
                         <span class="badge-image bg-neon-green">REFORESTATION</span>
@@ -180,7 +315,7 @@
                 </div>
 
                 <!-- Fund 3 -->
-                <div class="fund-card bg-white border-card">
+                <div class="fund-card bg-white border-card" onclick="openFundModal('urban')">
                     <div class="fund-img-wrapper">
                         <img src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=600&auto=format&fit=crop" alt="Green Building">
                         <span class="badge-image bg-neon-green">PROPTECH</span>
@@ -209,7 +344,7 @@
     </section>
 
     <!-- Trust Section -->
-    <section class="trust-section bg-white">
+    <section class="trust-section bg-light-gray" id="trust">
         <div class="section-container">
             <div class="trust-grid">
                 <!-- Left Col -->
@@ -217,7 +352,7 @@
                     <h2 class="section-title">Transparency<br>& Trust</h2>
                     <p class="section-subtitle mt-16 mb-32">Access real-time data on how your investments are changing the world. Every dollar is tracked to its destination.</p>
                     
-                    <div class="doc-card border-card">
+                    <div class="doc-card border-card bg-white" onclick="openModal('reportModal')">
                         <div class="doc-icon text-green">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
@@ -233,7 +368,7 @@
                         </div>
                     </div>
                     
-                    <div class="doc-card border-card mt-16">
+                    <div class="doc-card border-card mt-16 bg-white" onclick="showToast('Opening verified green ledger database')">
                         <div class="doc-icon text-green">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
@@ -252,7 +387,7 @@
                     <span class="card-badge-small text-gray">COMMUNITY IMPACT</span>
                     <h3 class="card-title-large">Micro-Loan Success</h3>
                     <p class="card-desc">Over $40M deployed to women-led agriculture startups in Southeast Asia this quarter.</p>
-                    <button class="btn-white mt-auto">Read Case Study</button>
+                    <button class="btn btn-white mt-auto" onclick="openModal('reportModal')">Read Case Study</button>
                 </div>
                 
                 <!-- Right Col -->
@@ -260,46 +395,46 @@
                     <span class="card-badge-small text-dark-green">VOTING POWER</span>
                     <h3 class="card-title-large">Shareholder Activism</h3>
                     <p class="card-desc">You voted on 12 key climate resolutions this month. Your voice shaped corporate policy.</p>
-                    <button class="btn-outline-dark-green mt-auto">Go to Ballot</button>
+                    <button class="btn btn-outline-dark-green mt-auto" onclick="openModal('ballotModal')">Go to Ballot</button>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="footer bg-light-gray">
+    <footer class="footer bg-white">
         <div class="footer-container">
             <div class="footer-top">
                 <div class="footer-brand">
-                    <h3 class="logo">AlphaFinance</h3>
+                    <h3 class="logo">Alpha<span class="logo-accent">Finance</span></h3>
                     <p class="footer-desc">Empowering institutions and individuals to invest in a world that thrives. Ethical metrics are not a feature; they are our foundation.</p>
                     <div class="footer-icons">
-                        <a href="#"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></a>
-                        <a href="#"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></a>
-                        <a href="#"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4"></circle><line x1="4.93" y1="4.93" x2="9.17" y2="9.17"></line><line x1="14.83" y1="14.83" x2="19.07" y2="19.07"></line><line x1="14.83" y1="9.17" x2="19.07" y2="4.93"></line><line x1="14.83" y1="9.17" x2="18.36" y2="5.64"></line><line x1="4.93" y1="19.07" x2="9.17" y2="14.83"></line></svg></a>
+                        <a href="#" aria-label="Web"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></a>
+                        <a href="#" aria-label="Profiles"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></a>
+                        <a href="#" aria-label="Audits"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4"></circle><line x1="4.93" y1="4.93" x2="9.17" y2="9.17"></line><line x1="14.83" y1="14.83" x2="19.07" y2="19.07"></line><line x1="14.83" y1="9.17" x2="19.07" y2="4.93"></line><line x1="14.83" y1="9.17" x2="18.36" y2="5.64"></line><line x1="4.93" y1="19.07" x2="9.17" y2="14.83"></line></svg></a>
                     </div>
                 </div>
                 
                 <div class="footer-links">
                     <div class="footer-col">
                         <h4>Resources</h4>
-                        <a href="#">Impact Framework</a>
-                        <a href="#">Methodology</a>
-                        <a href="#">API Status</a>
-                        <a href="#">Regulatory Disclosures</a>
+                        <a href="#" onclick="showToast('Under Development')">Impact Framework</a>
+                        <a href="#" onclick="showToast('Under Development')">Methodology</a>
+                        <a href="#" onclick="showToast('Under Development')">API Status</a>
+                        <a href="#" onclick="showToast('Under Development')">Regulatory Disclosures</a>
                     </div>
                     <div class="footer-col">
                         <h4>Support</h4>
-                        <a href="#">Contact Support</a>
-                        <a href="#">Privacy Policy</a>
-                        <a href="#">Terms of Service</a>
-                        <a href="#">Cookie Settings</a>
+                        <a href="#" onclick="showToast('Under Development')">Contact Support</a>
+                        <a href="#" onclick="showToast('Under Development')">Privacy Policy</a>
+                        <a href="#" onclick="showToast('Under Development')">Terms of Service</a>
+                        <a href="#" onclick="showToast('Under Development')">Cookie Settings</a>
                     </div>
                 </div>
             </div>
             
             <div class="footer-bottom">
-                <p>© 2024 AlphaFinance Global Markets. All rights reserved. Registered SEC/FINRA.</p>
+                <p>© 2026 AlphaFinance Global Markets. All rights reserved. Registered SEC/FINRA.</p>
                 <div class="footer-badges">
                     <span class="badge-gray">SDG COMPLIANT</span>
                     <span class="badge-gray">B-CORP PENDING</span>
@@ -307,5 +442,207 @@
             </div>
         </div>
     </footer>
+
+    <!-- MODAL CONTAINER BACKDROP -->
+    <div class="modal-backdrop hidden" id="modalBackdrop" onclick="closeAllModals()"></div>
+
+    <!-- MODAL 1: AUTHENTICATION -->
+    <div class="modal hidden" id="authModal">
+        <div class="modal-header">
+            <h3>AlphaFinance Security</h3>
+            <button class="modal-close" onclick="closeAllModals()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="auth-tabs">
+                <button class="auth-tab active" id="tabLogin" onclick="switchAuthTab('login')">Sign In</button>
+                <button class="auth-tab" id="tabRegister" onclick="switchAuthTab('register')">Create Account</button>
+            </div>
+            
+            <!-- Login Form -->
+            <form id="loginForm" onsubmit="handleAuthSubmit(event, 'login')">
+                <div class="form-group mt-16">
+                    <label for="loginEmail">Email Address</label>
+                    <input type="email" id="loginEmail" placeholder="name@company.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPass">Password</label>
+                    <input type="password" id="loginPass" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn btn-black btn-full mt-16">
+                    <span class="btn-text">Authenticate Securely</span>
+                    <span class="btn-spinner hidden">Sending...</span>
+                </button>
+            </form>
+
+            <!-- Register Form -->
+            <form id="registerForm" class="hidden" onsubmit="handleAuthSubmit(event, 'register')">
+                <div class="form-group mt-16">
+                    <label for="regName">Full Name</label>
+                    <input type="text" id="regName" placeholder="Alex Morgan" required>
+                </div>
+                <div class="form-group">
+                    <label for="regEmail">Work Email</label>
+                    <input type="email" id="regEmail" placeholder="alex@company.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="regPass">Secure Password</label>
+                    <input type="password" id="regPass" placeholder="Min. 8 characters" required>
+                </div>
+                <label class="chip-check mt-16">
+                    <input type="checkbox" required>
+                    <span>I confirm I am an accredited institutional or retail investor.</span>
+                </label>
+                <button type="submit" class="btn btn-green btn-full">
+                    <span class="btn-text">Create Account</span>
+                    <span class="btn-spinner hidden">Processing...</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 2: FUND DETAILS -->
+    <div class="modal modal-lg hidden" id="fundModal">
+        <div class="modal-header">
+            <h3 id="modalFundTitle">Fund Details</h3>
+            <button class="modal-close" onclick="closeAllModals()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="fund-detail-grid">
+                <div class="fund-detail-meta">
+                    <p class="fund-detail-desc" id="modalFundDesc">Vetted premium carbon-offset investment fund.</p>
+                    
+                    <div class="score-breakdown mt-16">
+                        <h4>ESG Pillars Breakdown</h4>
+                        <div class="pillar-row mt-8">
+                            <span class="pillar-label">Environmental (E)</span>
+                            <div class="pillar-bar"><div class="pillar-fill bg-green" id="pillarE" style="width: 95%;"></div></div>
+                            <span class="pillar-val" id="pillarValE">95%</span>
+                        </div>
+                        <div class="pillar-row">
+                            <span class="pillar-label">Social (S)</span>
+                            <div class="pillar-bar"><div class="pillar-fill bg-green" id="pillarS" style="width: 85%;"></div></div>
+                            <span class="pillar-val" id="pillarValS">85%</span>
+                        </div>
+                        <div class="pillar-row">
+                            <span class="pillar-label">Governance (G)</span>
+                            <div class="pillar-bar"><div class="pillar-fill bg-green" id="pillarG" style="width: 92%;"></div></div>
+                            <span class="pillar-val" id="pillarValG">92%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="fund-detail-sim border-card bg-light-gray mt-16">
+                    <h4>Direct Fund Simulator</h4>
+                    <div class="form-group mt-12">
+                        <label for="fundSimInput">Simulated Investment</label>
+                        <input type="number" id="fundSimInput" value="10000" min="1000" step="1000">
+                    </div>
+                    <div class="sim-output-row mt-16">
+                        <div>
+                            <span class="lbl-small">ANNUAL RETURN</span>
+                            <div class="val-large text-green" id="fundSimYield">5.8%</div>
+                        </div>
+                        <div>
+                            <span class="lbl-small">5-YR GROWTH</span>
+                            <div class="val-large" id="fundSimGrowth">$13,256</div>
+                        </div>
+                    </div>
+                    <button class="btn btn-black btn-full mt-16" onclick="openModal('authModal')">Invest in this Fund</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 3: SHAREHOLDER BALLOT -->
+    <div class="modal hidden" id="ballotModal">
+        <div class="modal-header">
+            <h3>Active Voting Ballot</h3>
+            <button class="modal-close" onclick="closeAllModals()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p class="text-muted">Use your collective equity weight to vote on these critical sustainability proposals.</p>
+            
+            <form id="ballotForm" onsubmit="handleBallotSubmit(event)" class="mt-16">
+                <div class="ballot-question">
+                    <h4>1. Plastic Waste Audit</h4>
+                    <p>Require Target Retailers to publish a comprehensive report on plastic packaging supply chain footprint.</p>
+                    <div class="ballot-options">
+                        <label class="ballot-opt"><input type="radio" name="q1" value="for" checked> <span>For</span></label>
+                        <label class="ballot-opt"><input type="radio" name="q1" value="against"> <span>Against</span></label>
+                        <label class="ballot-opt"><input type="radio" name="q1" value="abstain"> <span>Abstain</span></label>
+                    </div>
+                </div>
+
+                <div class="ballot-question mt-16">
+                    <h4>2. Net-Zero Transition Targets</h4>
+                    <p>Mandate that portfolio transport companies adopt Science-Based emissions limits by Q4 2027.</p>
+                    <div class="ballot-options">
+                        <label class="ballot-opt"><input type="radio" name="q2" value="for" checked> <span>For</span></label>
+                        <label class="ballot-opt"><input type="radio" name="q2" value="against"> <span>Against</span></label>
+                        <label class="ballot-opt"><input type="radio" name="q2" value="abstain"> <span>Abstain</span></label>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-black btn-full mt-24">Cast Active Vote</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 4: SUSTAINABILITY REPORT -->
+    <div class="modal hidden" id="reportModal">
+        <div class="modal-header">
+            <h3>Q4 Impact Performance</h3>
+            <button class="modal-close" onclick="closeAllModals()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="report-overview">
+                <h4>Verified Results Summary</h4>
+                <p class="mt-8 text-muted">A summary of environmental metrics audited during the current fiscal period.</p>
+                
+                <table class="report-table mt-16">
+                    <thead>
+                        <tr>
+                            <th>Performance Metric</th>
+                            <th>Current Q4</th>
+                            <th>Target Year</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Emissions Avoided (Tons)</td>
+                            <td><strong>1.4M t</strong></td>
+                            <td>1.8M t</td>
+                        </tr>
+                        <tr>
+                            <td>Renewable Energy Assets</td>
+                            <td><strong>4.2 GW</strong></td>
+                            <td>5.0 GW</td>
+                        </tr>
+                        <tr>
+                            <td>Affordable Housing Funded</td>
+                            <td><strong>12.4K units</strong></td>
+                            <td>15.0K units</td>
+                        </tr>
+                        <tr>
+                            <td>Accredited B-Corp Score</td>
+                            <td><strong>92.8/100</strong></td>
+                            <td>95.0/100</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <button class="btn btn-green btn-full mt-24" onclick="showToast('Downloading complete PDF report (12.4MB)')">
+                    Download Full Report (PDF)
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast hidden" id="toast">
+        <span id="toastMessage">Default Toast Notification Message</span>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>

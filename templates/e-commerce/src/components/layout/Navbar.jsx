@@ -25,7 +25,7 @@ export default function Navbar() {
     setMobileMenuOpen(false);
   }, [location.pathname]);
 
-  const navClass = isHome && !isScrolled
+  const navClass = (isHome && !isScrolled && !mobileMenuOpen)
     ? 'bg-transparent text-white border-transparent'
     : 'bg-background/95 backdrop-blur-md text-foreground border-b border-border shadow-sm';
 

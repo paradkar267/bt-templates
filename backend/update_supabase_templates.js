@@ -100,8 +100,7 @@ async function updateTemplate(titleKeyword, folderName) {
 }
 
 async function main() {
-  await updateTemplate('Premium Store', 'e-commerce');
-  await updateTemplate('Luxury Estate', 'real-estate/luxury-estate');
+  await updateTemplate('Vue Admin Dashboard', 'vue-admin');
 }
 
 main().catch(console.error);

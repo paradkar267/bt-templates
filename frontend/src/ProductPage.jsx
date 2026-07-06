@@ -148,20 +148,50 @@ export default function ProductPage() {
                 {template.description}
               </p>
               
-              <div className="grid sm:grid-cols-2 gap-6">
+             <div className="grid sm:grid-cols-2 gap-6">
                  <div className="p-6 rounded-2xl bg-gray-50/50 dark:bg-white/[0.02] border border-gray-100 dark:border-white/5">
-                    <h3 className="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-4">Highlights</h3>
+                    <h3 className="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-4">Key Features</h3>
                     <ul className="space-y-4 text-gray-600 dark:text-gray-400 font-medium text-sm">
-                      <li className="flex items-start gap-3"><Check className="w-5 h-5 text-indigo-500 shrink-0" /> Fully responsive design layout</li>
-                      <li className="flex items-start gap-3"><Check className="w-5 h-5 text-indigo-500 shrink-0" /> Modular component architecture</li>
+                      {template.key_features && template.key_features.length > 0 ? (
+                        template.key_features.map((feature, idx) => (
+                          <li key={idx} className="flex items-start gap-3"><Check className="w-5 h-5 text-indigo-500 shrink-0" /> {feature}</li>
+                        ))
+                      ) : (
+                        <>
+                          <li className="flex items-start gap-3"><Check className="w-5 h-5 text-indigo-500 shrink-0" /> Fully responsive design layout</li>
+                          <li className="flex items-start gap-3"><Check className="w-5 h-5 text-indigo-500 shrink-0" /> Modular component architecture</li>
+                        </>
+                      )}
                     </ul>
                  </div>
+                 
                  <div className="p-6 rounded-2xl bg-gray-50/50 dark:bg-white/[0.02] border border-gray-100 dark:border-white/5">
-                    <h3 className="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-4">Support</h3>
-                    <ul className="space-y-4 text-gray-600 dark:text-gray-400 font-medium text-sm">
-                      <li className="flex items-start gap-3"><Check className="w-5 h-5 text-indigo-500 shrink-0" /> Easy to customize variables</li>
-                      <li className="flex items-start gap-3"><Check className="w-5 h-5 text-indigo-500 shrink-0" /> Premium email support</li>
-                    </ul>
+                    <h3 className="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-4">Ideal For</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {template.ideal_for && template.ideal_for.length > 0 ? (
+                        template.ideal_for.map((ideal, idx) => (
+                          <span key={idx} className="px-3 py-1.5 bg-gray-200 dark:bg-white/10 text-gray-700 dark:text-gray-300 rounded-lg text-xs font-bold">{ideal}</span>
+                        ))
+                      ) : (
+                        <span className="text-gray-500 text-sm">Startups, Agencies, Creators</span>
+                      )}
+                    </div>
+                 </div>
+
+                 <div className="p-6 rounded-2xl bg-gray-50/50 dark:bg-white/[0.02] border border-gray-100 dark:border-white/5 sm:col-span-2">
+                    <h3 className="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-4">Pages Included</h3>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                      {template.pages_included && template.pages_included.length > 0 ? (
+                        template.pages_included.map((page, idx) => (
+                          <div key={idx} className="flex items-center gap-2 text-gray-600 dark:text-gray-400 text-sm font-medium">
+                            <div className="w-1.5 h-1.5 rounded-full bg-indigo-500"></div>
+                            {page}
+                          </div>
+                        ))
+                      ) : (
+                        <div className="text-gray-500 text-sm">Home, About, Contact, and more.</div>
+                      )}
+                    </div>
                  </div>
               </div>
             </div>

@@ -7,15 +7,15 @@ function fixPathsInContent(content, slug) {
   let changed = false;
   const prefix = `/previews/${slug}`;
 
-  // Fix HTML src/href absolute paths (that start with / but not //)
+  // Fix HTML src/href absolute paths (that start with / but not // and not /previews/)
   const replacements = [
-    { from: /src="\/([^\/][^"]*)"/g, to: `src="${prefix}/$1"` },
-    { from: /src='\/([^\/][^']*)'/g, to: `src='${prefix}/$1'` },
-    { from: /href="\/([^\/][^"]*)"/g, to: `href="${prefix}/$1"` },
-    { from: /href='\/([^\/][^']*)'/g, to: `href='${prefix}/$1'` },
-    { from: /url\("\/([^\/][^"]*)"\)/g, to: `url("${prefix}/$1")` },
-    { from: /url\('\/([^\/][^']*)'\)/g, to: `url('${prefix}/$1')` },
-    { from: /url\(\/([^\/'"][^\)]*)\)/g, to: `url(${prefix}/$1)` }
+    { from: /src="\/(?!previews\/)([^"]*)"/g, to: `src="${prefix}/$1"` },
+    { from: /src='\/(?!previews\/)([^']*)'/g, to: `src='${prefix}/$1'` },
+    { from: /href="\/(?!previews\/)([^"]*)"/g, to: `href="${prefix}/$1"` },
+    { from: /href='\/(?!previews\/)([^']*)'/g, to: `href='${prefix}/$1'` },
+    { from: /url\("\/(?!previews\/)([^"]*)"\)/g, to: `url("${prefix}/$1")` },
+    { from: /url\('\/(?!previews\/)([^']*)'\)/g, to: `url('${prefix}/$1')` },
+    { from: /url\(\/(?!previews\/)([^\)'"]*)\)/g, to: `url(${prefix}/$1)` }
   ];
 
   for (const { from, to } of replacements) {

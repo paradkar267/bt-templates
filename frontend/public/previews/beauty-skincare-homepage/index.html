@@ -3,51 +3,163 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elite Commerce - Skincare</title>
+    <title>Elite Commerce - Beauty & Skincare</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 </head>
 <body>
+    
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- E-Commerce Cart Drawer -->
+    <div id="cart-drawer-backdrop" class="drawer-backdrop"></div>
+    <div id="cart-drawer" class="cart-drawer">
+        <div class="drawer-header">
+            <h2>Your Bag</h2>
+            <button id="close-cart" class="btn-icon" aria-label="Close">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+        </div>
+        
+        <div class="drawer-content" id="cart-items">
+            <!-- Items injected by JS -->
+            <div class="empty-cart-msg">Your bag is currently empty.</div>
+        </div>
+        
+        <div class="drawer-footer">
+            <div class="cart-summary">
+                <span>Subtotal</span>
+                <span id="cart-subtotal">$0.00</span>
+            </div>
+            <p class="shipping-notice">Shipping & taxes calculated at checkout.</p>
+            <button class="btn-primary full-width">Checkout</button>
+        </div>
+    </div>
+
+    <!-- Interactive Skin Quiz Modal -->
+    <div id="quiz-modal" class="modal-backdrop">
+        <div class="modal-container quiz-container">
+            <button id="close-quiz" class="btn-icon modal-close">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+            <div class="modal-header center">
+                <h3 class="modal-title">Skin Diagnostic</h3>
+                <div class="progress-bar-container">
+                    <div id="quiz-progress" class="progress-bar"></div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <!-- Step 1 -->
+                <div id="q-step-1" class="quiz-step active">
+                    <h4>How would you describe your skin?</h4>
+                    <div class="options-grid">
+                        <label class="quiz-option"><input type="radio" name="skinType" value="Oily"><span>Oily</span></label>
+                        <label class="quiz-option"><input type="radio" name="skinType" value="Dry"><span>Dry</span></label>
+                        <label class="quiz-option"><input type="radio" name="skinType" value="Combination"><span>Combination</span></label>
+                        <label class="quiz-option"><input type="radio" name="skinType" value="Sensitive"><span>Sensitive</span></label>
+                    </div>
+                </div>
+                <!-- Step 2 -->
+                <div id="q-step-2" class="quiz-step">
+                    <h4>What is your primary concern?</h4>
+                    <div class="options-grid">
+                        <label class="quiz-option"><input type="radio" name="concern" value="Aging"><span>Fine Lines & Aging</span></label>
+                        <label class="quiz-option"><input type="radio" name="concern" value="Acne"><span>Blemishes & Acne</span></label>
+                        <label class="quiz-option"><input type="radio" name="concern" value="Dullness"><span>Dullness</span></label>
+                        <label class="quiz-option"><input type="radio" name="concern" value="Redness"><span>Redness</span></label>
+                    </div>
+                </div>
+                <!-- Result Step -->
+                <div id="q-step-3" class="quiz-step text-center">
+                    <div class="sparkle-icon big mb-16">✨</div>
+                    <h4 class="mb-16">Your Ritual is Ready</h4>
+                    <div id="quiz-result-card" class="result-card">
+                        <img id="result-img" src="" alt="Ritual">
+                        <div class="result-info">
+                            <h5 id="result-title">The Hydration Trio</h5>
+                            <p id="result-desc">Perfect for dry skin and dullness.</p>
+                            <button id="btn-result-add" class="btn-primary mt-16">Add to Bag - <span id="result-price">$124</span></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btn-quiz-back" class="btn-outline hidden">Back</button>
+                <button id="btn-quiz-next" class="btn-primary">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Quick View Modal -->
+    <div id="quickview-modal" class="modal-backdrop">
+        <div class="modal-container quickview-container">
+            <button id="close-quickview" class="btn-icon modal-close">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+            <div class="quickview-grid">
+                <div class="qv-image">
+                    <img id="qv-img" src="" alt="Product">
+                </div>
+                <div class="qv-details">
+                    <span id="qv-type" class="subheading">Category</span>
+                    <h2 id="qv-title" class="qv-title">Product Name</h2>
+                    <p id="qv-price" class="qv-price">$0.00</p>
+                    
+                    <div class="qv-desc">
+                        <p id="qv-description">Product description goes here. Formulated with botanical precision.</p>
+                    </div>
+                    
+                    <div class="qv-ingredients">
+                        <h5>Key Ingredients</h5>
+                        <ul id="qv-ingredients-list">
+                            <li>Ingredient 1</li>
+                            <li>Ingredient 2</li>
+                        </ul>
+                    </div>
+                    
+                    <button id="btn-qv-add" class="btn-primary full-width mt-24">Add to Bag</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Navbar -->
-    <nav class="navbar">
+    <nav class="navbar" id="main-nav">
         <div class="logo">ELITE COMMERCE</div>
         <ul class="nav-links">
-            <li><a href="#" class="active">Fashion</a></li>
+            <li><a href="#">Fashion</a></li>
             <li><a href="#">Tech</a></li>
             <li><a href="#">Artisanal</a></li>
-            <li><a href="#">Launch</a></li>
-            <li><a href="#">Beauty</a></li>
+            <li><a href="#" class="active">Beauty</a></li>
         </ul>
         <div class="nav-icons">
-            <button class="icon-btn" aria-label="Cart">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-                    <line x1="3" y1="6" x2="21" y2="6"></line>
-                    <path d="M16 10a4 4 0 0 1-8 0"></path>
-                </svg>
+            <button class="icon-btn" aria-label="Search">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
             </button>
             <button class="icon-btn" aria-label="Profile">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                    <circle cx="12" cy="7" r="4"></circle>
-                </svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            </button>
+            <button class="icon-btn cart-btn" id="btn-open-cart" aria-label="Cart">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                <span class="cart-badge" id="nav-cart-badge">0</span>
             </button>
         </div>
     </nav>
 
     <!-- Hero Section -->
     <header class="hero">
-        <div class="hero-bg">
+        <div class="hero-bg" id="hero-bg">
             <img src="https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?q=80&w=1920&auto=format&fit=crop" alt="Woman with glowing skin">
         </div>
         <div class="hero-content">
-            <h1 class="hero-title">The Science of Subtle Radiance.</h1>
-            <p class="hero-subtitle">
+            <h1 class="hero-title animate-up">The Science of<br/>Subtle Radiance.</h1>
+            <p class="hero-subtitle animate-up delay-1">
                 Discover high-performance skincare that respects your biology. Formulated with botanical precision and clinical rigor.
             </p>
-            <div class="hero-actions">
-                <a href="#" class="btn btn-black">SHOP COLLECTION</a>
-                <a href="#" class="btn btn-outline">SKIN QUIZ</a>
+            <div class="hero-actions animate-up delay-2">
+                <a href="#collection" class="btn-primary">SHOP COLLECTION</a>
+                <button class="btn-outline btn-open-quiz">TAKE SKIN QUIZ</button>
             </div>
         </div>
     </header>
@@ -61,7 +173,7 @@
                 <div class="card-overlay-box">
                     <h2>Find Your Perfect Ritual</h2>
                     <p>Our intelligent skin quiz analyzes your climate, lifestyle, and skin concerns to build a 3-step routine just for you.</p>
-                    <a href="#" class="link-underline">TAKE THE QUIZ →</a>
+                    <button class="link-underline btn-open-quiz">START DIAGNOSTIC →</button>
                 </div>
             </div>
             
@@ -71,24 +183,25 @@
                     <div class="sparkle-icon">✨</div>
                     <h2>New Arrivals</h2>
                     <p>Discover the Peptide Rejuvenating Elixir.</p>
-                    <a href="#" class="link-underline">VIEW DETAILS</a>
+                    <button class="link-underline btn-quickview" data-id="elixir">VIEW DETAILS</button>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Curated Bundles Section -->
-    <section class="bundles-section">
-        <div class="section-header center">
+    <section id="collection" class="bundles-section">
+        <div class="section-header center mb-48">
             <span class="subheading">TARGETED CARE</span>
             <h2 class="heading-serif">Curated Bundles</h2>
         </div>
 
         <div class="products-grid">
             <!-- Product 1 -->
-            <div class="product-card">
+            <div class="product-card group" data-id="hydration-trio">
                 <div class="product-img">
                     <img src="https://images.unsplash.com/photo-1571781564344-935fb31d4791?q=80&w=600&auto=format&fit=crop" alt="The Hydration Trio">
+                    <button class="btn-quick-add btn-quickview" data-id="hydration-trio">Quick View</button>
                 </div>
                 <div class="product-info">
                     <div class="title-price">
@@ -100,9 +213,10 @@
             </div>
 
             <!-- Product 2 -->
-            <div class="product-card">
+            <div class="product-card group" data-id="clarifying-ritual">
                 <div class="product-img">
                     <img src="https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?q=80&w=600&auto=format&fit=crop" alt="Clarifying Ritual">
+                    <button class="btn-quick-add btn-quickview" data-id="clarifying-ritual">Quick View</button>
                 </div>
                 <div class="product-info">
                     <div class="title-price">
@@ -114,9 +228,10 @@
             </div>
 
             <!-- Product 3 -->
-            <div class="product-card">
+            <div class="product-card group" data-id="renewal-system">
                 <div class="product-img">
                     <img src="https://images.unsplash.com/photo-1629198688000-71f23e745b6e?q=80&w=600&auto=format&fit=crop" alt="Renewal System">
+                    <button class="btn-quick-add btn-quickview" data-id="renewal-system">Quick View</button>
                 </div>
                 <div class="product-info">
                     <div class="title-price">
@@ -135,13 +250,13 @@
             <span class="subheading">THE SPOTLIGHT</span>
             <h2 class="spotlight-title">Niacinamide +<br/>Rosehip</h2>
             <p class="spotlight-desc">
-                Our signature blend combines the brightening power of Vitamin B3 with the deep nourishment of cold-pressed organic rosehip oil.
+                Our signature blend combines the brightening power of <span class="tooltip-trigger" data-tooltip="Vitamin B3: Reduces inflammation and hyperpigmentation.">Vitamin B3</span> with the deep nourishment of cold-pressed organic <span class="tooltip-trigger" data-tooltip="Rich in essential fatty acids and antioxidants for cellular turnover.">rosehip oil</span>.
             </p>
             
             <div class="feature-boxes">
                 <div class="feature-box">
                     <div class="feature-icon">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                             <path d="M10 2v7.31M14 9.31V2M8.5 2h7M14 9.31L20.84 18A2 2 0 0 1 19.26 21H4.74a2 2 0 0 1-1.58-3L10 9.31" />
                         </svg>
                     </div>
@@ -152,7 +267,7 @@
                 </div>
                 <div class="feature-box">
                     <div class="feature-icon">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                             <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
                             <path d="M8 14s1.5 2 4 2 4-2 4-2" />
                             <line x1="9" y1="9" x2="9.01" y2="9" />
@@ -182,11 +297,11 @@
     <!-- Newsletter Section -->
     <section class="newsletter-section">
         <div class="newsletter-content">
-            <h2 class="newsletter-title">Join the Collective</h2>
+            <h2 class="heading-serif">Join the Collective</h2>
             <p class="newsletter-desc">Receive skin care wisdom, early access to new launches, and 15% off your first order.</p>
-            <form class="newsletter-form">
+            <form class="newsletter-form" id="newsletter-form">
                 <input type="email" placeholder="YOUR EMAIL" required>
-                <button type="submit" class="btn-subscribe">SUBSCRIBE</button>
+                <button type="submit" class="btn-primary">SUBSCRIBE</button>
             </form>
         </div>
     </section>
@@ -195,7 +310,7 @@
     <footer class="footer">
         <div class="footer-top">
             <div class="footer-brand">
-                <h2 class="footer-logo">ELITE<br/>COMMERCE</h2>
+                <h2 class="footer-logo">ELITE COMMERCE</h2>
                 <p>Conscious beauty for the<br/>modern intellectual.</p>
             </div>
             
@@ -244,5 +359,7 @@
             <p>© 2024 Elite Commerce. All rights reserved.</p>
         </div>
     </footer>
+
+    <script src="script.js"></script>
 </body>
 </html>

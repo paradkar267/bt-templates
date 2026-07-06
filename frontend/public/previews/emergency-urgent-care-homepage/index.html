@@ -3,272 +3,755 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PharmaCare - Emergency & Urgent Care</title>
+    <title>MedGuard — Emergency & Urgent Care</title>
+    <meta name="description" content="MedGuard provides 24/7 emergency pharmaceutical services, late-night pharmacies, and instant pharmacist consultations.">
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,500;0,700;1,500&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+    <div class="mobile-drawer" id="mobileDrawer">
+        <div class="drawer-header">
+            <span class="logo">Med<span class="logo-accent">Guard</span></span>
+            <button class="drawer-close" id="drawerClose">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+        </div>
+        <nav class="drawer-nav">
+            <a href="#services" class="drawer-link active">Services</a>
+            <a href="#pharmacies" class="drawer-link">Find Pharmacy</a>
+            <a href="#team" class="drawer-link">Our Team</a>
+            <a href="#faq" class="drawer-link">FAQ</a>
+            <a href="#contact" class="drawer-link">Contact</a>
+            <div class="drawer-actions">
+                <button class="btn btn-outline-white" onclick="openModal('refillModal')">Refill Rx</button>
+                <button class="btn btn-primary" onclick="openModal('signinModal')">Sign In</button>
+            </div>
+        </nav>
+    </div>
+
     <!-- Navbar -->
-    <nav class="navbar">
-        <a href="#" class="logo">PharmaCare</a>
-        <ul class="nav-links">
-            <li><a href="#">Prescriptions</a></li>
-            <li><a href="#">Store Locator</a></li>
-            <li><a href="#" class="active">Services</a></li>
-            <li><a href="#">Health Advice</a></li>
-            <li><a href="#">Shop</a></li>
-        </ul>
-        <div class="nav-right">
-            <a href="#" class="btn-text">Refill Rx</a>
-            <a href="#" class="btn-solid">Sign In</a>
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">Med<span class="logo-accent">Guard</span></a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#services" class="nav-link active" data-section="services">Services</a></li>
+                <li><a href="#pharmacies" class="nav-link" data-section="pharmacies">Find Pharmacy</a></li>
+                <li><a href="#team" class="nav-link" data-section="team">Our Team</a></li>
+                <li><a href="#faq" class="nav-link" data-section="faq">FAQ</a></li>
+                <li><a href="#contact" class="nav-link" data-section="contact">Contact</a></li>
+            </ul>
+            <div class="nav-right">
+                <button class="btn btn-ghost" onclick="openModal('refillModal')">Refill Rx</button>
+                <button class="btn btn-primary" onclick="openModal('signinModal')">Sign In</button>
+                <button class="hamburger" id="hamburger">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <div class="badge-alert">
-                <span class="pulse-dot"></span>
-                EMERGENCY ASSISTANCE
+    <main>
+        <!-- Hero Section -->
+        <section class="hero" id="hero">
+            <div class="hero-bg">
+                <div class="hero-gradient"></div>
+                <div class="hero-particles" id="heroParticles"></div>
             </div>
-            <h1 class="hero-title">
-                Urgent Care<br>
-                <span class="text-blue">When You Need It Most</span>
-            </h1>
-            <p class="hero-subtitle">
-                Access critical pharmaceutical services, find open late-night pharmacies, and connect with licensed pharmacists instantly.
-            </p>
-
-            <div class="search-card">
-                <div class="card-header">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                        <circle cx="12" cy="10" r="3"></circle>
-                    </svg>
-                    <h3>Find Open Pharmacy</h3>
-                </div>
-                <div class="search-input-group">
-                    <div class="input-wrapper">
-                        <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="11" cy="11" r="8"></circle>
-                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                        </svg>
-                        <input type="text" placeholder="Enter your ZIP or City">
+            <div class="hero-container">
+                <div class="hero-content">
+                    <div class="badge-alert">
+                        <span class="pulse-dot"></span>
+                        EMERGENCY ASSISTANCE — 24/7
                     </div>
-                    <button class="btn-search">Search Now</button>
-                </div>
-                <div class="checkbox-group">
-                    <label class="checkbox-label">
-                        <input type="checkbox" checked>
-                        <span>Open 24 Hours</span>
-                    </label>
-                    <label class="checkbox-label">
-                        <input type="checkbox">
-                        <span>Home Delivery</span>
-                    </label>
-                </div>
-            </div>
-        </div>
-        
-        <div class="hero-image">
-            <div class="img-wrapper">
-                <img src="https://images.unsplash.com/photo-1576602976047-174e57a47881?q=80&w=800&auto=format&fit=crop" alt="Pharmacy System">
-                <div class="floating-card">
-                    <div class="icon-circle icon-green">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                        </svg>
+                    <h1 class="hero-title">
+                        Urgent Care<br>
+                        <span class="title-accent">When You Need It Most</span>
+                    </h1>
+                    <p class="hero-subtitle">
+                        Access critical pharmaceutical services, find open late-night pharmacies, and connect with licensed pharmacists — all in seconds.
+                    </p>
+
+                    <div class="search-card" id="searchCard">
+                        <div class="search-tabs">
+                            <button class="search-tab active" data-tab="pharmacy">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                                Find Pharmacy
+                            </button>
+                            <button class="search-tab" data-tab="medication">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 14.25h3"/></svg>
+                                Check Medication
+                            </button>
+                        </div>
+                        <div class="search-body" id="searchPharmacy">
+                            <div class="search-input-group">
+                                <div class="input-wrapper">
+                                    <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                                    <input type="text" id="zipInput" placeholder="Enter your ZIP or City" autocomplete="off">
+                                </div>
+                                <button class="btn btn-search" id="searchBtn">
+                                    <span class="btn-text-inner">Search Now</span>
+                                    <span class="btn-loader" style="display:none;">
+                                        <svg class="spinner" width="20" height="20" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" fill="none" stroke-dasharray="31.4" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" values="0 12 12;360 12 12" dur="0.8s" repeatCount="indefinite"/></circle></svg>
+                                    </span>
+                                </button>
+                            </div>
+                            <div class="filter-chips">
+                                <label class="chip active"><input type="checkbox" checked><span>Open 24h</span></label>
+                                <label class="chip"><input type="checkbox"><span>Home Delivery</span></label>
+                                <label class="chip"><input type="checkbox"><span>Drive-Thru</span></label>
+                                <label class="chip"><input type="checkbox"><span>Vaccines</span></label>
+                            </div>
+                        </div>
+                        <div class="search-body hidden" id="searchMedication">
+                            <div class="search-input-group">
+                                <div class="input-wrapper">
+                                    <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                                    <input type="text" id="medInput" placeholder="Enter medication name..." autocomplete="off">
+                                </div>
+                                <button class="btn btn-search" id="medSearchBtn">
+                                    <span class="btn-text-inner">Check</span>
+                                </button>
+                            </div>
+                            <div class="med-results hidden" id="medResults">
+                                <div class="med-card">
+                                    <div class="med-status available">In Stock</div>
+                                    <h4 id="medName">Amoxicillin 500mg</h4>
+                                    <p id="medInfo">Available at 12 pharmacies near you. Generic alternative saves up to 80%.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Search Results -->
+                        <div class="search-results hidden" id="searchResults">
+                            <div class="result-item">
+                                <div class="result-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+                                <div class="result-info">
+                                    <h4>Main St. MedGuard</h4>
+                                    <p>1.2 mi · Open 24h · Drive-Thru</p>
+                                </div>
+                                <button class="btn btn-sm" onclick="openModal('directionsModal')">Directions</button>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+                                <div class="result-info">
+                                    <h4>Westside Medical Hub</h4>
+                                    <p>3.5 mi · Closes 11PM · Vaccines</p>
+                                </div>
+                                <button class="btn btn-sm" onclick="openModal('directionsModal')">Directions</button>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+                                <div class="result-info">
+                                    <h4>Central Pharmacy Plus</h4>
+                                    <p>4.1 mi · Open 24h · Home Delivery</p>
+                                </div>
+                                <button class="btn btn-sm" onclick="openModal('directionsModal')">Directions</button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="floating-text">
-                        <h4>Pharmacist Consultation</h4>
-                        <p>Avg. wait time: <span class="text-green">2 mins</span></p>
+                </div>
+
+                <div class="hero-visual">
+                    <div class="hero-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1576602976047-174e57a47881?q=80&w=800&auto=format&fit=crop" alt="Emergency Pharmacy">
+                        <div class="hero-float-card">
+                            <div class="float-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+                            </div>
+                            <div>
+                                <h4>Live Pharmacist</h4>
+                                <p>Avg. wait: <span class="text-green">2 min</span></p>
+                            </div>
+                            <button class="btn btn-sm btn-green" onclick="openModal('chatModal')">Connect</button>
+                        </div>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="stat-card" data-count="4847" data-suffix="+">
+                            <span class="stat-value">0</span>
+                            <span class="stat-label">Patients Helped Today</span>
+                        </div>
+                        <div class="stat-card" data-count="98" data-suffix="%">
+                            <span class="stat-value">0</span>
+                            <span class="stat-label">Satisfaction Rate</span>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Emergency Services Section -->
-    <section class="services-section">
-        <div class="section-header">
-            <h2>Emergency Services</h2>
-            <p>Immediate tools for your urgent healthcare needs.</p>
-        </div>
-
-        <div class="bento-grid">
-            <!-- Top Left -->
-            <div class="bento-card bg-light-blue span-2">
-                <div class="card-icon bg-blue">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polyline points="23 4 23 10 17 10"></polyline>
-                        <polyline points="1 20 1 14 7 14"></polyline>
-                        <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
-                    </svg>
-                </div>
-                <h3>Express Rx Refill</h3>
-                <p>Running low on critical medication? Use our express refill tool to prioritize your order for same-day pickup.</p>
-                <div class="card-actions">
-                    <button class="btn-solid">Refill Now</button>
-                    <button class="btn-outline">Scan Prescription</button>
-                </div>
-                <div class="bg-cross">
-                    <svg width="120" height="120" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/>
-                    </svg>
+        <!-- Trusted By -->
+        <section class="trusted-section">
+            <div class="trusted-container">
+                <span class="trusted-label">Trusted by leading healthcare providers</span>
+                <div class="trusted-logos">
+                    <span class="trust-logo">BlueCross</span>
+                    <span class="trust-logo">Aetna</span>
+                    <span class="trust-logo">UnitedHealth</span>
+                    <span class="trust-logo">Cigna</span>
+                    <span class="trust-logo">Humana</span>
                 </div>
             </div>
+        </section>
 
-            <!-- Top Right -->
-            <div class="bento-card bg-light-blue span-1">
-                <div class="card-icon bg-green">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v5Z"></path>
-                        <path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"></path>
-                    </svg>
+        <!-- Emergency Services Section -->
+        <section class="services-section" id="services">
+            <div class="services-container">
+                <div class="section-header">
+                    <div class="section-badge">SERVICES</div>
+                    <h2>Emergency Services</h2>
+                    <p>Immediate tools for your urgent healthcare needs — available around the clock.</p>
                 </div>
-                <h3>Live Pharmacist</h3>
-                <p>Chat live with a licensed professional for medication interactions or dosage questions.</p>
-                <button class="btn-solid-green mt-auto">Start Chat</button>
-            </div>
 
-            <!-- Bottom Left -->
-            <div class="bento-card bg-white span-1">
-                <div class="icon-small text-orange">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                        <path d="M12 8v4"></path>
-                        <path d="M12 16h.01"></path>
-                    </svg>
-                </div>
-                <h4>Poison & First Aid</h4>
-                <p class="text-sm">Step-by-step guidance for common household emergencies.</p>
-                <a href="#" class="link-blue mt-auto">View Guides ›</a>
-            </div>
-
-            <!-- Bottom Middle -->
-            <div class="bento-card bg-white span-1">
-                <div class="icon-small text-blue">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="9" y="6" width="6" height="12" rx="2"></rect>
-                        <line x1="12" y1="10" x2="12" y2="14"></line>
-                        <line x1="10" y1="12" x2="14" y2="12"></line>
-                        <path d="M8 6h8"></path>
-                        <path d="M12 2v4"></path>
-                        <path d="M12 18v4"></path>
-                    </svg>
-                </div>
-                <h4>Walk-in Vaccines</h4>
-                <p class="text-sm">No appointment needed for flu, COVID-19, or travel shots.</p>
-                <a href="#" class="link-blue mt-auto">Check Availability ›</a>
-            </div>
-
-            <!-- Bottom Right -->
-            <div class="bento-card bg-white span-1">
-                <div class="icon-small text-green">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="2" y="6" width="20" height="12" rx="2"></rect>
-                        <circle cx="12" cy="12" r="2"></circle>
-                        <path d="M6 12h.01M18 12h.01"></path>
-                    </svg>
-                </div>
-                <h4>Insurance & Pricing</h4>
-                <p class="text-sm">Check coverage or find low-cost generic alternatives.</p>
-                <a href="#" class="link-blue mt-auto">Calculate Cost ›</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Nearest Pharmacies Section -->
-    <section class="pharmacies-section">
-        <div class="pharmacies-container">
-            <div class="pharmacies-list">
-                <h2>Nearest Pharmacies</h2>
-                
-                <div class="pharmacy-item">
-                    <div class="item-header">
-                        <h4>Main St. PharmaCare</h4>
-                        <span class="badge-status badge-open">OPEN NOW</span>
+                <div class="bento-grid">
+                    <div class="bento-card bento-featured">
+                        <div class="bento-glow"></div>
+                        <div class="card-icon icon-blue">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+                        </div>
+                        <h3>Express Rx Refill</h3>
+                        <p>Running low on critical medication? Use our express refill tool to prioritize your order for same-day pickup or home delivery.</p>
+                        <div class="card-actions">
+                            <button class="btn btn-primary" onclick="openModal('refillModal')">Refill Now</button>
+                            <button class="btn btn-outline" onclick="openModal('scanModal')">Scan Prescription</button>
+                        </div>
+                        <div class="bento-bg-icon">
+                            <svg width="140" height="140" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
+                        </div>
                     </div>
-                    <p class="item-desc">1.2 miles away • 24/7 Service</p>
-                    <button class="btn-outline-full">Get Directions</button>
-                </div>
 
-                <div class="pharmacy-item">
-                    <div class="item-header">
-                        <h4>Westside Medical Hub</h4>
-                        <span class="badge-status badge-closed">CLOSES 11PM</span>
+                    <div class="bento-card bento-chat">
+                        <div class="card-icon icon-green">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 9a2 2 0 01-2 2H6l-4 4V4c0-1.1.9-2 2-2h8a2 2 0 012 2v5Z"/><path d="M18 9h2a2 2 0 012 2v11l-4-4h-6a2 2 0 01-2-2v-1"/></svg>
+                        </div>
+                        <h3>Live Pharmacist Chat</h3>
+                        <p>Chat live with a licensed professional for medication interactions, dosage questions, or side effect concerns.</p>
+                        <div class="chat-preview">
+                            <div class="chat-bubble incoming">Hi! How can I help you today?</div>
+                            <div class="chat-bubble outgoing">Is it safe to take ibuprofen with my blood pressure medication?</div>
+                        </div>
+                        <button class="btn btn-green" onclick="openModal('chatModal')">Start Chat</button>
                     </div>
-                    <p class="item-desc">3.5 miles away • Drive-thru</p>
-                    <button class="btn-outline-full">Get Directions</button>
-                </div>
-                
-                <button class="btn-view-all">
-                    View All 15 Locations 
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                </button>
-            </div>
-            
-            <div class="pharmacies-map">
-                <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=800&auto=format&fit=crop" alt="Map">
-                <!-- Overlay markers could be added here -->
-            </div>
-        </div>
-    </section>
 
-    <!-- Metrics & Newsletter -->
-    <section class="metrics-newsletter">
-        <div class="metrics">
-            <div class="metric">
-                <span class="metric-value">4.9/5</span>
-                <span class="metric-label">PATIENT RATING</span>
+                    <div class="bento-card bento-sm" onclick="openModal('firstAidModal')">
+                        <div class="card-icon-sm icon-orange">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+                        </div>
+                        <h4>Poison & First Aid</h4>
+                        <p>Step-by-step guidance for common household emergencies.</p>
+                        <span class="card-link">View Guides <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+                    </div>
+
+                    <div class="bento-card bento-sm" onclick="openModal('vaccineModal')">
+                        <div class="card-icon-sm icon-blue">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="6" width="6" height="12" rx="2"/><line x1="12" y1="10" x2="12" y2="14"/><line x1="10" y1="12" x2="14" y2="12"/><path d="M8 6h8M12 2v4M12 18v4"/></svg>
+                        </div>
+                        <h4>Walk-in Vaccines</h4>
+                        <p>No appointment needed. Flu, COVID-19, and travel immunizations.</p>
+                        <span class="card-link">Check Availability <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+                    </div>
+
+                    <div class="bento-card bento-sm" onclick="openModal('insuranceModal')">
+                        <div class="card-icon-sm icon-purple">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg>
+                        </div>
+                        <h4>Insurance & Pricing</h4>
+                        <p>Check coverage or find low-cost generic alternatives instantly.</p>
+                        <span class="card-link">Calculate Cost <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+                    </div>
+                </div>
             </div>
-            <div class="metric">
-                <span class="metric-value">15k+</span>
-                <span class="metric-label">DAILY REFILLS</span>
+        </section>
+
+        <!-- Pharmacies Section -->
+        <section class="pharmacies-section" id="pharmacies">
+            <div class="pharmacies-container">
+                <div class="pharmacies-list">
+                    <div class="section-badge">LOCATIONS</div>
+                    <h2>Nearest Pharmacies</h2>
+                    <p class="list-subtitle">Based on your current location</p>
+
+                    <div class="pharmacy-item" onclick="selectPharmacy(this)">
+                        <div class="item-header">
+                            <div>
+                                <h4>Main St. MedGuard</h4>
+                                <p class="item-meta">1.2 miles · 24/7 Service · Drive-Thru</p>
+                            </div>
+                            <span class="badge badge-open">OPEN</span>
+                        </div>
+                        <div class="item-actions">
+                            <button class="btn btn-outline btn-sm" onclick="event.stopPropagation(); openModal('directionsModal')">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+                                Directions
+                            </button>
+                            <button class="btn btn-outline btn-sm" onclick="event.stopPropagation(); openModal('callModal')">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72"/></svg>
+                                Call
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="pharmacy-item" onclick="selectPharmacy(this)">
+                        <div class="item-header">
+                            <div>
+                                <h4>Westside Medical Hub</h4>
+                                <p class="item-meta">3.5 miles · Closes 11PM · Vaccines</p>
+                            </div>
+                            <span class="badge badge-closing">11PM</span>
+                        </div>
+                        <div class="item-actions">
+                            <button class="btn btn-outline btn-sm" onclick="event.stopPropagation(); openModal('directionsModal')">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+                                Directions
+                            </button>
+                            <button class="btn btn-outline btn-sm" onclick="event.stopPropagation(); openModal('callModal')">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72"/></svg>
+                                Call
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="pharmacy-item" onclick="selectPharmacy(this)">
+                        <div class="item-header">
+                            <div>
+                                <h4>Central Pharmacy Plus</h4>
+                                <p class="item-meta">4.1 miles · Open 24h · Home Delivery</p>
+                            </div>
+                            <span class="badge badge-open">OPEN</span>
+                        </div>
+                        <div class="item-actions">
+                            <button class="btn btn-outline btn-sm" onclick="event.stopPropagation(); openModal('directionsModal')">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+                                Directions
+                            </button>
+                            <button class="btn btn-outline btn-sm" onclick="event.stopPropagation(); openModal('callModal')">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72"/></svg>
+                                Call
+                            </button>
+                        </div>
+                    </div>
+
+                    <button class="btn-view-all" id="viewAllBtn">
+                        View All 15 Locations
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                </div>
+
+                <div class="pharmacies-map" id="mapArea">
+                    <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=800&auto=format&fit=crop" alt="Map View">
+                    <div class="map-pin pin-1 active"><span>1</span></div>
+                    <div class="map-pin pin-2"><span>2</span></div>
+                    <div class="map-pin pin-3"><span>3</span></div>
+                    <div class="map-overlay">
+                        <button class="btn btn-primary btn-sm" onclick="openModal('directionsModal')">Open in Maps</button>
+                    </div>
+                </div>
             </div>
-            <div class="metric">
-                <span class="metric-value">24h</span>
-                <span class="metric-label">AVG SUPPORT</span>
+        </section>
+
+        <!-- Team Section -->
+        <section class="team-section" id="team">
+            <div class="team-container">
+                <div class="section-header center">
+                    <div class="section-badge">OUR TEAM</div>
+                    <h2>Meet Our Specialists</h2>
+                    <p>Licensed pharmacists and healthcare professionals available around the clock.</p>
+                </div>
+                <div class="team-grid">
+                    <div class="team-card" onclick="openModal('consultModal')">
+                        <div class="team-img">
+                            <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?q=80&w=400&auto=format&fit=crop" alt="Dr. Sarah Chen">
+                            <div class="team-overlay">
+                                <button class="btn btn-primary btn-sm">Book Consultation</button>
+                            </div>
+                        </div>
+                        <div class="team-info">
+                            <h4>Dr. Sarah Chen</h4>
+                            <p>Chief Pharmacist · 15yr exp</p>
+                            <div class="team-tags">
+                                <span class="tag">Medication Safety</span>
+                                <span class="tag">Drug Interactions</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="team-card" onclick="openModal('consultModal')">
+                        <div class="team-img">
+                            <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?q=80&w=400&auto=format&fit=crop" alt="Dr. James Park">
+                            <div class="team-overlay">
+                                <button class="btn btn-primary btn-sm">Book Consultation</button>
+                            </div>
+                        </div>
+                        <div class="team-info">
+                            <h4>Dr. James Park</h4>
+                            <p>Emergency Pharmacist · 12yr exp</p>
+                            <div class="team-tags">
+                                <span class="tag">Urgent Care</span>
+                                <span class="tag">Pediatrics</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="team-card" onclick="openModal('consultModal')">
+                        <div class="team-img">
+                            <img src="https://images.unsplash.com/photo-1594824476967-48c8b964f800?q=80&w=400&auto=format&fit=crop" alt="Dr. Priya Mehta">
+                            <div class="team-overlay">
+                                <button class="btn btn-primary btn-sm">Book Consultation</button>
+                            </div>
+                        </div>
+                        <div class="team-info">
+                            <h4>Dr. Priya Mehta</h4>
+                            <p>Clinical Pharmacist · 10yr exp</p>
+                            <div class="team-tags">
+                                <span class="tag">Chronic Care</span>
+                                <span class="tag">Immunization</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-        
-        <div class="newsletter">
-            <form class="newsletter-form">
-                <input type="email" placeholder="Get health advice in your inbox">
-                <button class="btn-subscribe">Subscribe</button>
-            </form>
-        </div>
-    </section>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="faq-section" id="faq">
+            <div class="faq-container">
+                <div class="section-header center">
+                    <div class="section-badge">FAQ</div>
+                    <h2>Frequently Asked Questions</h2>
+                    <p>Quick answers to common urgent care questions.</p>
+                </div>
+                <div class="faq-list">
+                    <div class="faq-item" onclick="toggleFaq(this)">
+                        <div class="faq-question">
+                            <h4>What should I do in a medication emergency?</h4>
+                            <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Call Poison Control at 1-800-222-1222 immediately. If someone is unconscious or not breathing, call 911 first. Our 24/7 pharmacist line can also provide immediate guidance on accidental overdose, drug interactions, and adverse reactions.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item" onclick="toggleFaq(this)">
+                        <div class="faq-question">
+                            <h4>Can I get emergency prescription refills after hours?</h4>
+                            <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Yes! Our Express Rx Refill system operates 24/7. For controlled substances, a pharmacist will verify your identity and prescription history. Most emergency refills are ready within 30 minutes at our 24-hour locations.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item" onclick="toggleFaq(this)">
+                        <div class="faq-question">
+                            <h4>Do you accept walk-in patients for vaccines?</h4>
+                            <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Absolutely. We offer walk-in vaccinations for flu, COVID-19, shingles, pneumonia, and travel immunizations at all locations during operating hours. No appointment necessary — just bring your insurance card and ID.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item" onclick="toggleFaq(this)">
+                        <div class="faq-question">
+                            <h4>How does the insurance pricing tool work?</h4>
+                            <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Enter your medication name and insurance plan, and we'll instantly show your copay, out-of-pocket cost, and cheaper generic alternatives. We partner with GoodRx and all major insurers to find you the lowest price available.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item" onclick="toggleFaq(this)">
+                        <div class="faq-question">
+                            <h4>Is the Live Pharmacist Chat free?</h4>
+                            <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Yes, our Live Pharmacist Chat is completely free for all users. You can ask about medication interactions, dosage questions, side effects, and general health advice. For detailed consultations, we recommend booking a paid appointment.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Metrics & Newsletter -->
+        <section class="metrics-section" id="contact">
+            <div class="metrics-container">
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <span class="metric-value" data-count="4.9" data-decimals="1">0</span>
+                        <span class="metric-suffix">/5</span>
+                        <span class="metric-label">Patient Rating</span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-value" data-count="15000" data-suffix="+">0</span>
+                        <span class="metric-label">Daily Refills</span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-value">24/7</span>
+                        <span class="metric-label">Support Available</span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-value" data-count="500" data-suffix="+">0</span>
+                        <span class="metric-label">Pharmacy Locations</span>
+                    </div>
+                </div>
+                <div class="newsletter-card">
+                    <div class="newsletter-content">
+                        <h3>Stay Informed</h3>
+                        <p>Get health alerts, medication reminders, and exclusive pharmacy deals in your inbox.</p>
+                    </div>
+                    <form class="newsletter-form" id="newsletterForm" onsubmit="handleNewsletter(event)">
+                        <div class="newsletter-input-group">
+                            <input type="email" id="emailInput" placeholder="Enter your email" required>
+                            <button type="submit" class="btn btn-primary">
+                                <span class="btn-text-inner">Subscribe</span>
+                            </button>
+                        </div>
+                        <div class="newsletter-success hidden" id="newsletterSuccess">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                            <span>You're subscribed! Check your inbox.</span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
 
     <!-- Footer -->
     <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-left">
-                <h3 class="logo-text">PharmaCare</h3>
-                <p>Providing precision, accessibility, and trust in pharmaceutical care since 1998.</p>
+        <div class="footer-container">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <span class="logo">Med<span class="logo-accent">Guard</span></span>
+                    <p>Providing precision, accessibility, and trust in pharmaceutical care since 1998.</p>
+                    <div class="footer-social">
+                        <a href="#" class="social-link" onclick="event.preventDefault()"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg></a>
+                        <a href="#" class="social-link" onclick="event.preventDefault()"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg></a>
+                        <a href="#" class="social-link" onclick="event.preventDefault()"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+                    </div>
+                </div>
+                <div class="footer-links-group">
+                    <div class="footer-col">
+                        <h4>Services</h4>
+                        <a href="#" onclick="event.preventDefault(); openModal('refillModal')">Prescription Refill</a>
+                        <a href="#" onclick="event.preventDefault(); openModal('chatModal')">Live Pharmacist</a>
+                        <a href="#" onclick="event.preventDefault(); openModal('vaccineModal')">Vaccinations</a>
+                        <a href="#" onclick="event.preventDefault(); openModal('firstAidModal')">First Aid Guides</a>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Company</h4>
+                        <a href="#" onclick="event.preventDefault()">About Us</a>
+                        <a href="#" onclick="event.preventDefault()">Careers</a>
+                        <a href="#" onclick="event.preventDefault()">Press Kit</a>
+                        <a href="#" onclick="event.preventDefault(); openModal('consultModal')">Contact</a>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Legal</h4>
+                        <a href="#" onclick="event.preventDefault()">Privacy Policy</a>
+                        <a href="#" onclick="event.preventDefault()">Terms of Service</a>
+                        <a href="#" onclick="event.preventDefault()">HIPAA Compliance</a>
+                        <a href="#" onclick="event.preventDefault()">Certifications</a>
+                    </div>
+                </div>
             </div>
-            
-            <div class="footer-middle">
-                <a href="#">Regulatory Certifications</a>
-                <a href="#">Privacy Policy</a>
-                <a href="#">Terms of Service</a>
-                <a href="#">HIPAA Compliance</a>
-                <a href="#" class="link-contact">Contact Pharmacist</a>
-            </div>
-            
-            <div class="footer-right">
-                <p>© 2024 PharmaCare. All rights reserved. Licensed<br>Pharmacy #12345.</p>
+            <div class="footer-bottom">
+                <p>© 2024 MedGuard Pharmacy. All rights reserved. Licensed Pharmacy #12345. NABP Accredited.</p>
             </div>
         </div>
     </footer>
 
-    <!-- FAB -->
-    <div class="fab-emergency">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 2L12 22M2 12L22 12M5 5L19 19M5 19L19 5" stroke="white" stroke-width="3" stroke-linecap="round"/>
-        </svg>
+    <!-- Emergency FAB -->
+    <button class="fab-emergency" id="emergencyFab" onclick="openModal('emergencyModal')">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><path d="M12 6v12M6 12h12"/></svg>
+        <span class="fab-label">Emergency</span>
+    </button>
+
+    <!-- Scroll to Top -->
+    <button class="scroll-top hidden" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg>
+    </button>
+
+    <!-- ============== MODALS ============== -->
+    <div class="modal-backdrop hidden" id="modalBackdrop" onclick="closeAllModals()"></div>
+
+    <!-- Sign In Modal -->
+    <div class="modal hidden" id="signinModal">
+        <div class="modal-header">
+            <h3>Sign In to MedGuard</h3>
+            <button class="modal-close" onclick="closeAllModals()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+        </div>
+        <div class="modal-body">
+            <form onsubmit="event.preventDefault(); showToast('Signed in successfully!'); closeAllModals();">
+                <div class="form-group"><label>Email Address</label><input type="email" placeholder="you@example.com" required></div>
+                <div class="form-group"><label>Password</label><input type="password" placeholder="••••••••" required></div>
+                <button type="submit" class="btn btn-primary btn-full">Sign In</button>
+            </form>
+            <p class="modal-footer-text">Don't have an account? <a href="#" onclick="event.preventDefault(); showToast('Registration is a demo feature')">Sign Up</a></p>
+        </div>
     </div>
+
+    <!-- Refill Modal -->
+    <div class="modal hidden" id="refillModal">
+        <div class="modal-header">
+            <h3>Express Rx Refill</h3>
+            <button class="modal-close" onclick="closeAllModals()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+        </div>
+        <div class="modal-body">
+            <form onsubmit="event.preventDefault(); showToast('Refill request submitted! Ready in ~30 min.'); closeAllModals();">
+                <div class="form-group"><label>Prescription Number</label><input type="text" placeholder="RX-XXXXXXXX" required></div>
+                <div class="form-group"><label>Date of Birth</label><input type="date" required></div>
+                <div class="form-group"><label>Pickup Location</label>
+                    <select><option>Main St. MedGuard (24/7)</option><option>Westside Medical Hub</option><option>Central Pharmacy Plus</option></select>
+                </div>
+                <label class="chip-check"><input type="checkbox"> <span>Request Home Delivery (+$5)</span></label>
+                <button type="submit" class="btn btn-primary btn-full">Submit Refill Request</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Chat Modal -->
+    <div class="modal modal-lg hidden" id="chatModal">
+        <div class="modal-header">
+            <h3>Live Pharmacist Chat</h3>
+            <button class="modal-close" onclick="closeAllModals()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+        </div>
+        <div class="modal-body chat-modal-body">
+            <div class="chat-window" id="chatWindow">
+                <div class="chat-msg incoming"><div class="chat-avatar">P</div><div class="chat-text">Hello! I'm Dr. Chen, your pharmacist. How can I help you today?</div></div>
+            </div>
+            <form class="chat-input-form" onsubmit="handleChat(event)">
+                <input type="text" id="chatInput" placeholder="Type your question..." autocomplete="off">
+                <button type="submit" class="btn btn-primary">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scan Modal -->
+    <div class="modal hidden" id="scanModal">
+        <div class="modal-header">
+            <h3>Scan Prescription</h3>
+            <button class="modal-close" onclick="closeAllModals()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+        </div>
+        <div class="modal-body">
+            <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                <p>Click to upload or drag & drop</p>
+                <span>PNG, JPG, PDF up to 10MB</span>
+                <input type="file" id="fileInput" accept=".png,.jpg,.jpeg,.pdf" style="display:none" onchange="handleFileUpload(this)">
+            </div>
+            <div class="upload-success hidden" id="uploadSuccess">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                <h4>Prescription Uploaded!</h4>
+                <p>Our pharmacist will review and process it within 15 minutes.</p>
+                <button class="btn btn-primary btn-full" onclick="closeAllModals()">Done</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Emergency Modal -->
+    <div class="modal hidden" id="emergencyModal">
+        <div class="modal-header modal-header-red">
+            <h3>🚨 Emergency Resources</h3>
+            <button class="modal-close" onclick="closeAllModals()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+        </div>
+        <div class="modal-body">
+            <div class="emergency-list">
+                <a href="tel:911" class="emergency-item emergency-critical"><span class="em-icon">🚑</span><div><h4>Call 911</h4><p>Life-threatening emergencies</p></div></a>
+                <a href="tel:18002221222" class="emergency-item"><span class="em-icon">☠️</span><div><h4>Poison Control</h4><p>1-800-222-1222</p></div></a>
+                <a href="#" class="emergency-item" onclick="event.preventDefault(); closeAllModals(); openModal('chatModal')"><span class="em-icon">💊</span><div><h4>Pharmacist Hotline</h4><p>24/7 medication questions</p></div></a>
+                <a href="#" class="emergency-item" onclick="event.preventDefault(); closeAllModals(); openModal('firstAidModal')"><span class="em-icon">🩹</span><div><h4>First Aid Guides</h4><p>Step-by-step instructions</p></div></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Directions Modal -->
+    <div class="modal hidden" id="directionsModal">
+        <div class="modal-header"><h3>Get Directions</h3><button class="modal-close" onclick="closeAllModals()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>
+        <div class="modal-body">
+            <div class="directions-info">
+                <h4>Main St. MedGuard</h4>
+                <p>123 Main Street, Suite 100<br>New York, NY 10001</p>
+                <p class="text-muted">Open 24/7 · Drive-Thru Available</p>
+            </div>
+            <div class="directions-actions">
+                <button class="btn btn-primary btn-full" onclick="showToast('Opening Maps...'); closeAllModals()">Open in Google Maps</button>
+                <button class="btn btn-outline btn-full" onclick="showToast('Opening Maps...'); closeAllModals()">Open in Apple Maps</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Call Modal -->
+    <div class="modal hidden" id="callModal">
+        <div class="modal-header"><h3>Call Pharmacy</h3><button class="modal-close" onclick="closeAllModals()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>
+        <div class="modal-body center-content">
+            <div class="call-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72"/></svg></div>
+            <h4>Main St. MedGuard</h4>
+            <p class="phone-number">(212) 555-0142</p>
+            <button class="btn btn-green btn-full" onclick="showToast('Initiating call...'); closeAllModals()">Call Now</button>
+        </div>
+    </div>
+
+    <!-- Consult Modal -->
+    <div class="modal hidden" id="consultModal">
+        <div class="modal-header"><h3>Book Consultation</h3><button class="modal-close" onclick="closeAllModals()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>
+        <div class="modal-body">
+            <form onsubmit="event.preventDefault(); showToast('Consultation booked! Check your email for confirmation.'); closeAllModals();">
+                <div class="form-group"><label>Full Name</label><input type="text" placeholder="John Doe" required></div>
+                <div class="form-group"><label>Email</label><input type="email" placeholder="john@example.com" required></div>
+                <div class="form-group"><label>Preferred Date</label><input type="date" required></div>
+                <div class="form-group"><label>Reason</label><textarea placeholder="Brief description of your concern..." rows="3"></textarea></div>
+                <button type="submit" class="btn btn-primary btn-full">Book Appointment</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- First Aid Modal -->
+    <div class="modal hidden" id="firstAidModal">
+        <div class="modal-header"><h3>First Aid Guides</h3><button class="modal-close" onclick="closeAllModals()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>
+        <div class="modal-body">
+            <div class="guide-list">
+                <div class="guide-item" onclick="showToast('Guide: Apply pressure, elevate, call 911 if severe')"><span>🩸</span><div><h4>Bleeding & Cuts</h4><p>Apply pressure and elevate</p></div></div>
+                <div class="guide-item" onclick="showToast('Guide: Cool with water 10+ min, don\'t use ice')"><span>🔥</span><div><h4>Burns</h4><p>Cool with running water</p></div></div>
+                <div class="guide-item" onclick="showToast('Guide: Use EpiPen if available, call 911')"><span>⚠️</span><div><h4>Allergic Reactions</h4><p>Recognize and respond quickly</p></div></div>
+                <div class="guide-item" onclick="showToast('Guide: Call Poison Control 1-800-222-1222 immediately')"><span>☠️</span><div><h4>Poisoning</h4><p>Call Poison Control immediately</p></div></div>
+                <div class="guide-item" onclick="showToast('Guide: 30 compressions, 2 breaths, repeat')"><span>❤️</span><div><h4>CPR Basics</h4><p>Hands-only CPR steps</p></div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vaccine Modal -->
+    <div class="modal hidden" id="vaccineModal">
+        <div class="modal-header"><h3>Walk-in Vaccines</h3><button class="modal-close" onclick="closeAllModals()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>
+        <div class="modal-body">
+            <div class="vaccine-list">
+                <div class="vaccine-item"><div class="vaccine-info"><h4>Flu Shot</h4><p>Available now · All ages</p></div><span class="badge badge-open">Available</span></div>
+                <div class="vaccine-item"><div class="vaccine-info"><h4>COVID-19 Booster</h4><p>Updated formula · 12+ years</p></div><span class="badge badge-open">Available</span></div>
+                <div class="vaccine-item"><div class="vaccine-info"><h4>Shingles (Shingrix)</h4><p>2-dose series · 50+ years</p></div><span class="badge badge-open">Available</span></div>
+                <div class="vaccine-item"><div class="vaccine-info"><h4>Pneumonia</h4><p>PCV20 · 65+ years</p></div><span class="badge badge-closing">Limited</span></div>
+                <div class="vaccine-item"><div class="vaccine-info"><h4>Travel Vaccines</h4><p>Hepatitis A/B, Typhoid, etc.</p></div><span class="badge badge-open">Available</span></div>
+            </div>
+            <button class="btn btn-primary btn-full" style="margin-top:16px" onclick="showToast('Walk in anytime during business hours!'); closeAllModals()">Find Nearest Location</button>
+        </div>
+    </div>
+
+    <!-- Insurance Modal -->
+    <div class="modal hidden" id="insuranceModal">
+        <div class="modal-header"><h3>Insurance & Pricing</h3><button class="modal-close" onclick="closeAllModals()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>
+        <div class="modal-body">
+            <form onsubmit="event.preventDefault(); showToast('Your estimated copay: $12. Generic alternative: $4!'); closeAllModals();">
+                <div class="form-group"><label>Medication Name</label><input type="text" placeholder="e.g. Lisinopril 10mg" required></div>
+                <div class="form-group"><label>Insurance Provider</label>
+                    <select><option>BlueCross BlueShield</option><option>Aetna</option><option>UnitedHealthcare</option><option>Cigna</option><option>Humana</option><option>No Insurance</option></select>
+                </div>
+                <div class="form-group"><label>Member ID</label><input type="text" placeholder="Optional"></div>
+                <button type="submit" class="btn btn-primary btn-full">Calculate My Cost</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast hidden" id="toast">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        <span id="toastMessage">Success!</span>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>

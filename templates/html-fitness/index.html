@@ -1,73 +1,288 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IronForge Gym - Elite Fitness Center</title>
+    <title>IRONFORGE | Elite Fitness</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Space Grotesk', 'sans-serif'],
+                        display: ['Syncopate', 'sans-serif'],
+                    },
+                    colors: {
+                        neon: '#E8FF00', // Electric yellow
+                        dark: '#0A0A0A',
+                        darker: '#050505',
+                        surface: '#121212',
+                        surface2: '#1A1A1A'
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        body { font-family: 'Inter', sans-serif; }
+        body { background-color: theme('colors.dark'); color: white; overflow-x: hidden; }
+        
+        .hero-pattern {
+            background-image: radial-gradient(circle at center, rgba(232, 255, 0, 0.03) 0%, transparent 70%);
+        }
+
+        .neon-text-glow {
+            text-shadow: 0 0 20px rgba(232, 255, 0, 0.3);
+        }
+
+        .neon-border {
+            box-shadow: 0 0 15px rgba(232, 255, 0, 0.1);
+        }
+
+        .clip-diagonal {
+            clip-path: polygon(0 0, 100% 0, 100% 90%, 0% 100%);
+        }
+
+        .hover-lift {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px -10px rgba(232, 255, 0, 0.2);
+        }
+
+        /* Glitch effect on hover for the logo */
+        .glitch-hover:hover {
+            animation: glitch 0.3s linear infinite;
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0) }
+            20% { transform: translate(-2px, 2px) }
+            40% { transform: translate(-2px, -2px) }
+            60% { transform: translate(2px, 2px) }
+            80% { transform: translate(2px, -2px) }
+            100% { transform: translate(0) }
+        }
     </style>
 </head>
-<body class="bg-zinc-950 text-white">
-    <!-- Navbar -->
-    <nav class="fixed w-full z-50 bg-zinc-950/80 backdrop-blur-md border-b border-zinc-800">
-        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-            <div class="text-2xl font-black text-rose-600 tracking-tighter">IRONFORGE</div>
-            <div class="hidden md:flex space-x-8 text-sm font-semibold uppercase tracking-wider text-zinc-400">
-                <a href="#" class="hover:text-white transition">Classes</a>
-                <a href="#" class="hover:text-white transition">Trainers</a>
-                <a href="#" class="hover:text-white transition">Membership</a>
+<body class="antialiased selection:bg-neon selection:text-black">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 transition-all duration-300" id="navbar">
+        <div class="absolute inset-0 bg-dark/80 backdrop-blur-md border-b border-white/5"></div>
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between relative z-10">
+            <a href="#" class="text-xl md:text-2xl font-display font-bold tracking-widest text-white glitch-hover">
+                IRON<span class="text-neon">FORGE</span>
+            </a>
+            
+            <div class="hidden md:flex space-x-12 text-sm font-semibold uppercase tracking-[0.2em] text-gray-400">
+                <a href="#classes" class="hover:text-white hover:text-neon transition-colors">Classes</a>
+                <a href="#trainers" class="hover:text-white hover:text-neon transition-colors">Trainers</a>
+                <a href="#membership" class="hover:text-white hover:text-neon transition-colors">Join</a>
             </div>
-            <button class="bg-rose-600 hover:bg-rose-700 text-white px-6 py-2.5 rounded text-sm font-bold uppercase tracking-wider transition">Join Now</button>
+            
+            <button class="hidden md:block bg-neon text-black px-8 py-3 text-sm font-bold uppercase tracking-[0.15em] hover:bg-white transition-colors duration-300 group">
+                <span class="flex items-center gap-2">
+                    Start Trial <i data-lucide="arrow-up-right" class="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"></i>
+                </span>
+            </button>
+
+            <!-- Mobile Menu Toggle -->
+            <button class="md:hidden text-white p-2">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
         </div>
     </nav>
 
-    <!-- Hero -->
-    <section class="relative h-screen flex items-center justify-center overflow-hidden">
-        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1920&q=80')] bg-cover bg-center opacity-40"></div>
-        <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/60 to-transparent"></div>
+    <!-- Hero Section -->
+    <header class="relative min-h-screen flex items-center pt-20 clip-diagonal bg-darker overflow-hidden">
+        <!-- Abstract Background Elements -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=2000&auto=format&fit=crop" alt="Gym" class="w-full h-full object-cover opacity-20 mix-blend-luminosity">
+            <div class="absolute inset-0 bg-gradient-to-r from-darker via-darker/80 to-transparent"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-darker via-transparent to-transparent"></div>
+            <div class="hero-pattern absolute inset-0"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-6 relative z-10 w-full grid lg:grid-cols-2 gap-12 items-center">
+            <div class="max-w-3xl">
+                <div class="inline-flex items-center gap-3 px-4 py-2 bg-surface/50 border border-white/10 rounded-full mb-8 backdrop-blur-sm">
+                    <span class="w-2 h-2 rounded-full bg-neon animate-pulse"></span>
+                    <span class="text-xs font-semibold uppercase tracking-widest text-gray-300">Elite Training Facility</span>
+                </div>
+                
+                <h1 class="text-5xl md:text-7xl lg:text-8xl font-display font-bold uppercase leading-[0.9] tracking-tighter mb-8">
+                    Redefine <br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-neon to-white neon-text-glow">Your Limits</span>
+                </h1>
+                
+                <p class="text-lg md:text-xl text-gray-400 font-light mb-10 max-w-xl leading-relaxed">
+                    Not just a gym. An elite performance facility designed for those who refuse to settle. State-of-the-art equipment, world-class coaching.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row gap-6">
+                    <button class="bg-neon text-black px-10 py-5 font-bold uppercase tracking-[0.15em] hover:bg-white transition-all duration-300 flex items-center justify-center gap-3 group">
+                        Join The Ranks
+                        <i data-lucide="arrow-right" class="w-5 h-5 group-hover:translate-x-1 transition-transform"></i>
+                    </button>
+                    <button class="border border-white/20 bg-white/5 backdrop-blur-sm text-white px-10 py-5 font-bold uppercase tracking-[0.15em] hover:bg-white/10 transition-colors flex items-center justify-center gap-3">
+                        <i data-lucide="play-circle" class="w-5 h-5"></i> Watch Video
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats/Floating elements -->
+            <div class="hidden lg:block relative h-[600px]">
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-sm aspect-[3/4] bg-surface2 border border-white/5 p-6 hover-lift neon-border rotate-3 z-10 flex flex-col justify-end">
+                    <img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=1000&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover opacity-60 mix-blend-screen" alt="Training">
+                    <div class="absolute inset-0 bg-gradient-to-t from-darker via-transparent to-transparent"></div>
+                    <div class="relative z-10">
+                        <div class="text-neon font-display text-4xl font-bold mb-1">01</div>
+                        <div class="uppercase tracking-widest text-sm font-semibold">Strength & Conditioning</div>
+                    </div>
+                </div>
+                
+                <div class="absolute top-20 right-0 w-48 bg-surface/80 backdrop-blur-md border border-white/10 p-4 -rotate-6 z-20 hover-lift">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="w-10 h-10 bg-neon/10 text-neon flex items-center justify-center rounded">
+                            <i data-lucide="users" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-display font-bold">2.5K+</div>
+                        </div>
+                    </div>
+                    <div class="text-[10px] uppercase tracking-wider text-gray-400 font-semibold">Active Members</div>
+                </div>
+            </div>
+        </div>
         
-        <div class="relative z-10 text-center px-6 max-w-4xl mx-auto mt-20">
-            <h1 class="text-5xl md:text-8xl font-black uppercase tracking-tighter mb-6 leading-none">Forge Your <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-orange-500">Legacy</span></h1>
-            <p class="text-lg md:text-2xl text-zinc-300 font-light mb-10 max-w-2xl mx-auto">Join the elite fitness community. State-of-the-art equipment, world-class trainers, and a culture of relentless progress.</p>
-            <div class="flex flex-col sm:flex-row justify-center gap-4">
-                <button class="bg-rose-600 hover:bg-rose-700 text-white px-10 py-4 rounded text-lg font-bold uppercase tracking-wider transition transform hover:scale-105">Start Free Trial</button>
-                <button class="border-2 border-zinc-700 hover:border-zinc-500 text-white px-10 py-4 rounded text-lg font-bold uppercase tracking-wider transition">View Schedule</button>
+        <!-- Marquee -->
+        <div class="absolute bottom-0 left-0 w-full bg-neon text-black py-3 overflow-hidden border-y border-neon/50 z-20">
+            <div class="whitespace-nowrap flex items-center gap-8 animate-[marquee_20s_linear_infinite]">
+                <span class="text-sm font-bold uppercase tracking-widest">Push Harder</span>
+                <i data-lucide="zap" class="w-4 h-4"></i>
+                <span class="text-sm font-bold uppercase tracking-widest">No Excuses</span>
+                <i data-lucide="zap" class="w-4 h-4"></i>
+                <span class="text-sm font-bold uppercase tracking-widest">Elite Performance</span>
+                <i data-lucide="zap" class="w-4 h-4"></i>
+                <span class="text-sm font-bold uppercase tracking-widest">Push Harder</span>
+                <i data-lucide="zap" class="w-4 h-4"></i>
+                <span class="text-sm font-bold uppercase tracking-widest">No Excuses</span>
+                <i data-lucide="zap" class="w-4 h-4"></i>
+                <span class="text-sm font-bold uppercase tracking-widest">Elite Performance</span>
+                <i data-lucide="zap" class="w-4 h-4"></i>
+                <span class="text-sm font-bold uppercase tracking-widest">Push Harder</span>
+                <i data-lucide="zap" class="w-4 h-4"></i>
+                <span class="text-sm font-bold uppercase tracking-widest">No Excuses</span>
+                <i data-lucide="zap" class="w-4 h-4"></i>
+                <span class="text-sm font-bold uppercase tracking-widest">Elite Performance</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Features / Manifesto -->
+    <section class="py-32 relative bg-dark">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
+                <div class="max-w-2xl">
+                    <span class="text-neon font-bold uppercase tracking-widest text-sm mb-4 block">The Ironforge Standard</span>
+                    <h2 class="text-4xl md:text-5xl font-display font-bold uppercase tracking-tighter leading-tight">
+                        Engineered for <br>Maximum Results
+                    </h2>
+                </div>
+                <p class="text-gray-400 max-w-md">We provide the environment, the tools, and the knowledge. You provide the effort. Welcome to the next level of fitness.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="bg-surface p-10 border border-white/5 hover:border-neon/30 hover-lift group relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
+                        <i data-lucide="dumbbell" class="w-32 h-32 text-white"></i>
+                    </div>
+                    <div class="w-14 h-14 bg-neon/10 border border-neon/20 flex items-center justify-center text-neon mb-8">
+                        <i data-lucide="dumbbell" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-2xl font-display font-bold uppercase tracking-wide mb-4">Pro Equipment</h3>
+                    <p class="text-gray-400 leading-relaxed font-light">Competition-grade racks, platforms, and machines from industry-leading brands.</p>
+                </div>
+                <!-- Card 2 -->
+                <div class="bg-surface p-10 border border-white/5 hover:border-neon/30 hover-lift group relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
+                        <i data-lucide="activity" class="w-32 h-32 text-white"></i>
+                    </div>
+                    <div class="w-14 h-14 bg-neon/10 border border-neon/20 flex items-center justify-center text-neon mb-8">
+                        <i data-lucide="activity" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-2xl font-display font-bold uppercase tracking-wide mb-4">Elite Coaching</h3>
+                    <p class="text-gray-400 leading-relaxed font-light">Train with professionals who have competed at the highest levels of strength and fitness.</p>
+                </div>
+                <!-- Card 3 -->
+                <div class="bg-surface p-10 border border-white/5 hover:border-neon/30 hover-lift group relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
+                        <i data-lucide="flame" class="w-32 h-32 text-white"></i>
+                    </div>
+                    <div class="w-14 h-14 bg-neon/10 border border-neon/20 flex items-center justify-center text-neon mb-8">
+                        <i data-lucide="flame" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-2xl font-display font-bold uppercase tracking-wide mb-4">Recovery Lab</h3>
+                    <p class="text-gray-400 leading-relaxed font-light">Accelerate recovery with cold plunges, infrared saunas, and sports massage therapy.</p>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Features -->
-    <section class="py-24 bg-zinc-950 relative">
+    <!-- Footer -->
+    <footer class="bg-darker border-t border-white/10 pt-20 pb-10">
         <div class="max-w-7xl mx-auto px-6">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
-                <!-- Feature 1 -->
-                <div class="group border border-zinc-800 p-8 rounded-xl hover:bg-zinc-900 transition hover:border-rose-600/50">
-                    <div class="text-rose-600 mb-6">
-                        <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                    </div>
-                    <h3 class="text-2xl font-bold uppercase mb-4">High Intensity</h3>
-                    <p class="text-zinc-400 leading-relaxed">Push your limits with our signature HIIT classes designed to torch calories and build endurance.</p>
+            <div class="flex flex-col md:flex-row justify-between items-center gap-8 mb-16">
+                <h2 class="text-3xl font-display font-bold tracking-widest text-white">
+                    IRON<span class="text-neon">FORGE</span>
+                </h2>
+                <div class="flex space-x-6 text-gray-400">
+                    <a href="#" class="hover:text-neon transition-colors"><i data-lucide="instagram" class="w-6 h-6"></i></a>
+                    <a href="#" class="hover:text-neon transition-colors"><i data-lucide="twitter" class="w-6 h-6"></i></a>
+                    <a href="#" class="hover:text-neon transition-colors"><i data-lucide="youtube" class="w-6 h-6"></i></a>
                 </div>
-                <!-- Feature 2 -->
-                <div class="group border border-zinc-800 p-8 rounded-xl hover:bg-zinc-900 transition hover:border-rose-600/50">
-                    <div class="text-rose-600 mb-6">
-                        <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"></path></svg>
-                    </div>
-                    <h3 class="text-2xl font-bold uppercase mb-4">Strength Training</h3>
-                    <p class="text-zinc-400 leading-relaxed">Premium free weights, power racks, and Olympic platforms for serious strength athletes.</p>
-                </div>
-                <!-- Feature 3 -->
-                <div class="group border border-zinc-800 p-8 rounded-xl hover:bg-zinc-900 transition hover:border-rose-600/50">
-                    <div class="text-rose-600 mb-6">
-                        <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
-                    </div>
-                    <h3 class="text-2xl font-bold uppercase mb-4">Recovery Zone</h3>
-                    <p class="text-zinc-400 leading-relaxed">Saunas, cold plunges, and massage therapy to help you recover faster and perform better.</p>
+            </div>
+            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500 font-semibold uppercase tracking-wider">
+                <p>&copy; 2026 IRONFORGE FITNESS. ALL RIGHTS RESERVED.</p>
+                <div class="flex gap-6">
+                    <a href="#" class="hover:text-white transition-colors">Privacy</a>
+                    <a href="#" class="hover:text-white transition-colors">Terms</a>
                 </div>
             </div>
         </div>
-    </section>
+    </footer>
+
+    <style>
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+    </style>
+    <script>
+        lucide.createIcons();
+        
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.classList.add('py-0');
+                nav.classList.remove('py-4');
+            } else {
+                nav.classList.add('py-4');
+                nav.classList.remove('py-0');
+            }
+        });
+    </script>
 </body>
 </html>
