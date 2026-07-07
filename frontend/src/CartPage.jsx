@@ -150,30 +150,28 @@ export default function CartPage() {
     setIsProcessing(true);
     const orderId = paymentId || 'mock_' + Math.random().toString(36).substr(2, 9);
     
-    // Call backend to send email receipt
-    try {
-      const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
-      const response = await fetch(`${backendUrl}/api/send-receipt`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          to: user?.email || 'customer@example.com',
-          frontendUrl: window.location.origin,
-          orderDetails: {
-            items: cartItems,
-            total: cartTotal.toFixed(2),
-            orderId: orderId
-          }
-        })
-      });
-      
+    // Call backend to send email receipt (Non-blocking)
+    const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
+    fetch(`${backendUrl}/api/send-receipt`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        to: user?.email || 'customer@example.com',
+        frontendUrl: window.location.origin,
+        orderDetails: {
+          items: cartItems,
+          total: cartTotal.toFixed(2),
+          orderId: orderId
+        }
+      })
+    }).then(response => {
       if (!response.ok) {
-        throw new Error(`Email API error! status: ${response.status}`);
+        toast.error("Receipt email could not be sent, but purchase was successful.", { duration: 4000 });
       }
-    } catch (e) {
+    }).catch(e => {
       console.error("Email API failed:", e);
       toast.error("Receipt email could not be sent, but purchase was successful.", { duration: 4000 });
-    }
+    });
 
     await checkout(orderId);
     
