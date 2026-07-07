@@ -331,9 +331,9 @@ export default async function handler(req, res) {
     `;
 
     const info = await transporter.sendMail({
-      from: \`"Bizleap" <\${process.env.SMTP_FROM || process.env.SMTP_USER}>\`,
+      from: `"Bizleap" <${process.env.SMTP_FROM || process.env.SMTP_USER}>`,
       to: to,
-      subject: \`🧾 Your Bizleap Invoice — Order #\${orderId}\`,
+      subject: `🧾 Your Bizleap Invoice — Order #${orderId}`,
       html: htmlContent,
     });
 
