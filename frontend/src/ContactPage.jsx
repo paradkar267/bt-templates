@@ -29,7 +29,7 @@ export default function ContactPage() {
     };
 
     try {
-      const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
+      const backendUrl = import.meta.env.VITE_BACKEND_URL || 'https://bt-templates.onrender.com';
       const response = await fetch(`${backendUrl}/api/contact`, {
         method: 'POST',
         headers: {

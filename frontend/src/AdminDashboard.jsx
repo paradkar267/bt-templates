@@ -3,12 +3,12 @@ import { useAuth } from './AuthContext';
 import { useTemplates } from './useTemplates';
 import { useCurrency } from './CurrencyContext';
 import { supabase } from './lib/supabase';
-import { 
-  LayoutDashboard, 
-  Package, 
-  Upload, 
-  TrendingUp, 
-  Users, 
+import {
+  LayoutDashboard,
+  Package,
+  Upload,
+  TrendingUp,
+  Users,
   DollarSign,
   AlertCircle,
   Loader2,
@@ -25,12 +25,12 @@ export default function AdminDashboard() {
   const { templates, refetch } = useTemplates();
   const { formatPrice } = useCurrency();
   const [activeTab, setActiveTab] = useState('templates');
-  
+
   // Upload state
   const [uploadLoading, setUploadLoading] = useState(false);
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const [uploadError, setUploadError] = useState('');
-  
+
   // Form state
   const [formData, setFormData] = useState({
     title: '',
@@ -55,10 +55,10 @@ export default function AdminDashboard() {
   const handlePriceUpdate = async (templateId, currentPrice) => {
     const newPrice = window.prompt(`Enter new price for this template:`, currentPrice);
     if (!newPrice || isNaN(newPrice) || newPrice === currentPrice) return;
-    
+
     try {
       const { data: { session: currentSession } } = await supabase.auth.getSession();
-      const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
+      const backendUrl = import.meta.env.VITE_BACKEND_URL || 'https://bt-templates.onrender.com';
       const res = await fetch(`${backendUrl}/api/admin/update-price`, {
         method: 'POST',
         headers: {
@@ -83,7 +83,7 @@ export default function AdminDashboard() {
 
     try {
       const { data: { session: currentSession } } = await supabase.auth.getSession();
-      const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
+      const backendUrl = import.meta.env.VITE_BACKEND_URL || 'https://bt-templates.onrender.com';
       const res = await fetch(`${backendUrl}/api/admin/template/${templateId}?t=${Date.now()}`, {
         method: 'DELETE',
         headers: {
@@ -105,7 +105,7 @@ export default function AdminDashboard() {
       setUploadError('Please select a ZIP file');
       return;
     }
-    
+
     setUploadLoading(true);
     setUploadError('');
     setUploadSuccess(false);
@@ -122,7 +122,7 @@ export default function AdminDashboard() {
 
     try {
       const { data: { session: currentSession } } = await supabase.auth.getSession();
-      const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
+      const backendUrl = import.meta.env.VITE_BACKEND_URL || 'https://bt-templates.onrender.com';
       const res = await fetch(`${backendUrl}/api/admin/upload-template`, {
         method: 'POST',
         headers: {
@@ -130,10 +130,10 @@ export default function AdminDashboard() {
         },
         body: formPayload
       });
-      
+
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Upload failed');
-      
+
       setUploadSuccess(true);
       setFormData({
         title: '', description: '', price: '', category: 'React', tag: 'SaaS', keywords: '', image: ''
@@ -159,13 +159,13 @@ export default function AdminDashboard() {
           <div className="mt-2 text-xs font-bold text-indigo-500 uppercase tracking-widest">Admin Panel</div>
         </div>
         <nav className="p-4 space-y-2 flex-1">
-          <button 
+          <button
             onClick={() => setActiveTab('templates')}
             className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold transition-all ${activeTab === 'templates' ? 'bg-black text-white dark:bg-white dark:text-black shadow-md' : 'text-gray-500 hover:bg-gray-100 dark:hover:bg-white/5 hover:text-black dark:hover:text-white'}`}
           >
             <Package className="w-5 h-5" /> Manage Templates
           </button>
-          <button 
+          <button
             onClick={() => setActiveTab('upload')}
             className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold transition-all ${activeTab === 'upload' ? 'bg-black text-white dark:bg-white dark:text-black shadow-md' : 'text-gray-500 hover:bg-gray-100 dark:hover:bg-white/5 hover:text-black dark:hover:text-white'}`}
           >
@@ -186,54 +186,54 @@ export default function AdminDashboard() {
           <div className="max-w-5xl mx-auto animate-fade-in-up">
             <h1 className="text-3xl font-black mb-8">Manage Templates</h1>
             <div className="bg-white dark:bg-[#111111] border border-gray-200 dark:border-white/10 rounded-2xl overflow-hidden shadow-sm">
-               <div className="overflow-x-auto">
-                 <table className="w-full text-left">
-                    <thead className="bg-gray-50 dark:bg-white/5 border-b border-gray-200 dark:border-white/10 text-xs uppercase font-bold text-gray-500">
-                      <tr>
-                        <th className="px-6 py-4">Product</th>
-                        <th className="px-6 py-4">Category</th>
-                        <th className="px-6 py-4">Price</th>
-                        <th className="px-6 py-4">Sales</th>
-                        <th className="px-6 py-4 text-right">Actions</th>
+              <div className="overflow-x-auto">
+                <table className="w-full text-left">
+                  <thead className="bg-gray-50 dark:bg-white/5 border-b border-gray-200 dark:border-white/10 text-xs uppercase font-bold text-gray-500">
+                    <tr>
+                      <th className="px-6 py-4">Product</th>
+                      <th className="px-6 py-4">Category</th>
+                      <th className="px-6 py-4">Price</th>
+                      <th className="px-6 py-4">Sales</th>
+                      <th className="px-6 py-4 text-right">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200 dark:divide-white/5">
+                    {templates.map(t => (
+                      <tr key={t.id} className="hover:bg-gray-50 dark:hover:bg-white/[0.02] transition-colors">
+                        <td className="px-6 py-4">
+                          <div className="flex items-center gap-3">
+                            <img src={t.image} alt={t.title} className="w-10 h-10 rounded-lg object-cover" />
+                            <span className="font-bold">{t.title}</span>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4">
+                          <span className="px-2 py-1 bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 text-xs font-bold rounded-md">
+                            {t.category}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 font-bold">{formatPrice(t.price)}</td>
+                        <td className="px-6 py-4 text-gray-500">{t.sales}</td>
+                        <td className="px-6 py-4 text-right">
+                          <div className="flex justify-end gap-2">
+                            <button
+                              onClick={() => handlePriceUpdate(t.id, t.price)}
+                              className="px-3 py-1 bg-gray-100 dark:bg-white/10 hover:bg-gray-200 dark:hover:bg-white/20 rounded-md text-sm font-bold transition-colors"
+                            >
+                              Edit Price
+                            </button>
+                            <button
+                              onClick={() => handleDeleteTemplate(t.id)}
+                              className="px-3 py-1 bg-red-100 dark:bg-red-500/10 hover:bg-red-200 dark:hover:bg-red-500/20 text-red-600 dark:text-red-400 rounded-md text-sm font-bold transition-colors"
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        </td>
                       </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-200 dark:divide-white/5">
-                      {templates.map(t => (
-                        <tr key={t.id} className="hover:bg-gray-50 dark:hover:bg-white/[0.02] transition-colors">
-                          <td className="px-6 py-4">
-                            <div className="flex items-center gap-3">
-                              <img src={t.image} alt={t.title} className="w-10 h-10 rounded-lg object-cover" />
-                              <span className="font-bold">{t.title}</span>
-                            </div>
-                          </td>
-                          <td className="px-6 py-4">
-                            <span className="px-2 py-1 bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 text-xs font-bold rounded-md">
-                              {t.category}
-                            </span>
-                          </td>
-                          <td className="px-6 py-4 font-bold">{formatPrice(t.price)}</td>
-                          <td className="px-6 py-4 text-gray-500">{t.sales}</td>
-                          <td className="px-6 py-4 text-right">
-                             <div className="flex justify-end gap-2">
-                               <button 
-                                 onClick={() => handlePriceUpdate(t.id, t.price)}
-                                 className="px-3 py-1 bg-gray-100 dark:bg-white/10 hover:bg-gray-200 dark:hover:bg-white/20 rounded-md text-sm font-bold transition-colors"
-                               >
-                                 Edit Price
-                               </button>
-                               <button 
-                                 onClick={() => handleDeleteTemplate(t.id)}
-                                 className="px-3 py-1 bg-red-100 dark:bg-red-500/10 hover:bg-red-200 dark:hover:bg-red-500/20 text-red-600 dark:text-red-400 rounded-md text-sm font-bold transition-colors"
-                               >
-                                 Delete
-                               </button>
-                             </div>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                 </table>
-               </div>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         )}
@@ -260,41 +260,27 @@ export default function AdminDashboard() {
               <div className="space-y-6">
                 <div>
                   <label className="block text-sm font-bold mb-2">Title</label>
-                  <input type="text" required value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} className="w-full bg-gray-50 dark:bg-black border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow" placeholder="e.g. Next.js SaaS Starter" />
+                  <input type="text" required value={formData.title} onChange={e => setFormData({ ...formData, title: e.target.value })} className="w-full bg-gray-50 dark:bg-black border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow" placeholder="e.g. Next.js SaaS Starter" />
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-bold mb-2">Description</label>
-                  <textarea required value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})} rows="3" className="w-full bg-gray-50 dark:bg-black border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow" placeholder="Detailed description of the template..."></textarea>
+                  <textarea required value={formData.description} onChange={e => setFormData({ ...formData, description: e.target.value })} rows="3" className="w-full bg-gray-50 dark:bg-black border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow" placeholder="Detailed description of the template..."></textarea>
                 </div>
 
                 <div className="grid grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-bold mb-2">Price (₹)</label>
-                    <input type="number" required value={formData.price} onChange={e => setFormData({...formData, price: e.target.value})} className="w-full bg-gray-50 dark:bg-black border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow" placeholder="4999" />
+                    <input type="number" required value={formData.price} onChange={e => setFormData({ ...formData, price: e.target.value })} className="w-full bg-gray-50 dark:bg-black border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow" placeholder="4999" />
                   </div>
                   <div>
                     <label className="block text-sm font-bold mb-2">Category</label>
-                    <select value={formData.category} onChange={e => setFormData({...formData, category: e.target.value})} className="w-full bg-gray-50 dark:bg-black border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow">
+                    <select value={formData.category} onChange={e => setFormData({ ...formData, category: e.target.value })} className="w-full bg-gray-50 dark:bg-black border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow">
                       <option value="React">React</option>
                       <option value="Vue">Vue</option>
                       <option value="Next.js">Next.js</option>
                       <option value="Svelte">Svelte</option>
                       <option value="HTML">HTML</option>
-                      <option value="Business">Business</option>
-                      <option value="Corporate">Corporate</option>
-                      <option value="Startup">Startup</option>
-                      <option value="Agency">Agency</option>
-                      <option value="SaaS">SaaS</option>
-                      <option value="E-commerce">E-commerce</option>
-                      <option value="Fashion & Clothing">Fashion & Clothing</option>
-                      <option value="Jewelry">Jewelry</option>
-                      <option value="Electronics">Electronics</option>
-                      <option value="Furniture">Furniture</option>
-                      <option value="Beauty & Cosmetics">Beauty & Cosmetics</option>
-                      <option value="Grocery">Grocery</option>
-                      <option value="Marketplace">Marketplace</option>
-                      <option value="Portfolio">Portfolio</option>
                     </select>
                   </div>
                 </div>
@@ -302,44 +288,44 @@ export default function AdminDashboard() {
                 <div className="grid grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-bold mb-2">Tag</label>
-                    <input type="text" required value={formData.tag} onChange={e => setFormData({...formData, tag: e.target.value})} className="w-full bg-gray-50 dark:bg-black border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow" placeholder="e.g. Dashboard" />
+                    <input type="text" required value={formData.tag} onChange={e => setFormData({ ...formData, tag: e.target.value })} className="w-full bg-gray-50 dark:bg-black border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow" placeholder="e.g. Dashboard" />
                   </div>
                   <div>
                     <label className="block text-sm font-bold mb-2">Keywords (comma separated)</label>
-                    <input type="text" required value={formData.keywords} onChange={e => setFormData({...formData, keywords: e.target.value})} className="w-full bg-gray-50 dark:bg-black border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow" placeholder="react, admin, dark mode" />
+                    <input type="text" required value={formData.keywords} onChange={e => setFormData({ ...formData, keywords: e.target.value })} className="w-full bg-gray-50 dark:bg-black border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow" placeholder="react, admin, dark mode" />
                   </div>
                 </div>
 
                 <div>
                   <label className="block text-sm font-bold mb-2">Cover Image URL</label>
                   <div className="relative">
-                     <ImageIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                     <input type="url" required value={formData.image} onChange={e => setFormData({...formData, image: e.target.value})} className="w-full bg-gray-50 dark:bg-black border border-gray-200 dark:border-white/10 rounded-xl pl-12 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow" placeholder="https://images.unsplash.com/..." />
+                    <ImageIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                    <input type="url" required value={formData.image} onChange={e => setFormData({ ...formData, image: e.target.value })} className="w-full bg-gray-50 dark:bg-black border border-gray-200 dark:border-white/10 rounded-xl pl-12 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow" placeholder="https://images.unsplash.com/..." />
                   </div>
                 </div>
 
                 <div>
                   <label className="block text-sm font-bold mb-2">ZIP File (The actual product)</label>
                   <div className="relative">
-                     <input 
-                       type="file" 
-                       accept=".zip" 
-                       required 
-                       onChange={e => setSelectedFile(e.target.files[0])}
-                       className="hidden" 
-                       id="zip-upload"
-                     />
-                     <label htmlFor="zip-upload" className="w-full flex items-center justify-center gap-3 border-2 border-dashed border-gray-300 dark:border-white/20 hover:border-indigo-500 dark:hover:border-indigo-500 rounded-2xl p-8 cursor-pointer transition-colors bg-gray-50 dark:bg-white/[0.02]">
-                       <FileArchive className={`w-8 h-8 ${selectedFile ? 'text-indigo-500' : 'text-gray-400'}`} />
-                       <span className={`font-medium ${selectedFile ? 'text-indigo-500' : 'text-gray-500'}`}>
-                         {selectedFile ? selectedFile.name : 'Click to select a .zip file'}
-                       </span>
-                     </label>
+                    <input
+                      type="file"
+                      accept=".zip"
+                      required
+                      onChange={e => setSelectedFile(e.target.files[0])}
+                      className="hidden"
+                      id="zip-upload"
+                    />
+                    <label htmlFor="zip-upload" className="w-full flex items-center justify-center gap-3 border-2 border-dashed border-gray-300 dark:border-white/20 hover:border-indigo-500 dark:hover:border-indigo-500 rounded-2xl p-8 cursor-pointer transition-colors bg-gray-50 dark:bg-white/[0.02]">
+                      <FileArchive className={`w-8 h-8 ${selectedFile ? 'text-indigo-500' : 'text-gray-400'}`} />
+                      <span className={`font-medium ${selectedFile ? 'text-indigo-500' : 'text-gray-500'}`}>
+                        {selectedFile ? selectedFile.name : 'Click to select a .zip file'}
+                      </span>
+                    </label>
                   </div>
                 </div>
 
-                <button 
-                  type="submit" 
+                <button
+                  type="submit"
                   disabled={uploadLoading}
                   className="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
                 >

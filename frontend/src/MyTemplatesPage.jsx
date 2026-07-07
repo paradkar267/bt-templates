@@ -59,7 +59,7 @@ export default function MyTemplatesPage() {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) throw new Error("Not authenticated");
 
-      const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
+      const backendUrl = import.meta.env.VITE_BACKEND_URL || 'https://bt-templates.onrender.com';
       const response = await fetch(`${backendUrl}/api/generate-download`, {
         method: 'POST',
         headers: {
