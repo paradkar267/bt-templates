@@ -1,8 +1,4 @@
 import nodemailer from 'nodemailer';
-import dns from 'dns';
-
-// Force IPv4 to fix ETIMEDOUT errors on Vercel/Render for smtp.gmail.com
-dns.setDefaultResultOrder('ipv4first');
 
 export default async function handler(req, res) {
   // CORS setup for Vercel
@@ -25,7 +21,7 @@ export default async function handler(req, res) {
 
   try {
     const { to, orderDetails, frontendUrl } = req.body;
-    
+
     if (!to || !orderDetails) {
       return res.status(400).json({ error: 'Missing required fields' });
     }
@@ -347,4 +343,6 @@ export default async function handler(req, res) {
     res.status(500).json({ error: error.message || 'Failed to send email' });
   }
 }
+
+
 
