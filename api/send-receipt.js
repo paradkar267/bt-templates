@@ -1,4 +1,8 @@
 import nodemailer from 'nodemailer';
+import dns from 'dns';
+
+// Force IPv4 to fix ETIMEDOUT errors on Vercel/Render for smtp.gmail.com
+dns.setDefaultResultOrder('ipv4first');
 
 export default async function handler(req, res) {
   // CORS setup for Vercel
