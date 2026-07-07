@@ -101,6 +101,8 @@ export default async function handler(req, res) {
           .tip-text { color: #bfdbfe !important; }
           .btn-gradient { background: linear-gradient(135deg, #FFFFFF, #E5E5E5) !important; }
           .btn-text { color: #000000 !important; }
+          .force-white { color: #ffffff !important; }
+          .force-muted { color: rgba(255,255,255,0.7) !important; }
         }
         
         /* Outlook Data-ogsc fixes */
@@ -114,6 +116,8 @@ export default async function handler(req, res) {
         [data-ogsc] .dashed-divider { border-top-color: #3F3F46 !important; }
         [data-ogsc] .tip-box { background: linear-gradient(135deg, #1e3a8a, #172554) !important; border-left-color: #3b82f6 !important; }
         [data-ogsc] .tip-text { color: #bfdbfe !important; }
+        [data-ogsc] .force-white { color: #ffffff !important; }
+        [data-ogsc] .force-muted { color: rgba(255,255,255,0.7) !important; }
       </style>
       <!--[if mso]>
       <noscript>
@@ -171,21 +175,8 @@ export default async function handler(req, res) {
                             </td>
                           </tr>
                         </table>
-                        <h1 style="margin: 0 0 8px; color: #ffffff; font-size: 26px; font-weight: 800; letter-spacing: -0.5px;">Payment Successful!</h1>
-                        <p style="margin: 0; color: rgba(255,255,255,0.7); font-size: 14px; line-height: 1.5;">Your order has been confirmed and templates are ready.</p>
-                      </td>
-                    </tr>
-
-                    <!-- Amount Badge -->
-                    <tr>
-                      <td style="padding: 0; text-align: center;">
-                        <table cellpadding="0" cellspacing="0" border="0" style="margin: -22px auto 0;">
-                          <tr>
-                            <td style="background: linear-gradient(135deg, #10b981, #059669); color: #ffffff; padding: 12px 32px; border-radius: 50px; font-size: 22px; font-weight: 800; letter-spacing: -0.5px; box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);">
-                              ₹${total}
-                            </td>
-                          </tr>
-                        </table>
+                        <h1 class="force-white" style="margin: 0 0 8px; color: #ffffff; font-size: 26px; font-weight: 800; letter-spacing: -0.5px;">Payment Successful!</h1>
+                        <p class="force-muted" style="margin: 0; color: rgba(255,255,255,0.7); font-size: 14px; line-height: 1.5;">Your order has been confirmed and templates are ready.</p>
                       </td>
                     </tr>
 
