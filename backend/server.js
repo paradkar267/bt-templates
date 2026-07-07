@@ -27,6 +27,9 @@ dotenv.config({ path: path.resolve(__dirname, '../.env.local') });
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Trust reverse proxy (Fixes X-Forwarded-For warning on Render)
+app.set('trust proxy', 1);
+
 // Security Middlewares
 app.use(helmet());
 
