@@ -209,7 +209,7 @@ export function AuthProvider({ children }) {
     }
   };
 
-  const isAdmin = user?.email?.toLowerCase() === 'bizleap1@gmail.com';
+  const isAdmin = user?.email?.toLowerCase() === (import.meta.env.VITE_ADMIN_EMAIL?.toLowerCase() || 'bizleap1@gmail.com');
 
   return (
     <AuthContext.Provider value={{ user, profile, setProfile, isAdmin, loading, signInWithGoogle, signInWithGithub, signInWithFigma, signIn, signUp, verifyOtp, resetPassword, updatePassword, signOut, openAuthModal, closeAuthModal, requireAuth }}>

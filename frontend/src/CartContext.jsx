@@ -103,7 +103,7 @@ export const CartProvider = ({ children }) => {
       return;
     }
     
-    const soldOutItems = checkTemplates.filter(t => t.is_sold_out);
+    const soldOutItems = checkTemplates.filter(t => t.is_sold_out && false); // HOLD FEATURE
     if (soldOutItems.length > 0) {
       toast.error(`Sorry, ${soldOutItems[0].title} was just purchased by someone else!`);
       // Remove sold out items from cart

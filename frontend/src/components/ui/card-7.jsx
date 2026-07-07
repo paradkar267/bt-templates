@@ -70,7 +70,10 @@ export function InteractiveProductCard({
       {...props}
     >
       {/* Image Area */}
-      <div className="relative w-full aspect-[16/10] overflow-hidden rounded-t-[1.75rem] bg-gray-100 dark:bg-gray-800">
+      <div 
+        className="relative w-full aspect-[16/10] overflow-hidden rounded-t-[1.75rem] bg-gray-100 dark:bg-gray-800"
+        style={{ WebkitMaskImage: "-webkit-radial-gradient(white, black)" }}
+      >
         <img
           src={template.image}
           alt={template.title}

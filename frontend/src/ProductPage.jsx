@@ -110,7 +110,7 @@ export default function ProductPage() {
             </button>
           </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:items-start">
           {/* Left Column: Image & Details */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -119,7 +119,7 @@ export default function ProductPage() {
             className="lg:col-span-2 space-y-8"
           >
             {/* Main Image Container */}
-            <div className="w-full relative aspect-[16/10] sm:aspect-video lg:h-[500px] rounded-[2.5rem] overflow-hidden group">
+            <div className="w-full relative aspect-[16/10] sm:aspect-video lg:h-[500px] rounded-[2.5rem] overflow-hidden group cursor-pointer">
               {/* Subtle background glow when loading or if transparent */}
               <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-purple-500/10 to-pink-500/10 dark:from-indigo-500/20 dark:via-purple-500/20 dark:to-pink-500/20 animate-gradient-xy"></div>
               
@@ -137,12 +137,24 @@ export default function ProductPage() {
                  <span className="text-gray-400 font-medium">Image Preview Unavailable</span>
               </div>
               
+              {/* Hover Preview Overlay */}
+              <Link 
+                to={`/preview/${template.id}`} 
+                target="_blank"
+                className="absolute inset-0 z-40 bg-black/40 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center"
+              >
+                <div className="translate-y-8 group-hover:translate-y-0 transition-transform duration-500 ease-out flex items-center gap-2 px-8 py-4 bg-white text-black font-black text-lg rounded-full shadow-[0_20px_50px_rgba(0,0,0,0.3)] hover:scale-105">
+                  <Eye className="w-6 h-6" />
+                  <span>Live Preview</span>
+                </div>
+              </Link>
+              
               {/* Overlay shadow for depth */}
               <div className="absolute inset-0 ring-1 ring-inset ring-black/10 dark:ring-white/10 rounded-[2.5rem] z-30 pointer-events-none"></div>
             </div>
 
             {/* Product Overview Card */}
-            <div className="bg-white/80 dark:bg-[#0F0F11]/80 backdrop-blur-xl p-8 sm:p-12 rounded-[2.5rem] border border-gray-100 dark:border-white/5 shadow-sm">
+            <div className="bg-white/80 dark:bg-[#09090b]/80 backdrop-blur-xl p-8 sm:p-12 rounded-[2.5rem] border border-gray-100 dark:border-white/5 shadow-sm">
               <h2 className="text-3xl font-black tracking-tight mb-6 text-gray-900 dark:text-white">Overview</h2>
               <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed mb-10">
                 {template.description}
@@ -202,99 +214,123 @@ export default function ProductPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="lg:col-span-1"
+            className="lg:col-span-1 lg:sticky lg:top-[120px] h-fit"
           >
-            <div className="bg-white/90 dark:bg-[#0F0F11]/90 backdrop-blur-2xl p-8 rounded-[2.5rem] shadow-[0_0_50px_-12px_rgba(0,0,0,0.1)] dark:shadow-none border border-gray-100 dark:border-white/10 ring-1 ring-black/5 dark:ring-white/5 sticky top-[120px]">
-               <div className="mb-6">
-                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-100 dark:border-indigo-500/20 mb-4">
-                    <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">{template.category}</span>
-                    <span className="w-1 h-1 rounded-full bg-indigo-300 dark:bg-indigo-500/50"></span>
-                    <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">{template.tag}</span>
-                 </div>
-                 <h1 className="text-4xl font-black tracking-tight leading-tight mb-3 text-gray-900 dark:text-white">
-                   {template.title}
-                 </h1>
-                 <p className="text-gray-500 font-medium">by <span className="text-indigo-600 dark:text-indigo-400 font-bold cursor-pointer hover:underline">{template.author}</span></p>
-               </div>
-               
-               {template.is_sold_out && (
-                 <div className="mb-6 p-4 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 flex items-start gap-3">
-                   <div className="w-8 h-8 rounded-full bg-red-100 dark:bg-red-800 flex items-center justify-center shrink-0">
-                     <ShieldCheck className="w-4 h-4 text-red-600 dark:text-red-400" />
+            {/* Redesigned Premium Card */}
+            <div className="relative p-[1px] rounded-[2.5rem] bg-gradient-to-b from-gray-300 to-transparent dark:from-white/15 dark:to-transparent shadow-2xl hover:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.15)] dark:hover:shadow-[0_20px_60px_-15px_rgba(255,255,255,0.05)] transition-shadow duration-500">
+              <div className="bg-white/95 dark:bg-[#09090b]/95 backdrop-blur-3xl p-8 rounded-[2.5rem] relative overflow-hidden">
+                 
+                 {/* Top ambient glow */}
+                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80%] h-32 bg-indigo-500/20 dark:bg-indigo-500/10 blur-[50px] rounded-full pointer-events-none"></div>
+
+                 <div className="relative z-10">
+                   {/* Badges */}
+                   <div className="flex flex-wrap items-center gap-2 mb-6">
+                      <span className="px-3 py-1.5 text-[10px] font-black uppercase tracking-widest rounded-full bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-500/20">
+                        {template.category}
+                      </span>
+                      <span className="px-3 py-1.5 text-[10px] font-black uppercase tracking-widest rounded-full bg-gray-100 dark:bg-white/5 text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-white/5">
+                        {template.tag}
+                      </span>
                    </div>
-                   <div>
-                     <h3 className="text-red-800 dark:text-red-300 font-bold text-sm">This template is Sold Out</h3>
-                     <p className="text-red-600 dark:text-red-400 text-xs mt-1">This is an exclusive 1-of-1 template that has already been purchased by another user and is no longer available.</p>
+
+                   {/* Title */}
+                   <h1 className="text-3xl lg:text-4xl font-black tracking-tight leading-tight mb-2 text-gray-900 dark:text-white">
+                     {template.title}
+                   </h1>
+                   <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-8">
+                     by <span className="text-indigo-600 dark:text-indigo-400 font-bold hover:underline cursor-pointer">{template.author}</span>
+                   </p>
+
+                   {template.is_sold_out && (
+                     <div className="mb-8 p-4 rounded-xl bg-red-50 dark:bg-red-900/10 border border-red-200 dark:border-red-500/20 flex items-start gap-3">
+                       <div className="w-8 h-8 rounded-full bg-red-100 dark:bg-red-500/20 flex items-center justify-center shrink-0">
+                         <ShieldCheck className="w-4 h-4 text-red-600 dark:text-red-400" />
+                       </div>
+                       <div>
+                         <h3 className="text-red-800 dark:text-red-300 font-bold text-sm">Sold Out</h3>
+                         <p className="text-red-600 dark:text-red-400 text-xs mt-1">This exclusive 1-of-1 template has been purchased and is no longer available.</p>
+                       </div>
+                     </div>
+                   )}
+
+                   {/* Divider */}
+                   <div className="h-px w-full bg-gradient-to-r from-transparent via-gray-200 dark:via-white/10 to-transparent mb-8"></div>
+
+                   {/* Price & Stats */}
+                   <div className="flex items-end justify-between mb-8">
+                     <div>
+                       <div className="text-[11px] font-black text-gray-400 uppercase tracking-widest mb-2">Total Price</div>
+                       <div className={`text-4xl lg:text-5xl font-black tracking-tighter ${template.is_sold_out ? 'text-red-500' : 'text-gray-900 dark:text-white'}`}>
+                         {template.is_sold_out ? 'Sold Out' : formatPrice(template.price)}
+                       </div>
+                     </div>
+                     <div className="text-right">
+                        <div className="flex items-center gap-1 text-amber-400 justify-end mb-1">
+                          <Star className="w-4 h-4 fill-current" />
+                          <span className="text-sm font-black text-gray-900 dark:text-white">{template.rating}</span>
+                        </div>
+                        <div className="text-[10px] font-black text-gray-400 uppercase tracking-widest mt-1">
+                          {template.is_sold_out ? '1/1 Edition' : `${template.sales.toLocaleString()} Sales`}
+                        </div>
+                     </div>
+                   </div>
+
+                   {/* Features */}
+                   <div className="space-y-4 mb-8">
+                      <div className="flex items-center gap-3 text-sm font-medium text-gray-700 dark:text-gray-300">
+                        <div className="w-8 h-8 rounded-full bg-emerald-50 dark:bg-emerald-500/10 flex items-center justify-center shrink-0">
+                          <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                        </div>
+                        Quality checked by Bizleap
+                      </div>
+                      <div className="flex items-center gap-3 text-sm font-medium text-gray-700 dark:text-gray-300">
+                        <div className="w-8 h-8 rounded-full bg-amber-50 dark:bg-amber-500/10 flex items-center justify-center shrink-0">
+                          <Zap className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+                        </div>
+                        Instant download access
+                      </div>
+                   </div>
+
+                   {/* Primary Action */}
+                   <button 
+                      onClick={() => {
+                        if (isOwned || template.is_sold_out) return;
+                        requireAuth(() => addToCart(template));
+                      }}
+                      disabled={isOwned || template.is_sold_out}
+                      className={`w-full py-4 rounded-xl font-bold text-base flex items-center justify-center gap-2 transition-all duration-300 relative overflow-hidden group mb-3 shadow-lg ${
+                        template.is_sold_out
+                        ? 'bg-red-50 dark:bg-red-900/20 text-red-400 cursor-not-allowed border border-red-200 dark:border-red-800'
+                        : isOwned
+                        ? 'bg-gray-100 dark:bg-white/5 text-gray-400 dark:text-gray-500 cursor-not-allowed'
+                        : inCart 
+                        ? 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/20 shadow-[0_0_20px_-5px_rgba(16,185,129,0.3)]' 
+                        : 'bg-black dark:bg-white text-white dark:text-black hover:scale-[1.02] shadow-[0_10px_20px_-10px_rgba(0,0,0,0.5)] dark:shadow-[0_10px_20px_-10px_rgba(255,255,255,0.2)]'
+                      }`}
+                   >
+                      {!isOwned && !inCart && !template.is_sold_out && (
+                        <div className="absolute inset-0 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/20 dark:via-black/10 to-transparent"></div>
+                      )}
+                      {template.is_sold_out ? 'Sold Out' : isOwned ? <><Check className="w-5 h-5" /> Already Owned</> : inCart ? 'Added to Cart' : <><ShoppingCart className="w-5 h-5" /> Add to Cart</>}
+                   </button>
+
+                   {/* Secondary Actions */}
+                   <div className="flex items-center gap-3">
+                     <button
+                        onClick={() => toggleWishlist(template)}
+                        className={`w-full flex items-center justify-center gap-2 py-3.5 rounded-xl border transition-all duration-300 font-bold ${
+                          isInWishlist(template.id)
+                            ? 'border-red-200 dark:border-red-500/20 bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400'
+                            : 'border-gray-200 dark:border-white/10 hover:border-gray-300 dark:hover:border-white/20 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5 bg-white/50 dark:bg-transparent'
+                        }`}
+                     >
+                        <Heart className={`w-4 h-4 ${isInWishlist(template.id) ? 'fill-current' : ''}`} />
+                        <span className="text-sm">{isInWishlist(template.id) ? 'Wishlisted' : 'Wishlist'}</span>
+                     </button>
                    </div>
                  </div>
-               )}
-
-               <div className="flex items-center gap-4 mb-8">
-                  <div className="flex text-amber-400">
-                     {[...Array(5)].map((_, i) => (
-                        <Star key={i} className={`w-4 h-4 ${i < Math.floor(template.rating) ? 'fill-current' : 'text-gray-200 dark:text-gray-700'}`} />
-                     ))}
-                  </div>
-                  <span className="text-sm font-bold text-gray-500 dark:text-gray-400">
-                    {template.is_sold_out ? '1/1 Edition' : `${template.sales.toLocaleString()} Sales`}
-                  </span>
-               </div>
-
-               <div className={`text-5xl font-black mb-8 border-y border-gray-100 dark:border-white/10 py-8 ${template.is_sold_out ? 'text-red-500' : 'text-transparent bg-clip-text bg-gradient-to-br from-gray-900 to-gray-600 dark:from-white dark:to-gray-400'}`}>
-                 {template.is_sold_out ? 'Sold Out' : formatPrice(template.price)}
-               </div>
-
-               <div className="space-y-4 mb-8 text-sm font-medium text-gray-600 dark:text-gray-400 bg-gray-50/50 dark:bg-white/[0.02] p-5 rounded-2xl border border-gray-100 dark:border-white/5">
-                  <div className="flex items-center gap-3"><ShieldCheck className="w-5 h-5 text-emerald-500" /> Quality checked by Bizleap</div>
-                  <div className="flex items-center gap-3"><Zap className="w-5 h-5 text-amber-500" /> Instant download access</div>
-               </div>
-
-               <button 
-                  onClick={() => {
-                    if (isOwned || template.is_sold_out) return;
-                    requireAuth(() => addToCart(template));
-                  }}
-                  disabled={isOwned || template.is_sold_out}
-                  className={`w-full py-5 rounded-2xl font-bold text-lg flex items-center justify-center gap-3 transition-all duration-300 relative overflow-hidden group ${
-                    template.is_sold_out
-                    ? 'bg-red-50 dark:bg-red-900/20 text-red-400 cursor-not-allowed border border-red-200 dark:border-red-800'
-                    : isOwned
-                    ? 'bg-gray-100 dark:bg-white/5 text-gray-400 dark:text-gray-500 cursor-not-allowed'
-                    : inCart 
-                    ? 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/20 shadow-[0_0_20px_-5px_rgba(16,185,129,0.3)]' 
-                    : 'bg-black dark:bg-white text-white dark:text-black hover:scale-[1.02] hover:shadow-[0_15px_30px_-10px_rgba(0,0,0,0.3)] dark:hover:shadow-[0_15px_30px_-10px_rgba(255,255,255,0.3)]'
-                  }`}
-               >
-                  {/* Subtle shine effect on primary button */}
-                  {!isOwned && !inCart && !template.is_sold_out && (
-                    <div className="absolute inset-0 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/20 dark:via-black/10 to-transparent"></div>
-                  )}
-                  {template.is_sold_out ? 'Sold Out' : isOwned ? <><Check className="w-6 h-6" /> Already Owned</> : inCart ? 'Added to Cart' : <><ShoppingCart className="w-6 h-6" /> Add to Cart</>}
-               </button>
-
-               <div className="flex flex-col sm:flex-row gap-3 mt-4">
-                 <button
-                    onClick={() => toggleWishlist(template)}
-                    className={`flex-1 flex items-center justify-center gap-2 py-4 rounded-xl border transition-all duration-300 font-bold ${
-                      isInWishlist(template.id)
-                        ? 'border-red-200 dark:border-red-500/20 bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400'
-                        : 'border-gray-200 dark:border-white/10 hover:border-gray-300 dark:hover:border-white/20 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5'
-                    }`}
-                    title="Add to Wishlist"
-                 >
-                    <Heart className={`w-5 h-5 ${isInWishlist(template.id) ? 'fill-current' : ''}`} />
-                    <span className="text-sm">{isInWishlist(template.id) ? 'Wishlisted' : 'Wishlist'}</span>
-                 </button>
-                 <Link
-                    to={`/preview/${template.id}`}
-                    target="_blank"
-                    className="flex-1 flex items-center justify-center gap-2 py-4 rounded-xl border border-gray-200 dark:border-white/10 hover:border-gray-300 dark:hover:border-white/20 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5 transition-all duration-300 font-bold"
-                    title="Live Preview"
-                 >
-                    <Eye className="w-5 h-5" />
-                    <span className="text-sm">Preview</span>
-                 </Link>
-               </div>
+              </div>
             </div>
           </motion.div>
         </div>

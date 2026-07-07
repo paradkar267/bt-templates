@@ -152,7 +152,8 @@ export default function CartPage() {
     
     // Call backend to send email receipt
     try {
-      const response = await fetch('http://localhost:3000/api/send-receipt', {
+      const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
+      const response = await fetch(`${backendUrl}/api/send-receipt`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -254,7 +255,7 @@ export default function CartPage() {
     )}
     <div className={`min-h-screen font-sans pb-24 transition-colors duration-1000 ${isDark ? 'bg-transparent text-white' : 'bg-gray-50 dark:bg-gray-900 text-black dark:text-white'}`}>
       {/* Mini Nav */}
-      <nav className={`h-[80px] w-full px-8 md:px-16 flex items-center justify-between border-b sticky top-0 z-50 ${isDark ? 'bg-transparent border-white/10' : 'bg-white dark:bg-black border-gray-200 dark:border-gray-800'}`}>
+      <nav className="h-[80px] w-full px-8 md:px-16 flex items-center justify-between border-b sticky top-0 z-50 bg-white/80 dark:bg-black/80 backdrop-blur-xl border-gray-200 dark:border-white/10">
         <div className="flex items-center gap-8">
           <Logo />
           <div className="w-px h-6 bg-gray-200 dark:bg-gray-800 hidden md:block"></div>

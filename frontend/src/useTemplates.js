@@ -26,7 +26,7 @@ export function useTemplates() {
         let category = t.category;
         if (t.id === 1 || t.id === 2) category = 'HTML';
 
-        return { ...t, price: currentPrice.toString(), previewUrl, category };
+        return { ...t, price: currentPrice.toString(), previewUrl, category, is_sold_out: false };
       }) || [];
       
       setTemplates(adjustedData);

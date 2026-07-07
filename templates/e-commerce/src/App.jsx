@@ -8,7 +8,7 @@ import Checkout from './pages/Checkout';
 
 function App() {
   return (
-    <HashRouter>
+    <Router>
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
@@ -17,7 +17,7 @@ function App() {
           <Route path="checkout" element={<Checkout />} />
         </Route>
       </Routes>
-    </HashRouter>
+    </Router>
   );
 }
 

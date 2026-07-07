@@ -44,7 +44,7 @@ export default function AdminDashboard() {
   const [selectedFile, setSelectedFile] = useState(null);
 
   // Check Admin Access
-  const isAdmin = user?.email?.toLowerCase() === 'bizleap1@gmail.com';
+  const isAdmin = user?.email?.toLowerCase() === (import.meta.env.VITE_ADMIN_EMAIL?.toLowerCase() || 'bizleap1@gmail.com');
 
   useEffect(() => {
     if (session && !isAdmin) {
@@ -58,7 +58,8 @@ export default function AdminDashboard() {
     
     try {
       const { data: { session: currentSession } } = await supabase.auth.getSession();
-      const res = await fetch('http://localhost:3000/api/admin/update-price', {
+      const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
+      const res = await fetch(`${backendUrl}/api/admin/update-price`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -72,6 +73,29 @@ export default function AdminDashboard() {
     } catch (error) {
       console.error(error);
       alert('Error updating price');
+    }
+  };
+
+  const handleDeleteTemplate = async (templateId) => {
+    if (!window.confirm('Are you sure you want to delete this template completely? This will remove the original code, preview files, and database records forever.')) {
+      return;
+    }
+
+    try {
+      const { data: { session: currentSession } } = await supabase.auth.getSession();
+      const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
+      const res = await fetch(`${backendUrl}/api/admin/template/${templateId}?t=${Date.now()}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${currentSession?.access_token}`
+        }
+      });
+      if (!res.ok) throw new Error('Failed to delete template');
+      alert('Template deleted successfully!');
+      refetch();
+    } catch (error) {
+      console.error(error);
+      alert('Error deleting template');
     }
   };
 
@@ -98,7 +122,8 @@ export default function AdminDashboard() {
 
     try {
       const { data: { session: currentSession } } = await supabase.auth.getSession();
-      const res = await fetch('http://localhost:3000/api/admin/upload-template', {
+      const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
+      const res = await fetch(`${backendUrl}/api/admin/upload-template`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${currentSession?.access_token}`
@@ -189,12 +214,20 @@ export default function AdminDashboard() {
                           <td className="px-6 py-4 font-bold">{formatPrice(t.price)}</td>
                           <td className="px-6 py-4 text-gray-500">{t.sales}</td>
                           <td className="px-6 py-4 text-right">
-                             <button 
-                               onClick={() => handlePriceUpdate(t.id, t.price)}
-                               className="px-3 py-1 bg-gray-100 dark:bg-white/10 hover:bg-gray-200 dark:hover:bg-white/20 rounded-md text-sm font-bold transition-colors"
-                             >
-                               Edit Price
-                             </button>
+                             <div className="flex justify-end gap-2">
+                               <button 
+                                 onClick={() => handlePriceUpdate(t.id, t.price)}
+                                 className="px-3 py-1 bg-gray-100 dark:bg-white/10 hover:bg-gray-200 dark:hover:bg-white/20 rounded-md text-sm font-bold transition-colors"
+                               >
+                                 Edit Price
+                               </button>
+                               <button 
+                                 onClick={() => handleDeleteTemplate(t.id)}
+                                 className="px-3 py-1 bg-red-100 dark:bg-red-500/10 hover:bg-red-200 dark:hover:bg-red-500/20 text-red-600 dark:text-red-400 rounded-md text-sm font-bold transition-colors"
+                               >
+                                 Delete
+                               </button>
+                             </div>
                           </td>
                         </tr>
                       ))}
@@ -248,6 +281,20 @@ export default function AdminDashboard() {
                       <option value="Next.js">Next.js</option>
                       <option value="Svelte">Svelte</option>
                       <option value="HTML">HTML</option>
+                      <option value="Business">Business</option>
+                      <option value="Corporate">Corporate</option>
+                      <option value="Startup">Startup</option>
+                      <option value="Agency">Agency</option>
+                      <option value="SaaS">SaaS</option>
+                      <option value="E-commerce">E-commerce</option>
+                      <option value="Fashion & Clothing">Fashion & Clothing</option>
+                      <option value="Jewelry">Jewelry</option>
+                      <option value="Electronics">Electronics</option>
+                      <option value="Furniture">Furniture</option>
+                      <option value="Beauty & Cosmetics">Beauty & Cosmetics</option>
+                      <option value="Grocery">Grocery</option>
+                      <option value="Marketplace">Marketplace</option>
+                      <option value="Portfolio">Portfolio</option>
                     </select>
                   </div>
                 </div>

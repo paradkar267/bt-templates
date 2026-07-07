@@ -34,8 +34,7 @@ export function CenterNav() {
         }}
         items={[
           { name: "HOME", url: "/", icon: Home },
-          { name: "TEMPLATES", url: "/templates", icon: LayoutTemplate },
-          { name: "UI KITS", url: "/ui-kits", icon: Layers },
+          { name: "TEMPLATES", url: "/templates", icon: LayoutTemplate }
         ]} 
       >
         <CategoryDropdown 

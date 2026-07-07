@@ -12,7 +12,12 @@ export function CategoryDropdown({ isActive, isOpen, setIsOpen }) {
   const { templates } = useTemplates();
 
   // Extract unique business tags from templates
-  const tags = Array.from(new Set(templates.map(t => t.tag).filter(Boolean))).sort();
+  const predefinedTags = [
+    "Business", "Corporate", "Startup", "Agency", "SaaS", "E-commerce", 
+    "Fashion & Clothing", "Jewelry", "Electronics", "Furniture", 
+    "Beauty & Cosmetics", "Grocery", "Marketplace", "Portfolio"
+  ];
+  const tags = Array.from(new Set([...predefinedTags, ...templates.map(t => t.tag).filter(Boolean)])).sort();
 
   useEffect(() => {
     const handleClickOutside = (event) => {

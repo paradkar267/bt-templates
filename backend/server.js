@@ -3,11 +3,14 @@ import cors from 'cors';
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
 import path from 'path';
+import crypto from 'crypto';
+import AdmZip from 'adm-zip';
 import { fileURLToPath } from 'url';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import { createClient } from '@supabase/supabase-js';
 import multer from 'multer';
+import fs from 'fs';
 
 const upload = multer({ storage: multer.memoryStorage() });
 
@@ -36,9 +39,8 @@ app.use('/api/', apiLimiter);
 
 // Strict CORS
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://localhost:5174'],
-  methods: ['GET', 'POST'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  origin: process.env.FRONTEND_URL ? [process.env.FRONTEND_URL, 'http://localhost:5173', 'http://localhost:5174'] : ['http://localhost:5173', 'http://localhost:5174'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept']
 }));
 
 app.use(express.json());
@@ -66,13 +68,13 @@ app.post('/api/send-receipt', async (req, res) => {
   const { items, total, orderId } = orderDetails;
 
   const itemsHtml = items.map((item, index) => `
-    <tr style="${index % 2 === 0 ? 'background-color: #fafafa;' : ''}">
-      <td style="padding: 14px 16px; border-bottom: 1px solid #f0f0f0;">
-        <strong style="color: #1a1a1a; font-size: 14px;">${item.title}</strong><br/>
-        <span style="color: #888; font-size: 12px;">${item.category || 'Digital Template'}</span>
+    <tr class="${index % 2 === 0 ? 'bg-light' : ''}" style="${index % 2 === 0 ? 'background-color: #fafafa;' : ''}">
+      <td class="border-light" style="padding: 14px 16px; border-bottom: 1px solid #f0f0f0;">
+        <strong class="text-main" style="color: #1a1a1a; font-size: 14px;">${item.title}</strong><br/>
+        <span class="text-muted" style="color: #888; font-size: 12px;">${item.category || 'Digital Template'}</span>
       </td>
-      <td style="padding: 14px 16px; border-bottom: 1px solid #f0f0f0; text-align: center; color: #666; font-size: 13px;">1</td>
-      <td style="padding: 14px 16px; border-bottom: 1px solid #f0f0f0; text-align: right; color: #1a1a1a; font-weight: 600; font-size: 14px;">₹${item.price}</td>
+      <td class="border-light text-muted" style="padding: 14px 16px; border-bottom: 1px solid #f0f0f0; text-align: center; color: #666; font-size: 13px;">1</td>
+      <td class="border-light text-main" style="padding: 14px 16px; border-bottom: 1px solid #f0f0f0; text-align: right; color: #1a1a1a; font-weight: 600; font-size: 14px;">₹${item.price}</td>
     </tr>
   `).join('');
 
@@ -89,30 +91,46 @@ app.post('/api/send-receipt', async (req, res) => {
     <head>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="color-scheme" content="light dark">
+      <meta name="supported-color-schemes" content="light dark">
+      <style>
+        :root { color-scheme: light dark; }
+        @media (prefers-color-scheme: dark) {
+          .body-bg { background-color: #000000 !important; }
+          .card-bg { background-color: #111111 !important; }
+          .text-main { color: #ffffff !important; }
+          .text-muted { color: #a0a0a0 !important; }
+          .bg-light { background-color: #1a1a1a !important; }
+          .border-light { border-color: #222222 !important; }
+          .info-box { background-color: #0f172a !important; border-left-color: #3b82f6 !important; }
+          .info-text { color: #e2e8f0 !important; }
+          .header-bg { background: #0a0a0a !important; }
+        }
+      </style>
     </head>
-    <body style="margin: 0; padding: 0; background-color: #f4f4f7; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
+    <body class="body-bg" style="margin: 0; padding: 0; background-color: #f4f4f7; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
       <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
         
         <!-- Main Card -->
-        <div style="background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.08);">
+        <div class="card-bg" style="background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.08);">
           
           <!-- Header -->
-          <div style="background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%); padding: 36px 32px; text-align: center;">
+          <div class="header-bg" style="background-color: #111827; padding: 36px 32px; text-align: center;">
             <h1 style="margin: 0 0 4px 0; font-size: 28px; font-weight: 800; letter-spacing: 3px; color: #ffffff;">BIZLEAP</h1>
-            <p style="margin: 0; font-size: 12px; color: rgba(255,255,255,0.5); letter-spacing: 1px; text-transform: uppercase;">Digital Marketplace</p>
+            <p style="margin: 0; font-size: 12px; color: #a1a1aa; letter-spacing: 1px; text-transform: uppercase;">Digital Marketplace</p>
           </div>
 
           <!-- Success Badge -->
           <div style="text-align: center; padding: 28px 32px 0;">
-            <div style="display: inline-block; background: linear-gradient(135deg, #10b981, #059669); color: #fff; padding: 8px 20px; border-radius: 50px; font-size: 13px; font-weight: 700; letter-spacing: 0.5px;">
+            <div style="display: inline-block; background-color: #10b981; color: #ffffff; padding: 8px 20px; border-radius: 50px; font-size: 13px; font-weight: 700; letter-spacing: 0.5px;">
               ✓ PAYMENT SUCCESSFUL
             </div>
           </div>
 
           <!-- Greeting -->
           <div style="padding: 24px 32px 0;">
-            <h2 style="margin: 0 0 8px; color: #1a1a1a; font-size: 22px; font-weight: 700;">Thank you for your purchase!</h2>
-            <p style="margin: 0; color: #666; font-size: 14px; line-height: 1.6;">
+            <h2 class="text-main" style="margin: 0 0 8px; color: #1a1a1a; font-size: 22px; font-weight: 700;">Thank you for your purchase!</h2>
+            <p class="text-muted" style="margin: 0; color: #666; font-size: 14px; line-height: 1.6;">
               Your order has been confirmed and your templates are ready to download from your dashboard.
             </p>
           </div>
@@ -121,17 +139,17 @@ app.post('/api/send-receipt', async (req, res) => {
           <div style="padding: 24px 32px;">
             <table style="width: 100%; border-collapse: collapse;">
               <tr>
-                <td style="padding: 12px 16px; background: #f8f9fb; border-radius: 10px 0 0 10px;">
-                  <span style="display: block; font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">Order ID</span>
-                  <span style="font-size: 14px; font-weight: 700; color: #1a1a1a;">#${orderId}</span>
+                <td class="bg-light" style="padding: 12px 16px; background: #f8f9fb; border-radius: 10px 0 0 10px;">
+                  <span class="text-muted" style="display: block; font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">Order ID</span>
+                  <span class="text-main" style="font-size: 14px; font-weight: 700; color: #1a1a1a;">#${orderId}</span>
                 </td>
-                <td style="padding: 12px 16px; background: #f8f9fb;">
-                  <span style="display: block; font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">Date</span>
-                  <span style="font-size: 14px; font-weight: 600; color: #1a1a1a;">${orderDate}</span>
+                <td class="bg-light" style="padding: 12px 16px; background: #f8f9fb;">
+                  <span class="text-muted" style="display: block; font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">Date</span>
+                  <span class="text-main" style="font-size: 14px; font-weight: 600; color: #1a1a1a;">${orderDate}</span>
                 </td>
-                <td style="padding: 12px 16px; background: #f8f9fb; border-radius: 0 10px 10px 0;">
-                  <span style="display: block; font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">Time</span>
-                  <span style="font-size: 14px; font-weight: 600; color: #1a1a1a;">${orderTime}</span>
+                <td class="bg-light" style="padding: 12px 16px; background: #f8f9fb; border-radius: 0 10px 10px 0;">
+                  <span class="text-muted" style="display: block; font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">Time</span>
+                  <span class="text-main" style="font-size: 14px; font-weight: 600; color: #1a1a1a;">${orderTime}</span>
                 </td>
               </tr>
             </table>
@@ -139,18 +157,18 @@ app.post('/api/send-receipt', async (req, res) => {
 
           <!-- Divider -->
           <div style="padding: 0 32px;">
-            <hr style="border: none; border-top: 1px solid #eee; margin: 0;"/>
+            <hr class="border-light" style="border: none; border-top: 1px solid #eee; margin: 0;"/>
           </div>
 
           <!-- Items Table -->
           <div style="padding: 24px 32px;">
-            <h3 style="margin: 0 0 16px; font-size: 16px; font-weight: 700; color: #1a1a1a;">Order Summary</h3>
-            <table style="width: 100%; border-collapse: collapse; border-radius: 12px; overflow: hidden; border: 1px solid #f0f0f0;">
+            <h3 class="text-main" style="margin: 0 0 16px; font-size: 16px; font-weight: 700; color: #1a1a1a;">Order Summary</h3>
+            <table class="border-light" style="width: 100%; border-collapse: collapse; border-radius: 12px; overflow: hidden; border: 1px solid #f0f0f0;">
               <thead>
-                <tr style="background-color: #f8f9fb;">
-                  <th style="text-align: left; padding: 12px 16px; font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;">Item</th>
-                  <th style="text-align: center; padding: 12px 16px; font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;">Qty</th>
-                  <th style="text-align: right; padding: 12px 16px; font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;">Price</th>
+                <tr class="bg-light" style="background-color: #f8f9fb;">
+                  <th class="text-muted" style="text-align: left; padding: 12px 16px; font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;">Item</th>
+                  <th class="text-muted" style="text-align: center; padding: 12px 16px; font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;">Qty</th>
+                  <th class="text-muted" style="text-align: right; padding: 12px 16px; font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;">Price</th>
                 </tr>
               </thead>
               <tbody>
@@ -163,45 +181,45 @@ app.post('/api/send-receipt', async (req, res) => {
           <div style="padding: 0 32px 28px;">
             <table style="width: 100%; border-collapse: collapse;">
               <tr>
-                <td style="padding: 6px 0; color: #888; font-size: 14px;">Subtotal</td>
-                <td style="padding: 6px 0; text-align: right; color: #1a1a1a; font-size: 14px;">₹${total}</td>
+                <td class="text-muted" style="padding: 6px 0; color: #888; font-size: 14px;">Subtotal</td>
+                <td class="text-main" style="padding: 6px 0; text-align: right; color: #1a1a1a; font-size: 14px;">₹${total}</td>
               </tr>
               <tr>
-                <td style="padding: 6px 0; color: #888; font-size: 14px;">Discount</td>
+                <td class="text-muted" style="padding: 6px 0; color: #888; font-size: 14px;">Discount</td>
                 <td style="padding: 6px 0; text-align: right; color: #10b981; font-size: 14px;">-₹0.00</td>
               </tr>
               <tr>
-                <td colspan="2" style="padding: 12px 0 0;"><hr style="border: none; border-top: 2px solid #eee; margin: 0;"/></td>
+                <td colspan="2" style="padding: 12px 0 0;"><hr class="border-light" style="border: none; border-top: 2px solid #eee; margin: 0;"/></td>
               </tr>
               <tr>
-                <td style="padding: 12px 0 0; color: #1a1a1a; font-size: 18px; font-weight: 800;">Total Paid</td>
-                <td style="padding: 12px 0 0; text-align: right; color: #1a1a1a; font-size: 22px; font-weight: 800;">₹${total}</td>
+                <td class="text-main" style="padding: 12px 0 0; color: #1a1a1a; font-size: 18px; font-weight: 800;">Total Paid</td>
+                <td class="text-main" style="padding: 12px 0 0; text-align: right; color: #1a1a1a; font-size: 22px; font-weight: 800;">₹${total}</td>
               </tr>
             </table>
           </div>
 
           <!-- CTA Button -->
           <div style="text-align: center; padding: 0 32px 32px;">
-            <a href="${baseUrl}/my-templates" style="display: inline-block; background: linear-gradient(135deg, #0a0a0a, #1a1a2e); color: #ffffff; padding: 14px 36px; text-decoration: none; border-radius: 12px; font-weight: 700; font-size: 14px; letter-spacing: 0.5px; box-shadow: 0 4px 14px rgba(0,0,0,0.2);">
+            <a href="${baseUrl}/my-templates" style="display: inline-block; background-color: #000000; color: #ffffff; padding: 14px 36px; text-decoration: none; border-radius: 12px; font-weight: 700; font-size: 14px; letter-spacing: 0.5px; box-shadow: 0 4px 14px rgba(0,0,0,0.2);">
               Download Your Templates →
             </a>
           </div>
 
           <!-- Info Box -->
-          <div style="margin: 0 32px 28px; padding: 16px 20px; background: #f0f7ff; border-radius: 12px; border-left: 4px solid #3b82f6;">
-            <p style="margin: 0; font-size: 13px; color: #1e40af; line-height: 1.5;">
-              <strong>💡 Quick Tip:</strong> You can download your purchased templates anytime from the "My Templates" section in your dashboard. Download links are secure and time-limited for your protection.
+          <div class="info-box" style="margin: 0 32px 28px; padding: 16px 20px; background: #f0f7ff; border-radius: 12px; border-left: 4px solid #3b82f6;">
+            <p class="info-text" style="margin: 0; font-size: 13px; color: #1e40af; line-height: 1.5;">
+              <strong class="info-text">💡 Quick Tip:</strong> You can download your purchased templates anytime from the "My Templates" section in your dashboard. Download links are secure and time-limited for your protection.
             </p>
           </div>
 
           <!-- Footer -->
-          <div style="background-color: #fafafa; padding: 24px 32px; border-top: 1px solid #f0f0f0;">
+          <div class="bg-light border-light" style="background-color: #fafafa; padding: 24px 32px; border-top: 1px solid #f0f0f0;">
             <table style="width: 100%;">
               <tr>
                 <td style="text-align: center;">
-                  <p style="margin: 0 0 8px; font-size: 13px; color: #999;">Need help? Contact us at</p>
+                  <p class="text-muted" style="margin: 0 0 8px; font-size: 13px; color: #999;">Need help? Contact us at</p>
                   <a href="mailto:bizleap1@gmail.com" style="color: #3b82f6; text-decoration: none; font-size: 13px; font-weight: 600;">bizleap1@gmail.com</a>
-                  <p style="margin: 16px 0 0; font-size: 11px; color: #ccc;">
+                  <p class="text-muted" style="margin: 16px 0 0; font-size: 11px; color: #ccc;">
                     © ${new Date().getFullYear()} Bizleap. All rights reserved.<br/>
                     This is an automated receipt. Please do not reply to this email.
                   </p>
@@ -258,7 +276,7 @@ app.post('/api/contact', async (req, res) => {
   try {
     const info = await transporter.sendMail({
       from: `"Bizleap Contact Form" <bizleap1@gmail.com>`,
-      to: 'bizleap1@gmail.com', // Send to site admin
+      to: process.env.ADMIN_EMAIL || 'bizleap1@gmail.com', // Send to site admin
       replyTo: email,
       subject: `New Message: ${subject || 'General Inquiry'} from ${firstName} ${lastName}`,
       html: htmlContent,
@@ -410,7 +428,7 @@ app.get('/api/admin/stats', async (req, res) => {
 
   try {
     const { data: { user }, error: userError } = await supabaseAdmin.auth.getUser(token);
-    if (userError || !user || user.email?.toLowerCase() !== 'bizleap1@gmail.com') {
+    if (userError || !user || user.email?.toLowerCase() !== (process.env.ADMIN_EMAIL?.toLowerCase() || 'bizleap1@gmail.com')) {
       return res.status(403).json({ error: 'Forbidden' });
     }
 
@@ -444,7 +462,7 @@ app.post('/api/admin/upload-template', upload.single('file'), async (req, res) =
 
   try {
     const { data: { user }, error: userError } = await supabaseAdmin.auth.getUser(token);
-    if (userError || !user || user.email?.toLowerCase() !== 'bizleap1@gmail.com') {
+    if (userError || !user || user.email?.toLowerCase() !== (process.env.ADMIN_EMAIL?.toLowerCase() || 'bizleap1@gmail.com')) {
       return res.status(403).json({ error: 'Forbidden' });
     }
 
@@ -468,6 +486,17 @@ app.post('/api/admin/upload-template', upload.single('file'), async (req, res) =
 
     if (uploadError) throw uploadError;
 
+    // Automatically unzip to frontend public directory for live preview
+    try {
+      const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+      const extractPath = path.resolve(__dirname, '../frontend/public/previews', slug);
+      const zip = new AdmZip(file.buffer);
+      zip.extractAllTo(extractPath, true);
+    } catch (unzipErr) {
+      console.error('Failed to extract zip for preview:', unzipErr);
+      // We don't throw here to ensure the db insert still happens
+    }
+
     // Parse keywords safely
     let parsedKeywords = [];
     try {
@@ -482,6 +511,7 @@ app.post('/api/admin/upload-template', upload.single('file'), async (req, res) =
     const { data: templateData, error: dbError } = await supabaseAdmin
       .from('templates')
       .insert({
+        id: Math.floor(Math.random() * 2000000000),
         title,
         description,
         price,
@@ -513,6 +543,87 @@ app.post('/api/admin/upload-template', upload.single('file'), async (req, res) =
   }
 });
 
+// Admin: Delete Template
+app.delete('/api/admin/template/:id', async (req, res) => {
+  const authHeader = req.headers.authorization;
+  if (!supabaseAdmin) return res.status(500).json({ error: 'Misconfigured' });
+  if (!authHeader) return res.status(401).json({ error: 'Missing auth' });
+  const token = authHeader.replace('Bearer ', '');
+
+  try {
+    const { data: { user }, error: userError } = await supabaseAdmin.auth.getUser(token);
+    if (userError || !user) return res.status(401).json({ error: 'Unauthorized' });
+    if (user.email.toLowerCase() !== (process.env.ADMIN_EMAIL?.toLowerCase() || 'bizleap1@gmail.com')) {
+      return res.status(403).json({ error: 'Forbidden' });
+    }
+
+    const { id } = req.params;
+
+    // 1. Fetch template
+    const { data: template, error: fetchErr } = await supabaseAdmin
+      .from('templates')
+      .select('title')
+      .eq('id', id)
+      .single();
+
+    if (fetchErr) {
+      console.warn('Template fetch error (might be invalid ID):', fetchErr.message);
+    }
+
+    // 2. Fetch file mapping
+    const { data: fileMapping } = await supabaseAdmin
+      .from('template_files')
+      .select('file_path')
+      .eq('template_id', id)
+      .single();
+
+    // 3. Delete from DB (ignore out of range errors)
+    await supabaseAdmin.from('template_files').delete().eq('template_id', id);
+    await supabaseAdmin.from('templates').delete().eq('id', id);
+
+    // 4. Delete from Storage
+    if (fileMapping && fileMapping.file_path) {
+      await supabaseAdmin.storage
+        .from('secure_templates')
+        .remove([fileMapping.file_path]);
+    }
+    
+    if (template && template.title) {
+      // Fallback: also try to delete templates/${template.title}.zip (legacy script uploads)
+      await supabaseAdmin.storage.from('secure_templates').remove([`templates/${template.title}.zip`]);
+
+      // 5. Delete Preview folder
+      const slug = template.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+      const previewPath = path.resolve(__dirname, '../frontend/public/previews', slug);
+      try {
+        if (fs.existsSync(previewPath)) {
+          fs.rmSync(previewPath, { recursive: true, force: true });
+        }
+      } catch (fsErr) {
+        if (process.env.NODE_ENV !== 'production') console.warn('Could not delete preview folder:', fsErr.message);
+      }
+
+      // 6. Delete Original Source Folder (if exists)
+      const sourcePath = path.resolve(__dirname, '../templates', template.title);
+      try {
+        if (fs.existsSync(sourcePath)) {
+          fs.rmSync(sourcePath, { recursive: true, force: true });
+        }
+      } catch (fsErr) {
+        if (process.env.NODE_ENV !== 'production') console.warn('Could not delete source folder:', fsErr.message);
+      }
+    }
+
+    res.status(200).json({ success: true });
+  } catch (err) {
+    console.error('Delete error:', err);
+    try {
+      fs.writeFileSync(path.resolve(__dirname, 'delete_error.log'), err.stack || err.message);
+    } catch (e) {}
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Admin: Update Price
 app.post('/api/admin/update-price', async (req, res) => {
   const authHeader = req.headers.authorization;
@@ -527,7 +638,7 @@ app.post('/api/admin/update-price', async (req, res) => {
     
     console.log("Auth Check:", { email: user?.email, error: userError?.message });
     
-    if (userError || !user || user.email?.toLowerCase() !== 'bizleap1@gmail.com') {
+    if (userError || !user || user.email?.toLowerCase() !== (process.env.ADMIN_EMAIL?.toLowerCase() || 'bizleap1@gmail.com')) {
       return res.status(403).json({ error: 'Forbidden' });
     }
 

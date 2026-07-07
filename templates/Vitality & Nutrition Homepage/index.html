@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PharmaCare - Vitality & Nutrition</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,600;1,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,600;1,700&family=Bebas+Neue&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- Navbar -->
-    <nav class="navbar">
+    <nav class="navbar" id="navbar">
         <div class="nav-left">
-            <a href="#" class="logo">PharmaCare</a>
+            <a href="#" class="logo">PHARMACARE</a>
             <ul class="nav-links">
                 <li><a href="#">Prescriptions</a></li>
                 <li><a href="#">Store Locator</a></li>
@@ -27,10 +27,12 @@
                     <circle cx="11" cy="11" r="8"></circle>
                     <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                 </svg>
-                <input type="text" placeholder="Search medications, refills, or symptoms...">
+                <input type="text" placeholder="Search supplements, refills...">
             </div>
             <a href="#" class="link-refill">Refill Rx</a>
-            <button class="btn-primary">Sign In</button>
+            <button class="btn-primary" id="open-cart-btn">
+                Cart (<span id="cart-count">0</span>)
+            </button>
         </div>
     </nav>
 
@@ -42,17 +44,17 @@
         </div>
         
         <div class="hero-content">
-            <div class="hero-card">
+            <div class="hero-card slide-up">
                 <span class="badge-neon">VITALITY & NUTRITION</span>
                 <h1 class="hero-title">Fuel Your Most <span class="italic-blue">Powerful</span> Self.</h1>
                 <p class="hero-desc">Advanced sports nutrition, essential vitamins, and personalized wellness plans designed by pharmacists for peak human performance.</p>
                 <div class="hero-actions">
-                    <button class="btn-blue-solid">Shop All Supplements <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></button>
-                    <button class="btn-light-gray">Take Wellness Quiz</button>
+                    <button class="btn-blue-solid glow-effect">Shop All Supplements</button>
+                    <button class="btn-light-gray" id="open-quiz-btn">Take Wellness Quiz</button>
                 </div>
             </div>
             
-            <div class="hero-promo-card">
+            <div class="hero-promo-card slide-up-delay">
                 <div class="promo-header">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2">
                         <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
@@ -60,30 +62,24 @@
                     <span class="promo-title text-orange">DAILY ENERGY BOOSTER</span>
                 </div>
                 <p>Get 20% off your first subscription order of Pure Whey Isolate.</p>
-                <a href="#" class="promo-link text-blue">CLAIM OFFER &gt;</a>
+                <a href="#" class="promo-link text-blue hover-slide">CLAIM OFFER &gt;</a>
             </div>
         </div>
     </header>
 
     <!-- Shop by Goal Section -->
     <section class="goals-section">
-        <div class="section-header-row">
+        <div class="section-header-row reveal">
             <div>
                 <h2>Shop by Goal</h2>
                 <p>Targeted nutrition for every lifestyle.</p>
             </div>
-            <a href="#" class="view-all-link text-blue">View all categories 
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                    <polyline points="15 3 21 3 21 9"></polyline>
-                    <line x1="10" y1="14" x2="21" y2="3"></line>
-                </svg>
-            </a>
+            <a href="#" class="view-all-link text-blue">View all categories &rarr;</a>
         </div>
         
-        <div class="goals-grid">
+        <div class="goals-grid reveal">
             <!-- Large Left -->
-            <div class="goal-card-large">
+            <div class="goal-card-large group-hover">
                 <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=800&auto=format&fit=crop" alt="Lifting weights">
                 <div class="goal-overlay-gradient"></div>
                 <div class="goal-info">
@@ -94,7 +90,7 @@
             
             <div class="goals-right-col">
                 <div class="goals-row-top">
-                    <div class="goal-card-small bg-blue-light">
+                    <div class="goal-card-small bg-blue-light group-hover">
                         <div class="goal-info-top">
                             <h3 class="text-blue">Vital Vitamins</h3>
                             <p>Daily essentials for immune support and clarity.</p>
@@ -102,7 +98,7 @@
                         <img src="https://images.unsplash.com/photo-1584308666744-24d5e4b6c33c?q=80&w=400&auto=format&fit=crop" alt="Vitamins">
                     </div>
                     
-                    <div class="goal-card-small bg-green-light">
+                    <div class="goal-card-small bg-green-light group-hover">
                         <div class="goal-info-top">
                             <h3 class="text-green">Recovery Plus</h3>
                             <p>Electrolytes and restorative blends for post-workout.</p>
@@ -112,23 +108,17 @@
                 </div>
                 
                 <div class="goals-row-bottom">
-                    <div class="goal-card-small bg-orange-light">
+                    <div class="goal-card-small bg-orange-light group-hover">
                         <div class="icon-wrapper">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2">
-                                <path d="M6.5 6.5l11 11"></path>
-                                <path d="M21 21l-1-1"></path>
-                                <path d="M3 3l1 1"></path>
-                                <path d="M18 22l4-4"></path>
-                                <path d="M2 6l4-4"></path>
-                                <path d="M3 10l7-7"></path>
-                                <path d="M14 21l7-7"></path>
+                                <path d="M6.5 6.5l11 11"></path><path d="M21 21l-1-1"></path><path d="M3 3l1 1"></path><path d="M18 22l4-4"></path><path d="M2 6l4-4"></path><path d="M3 10l7-7"></path><path d="M14 21l7-7"></path>
                             </svg>
                         </div>
                         <h3 class="text-orange mt-auto">Metabolic Balance</h3>
                         <p>Smart solutions for a leaner, healthier profile.</p>
                     </div>
                     
-                    <div class="goal-card-small bg-gray-light relative">
+                    <div class="goal-card-small bg-gray-light relative group-hover">
                         <h3 class="text-green mt-auto">Plant-Powered</h3>
                         <p>100% vegan protein and greens.</p>
                         <div class="leaf-icon">
@@ -145,29 +135,27 @@
 
     <!-- Featured Picks Section -->
     <section class="picks-section">
-        <div class="section-header-row">
+        <div class="section-header-row reveal">
             <h2>Featured Performance Picks</h2>
-            <div class="toggle-group">
-                <button class="active">Best Sellers</button>
-                <button>New Arrivals</button>
-                <button>Bundles</button>
+            <div class="toggle-group" id="filter-tabs">
+                <button class="active" data-filter="all">All</button>
+                <button data-filter="bestsellers">Best Sellers</button>
+                <button data-filter="new">New Arrivals</button>
             </div>
         </div>
         
-        <div class="products-grid">
+        <div class="products-grid reveal" id="product-grid">
             <!-- Product 1 -->
-            <div class="product-card">
+            <div class="product-card" data-category="bestsellers" data-id="1">
                 <div class="product-img-box bg-dark">
                     <span class="badge-sale">SALE</span>
                     <img src="https://images.unsplash.com/photo-1579722820308-d74e571900a9?q=80&w=400&auto=format&fit=crop" alt="Whey Protein">
+                    <button class="quick-view-btn">Quick View</button>
                 </div>
                 <div class="product-info">
                     <span class="category-name text-green">Muscle & Power</span>
                     <h3 class="product-name">Elite Hydrolyzed Whey Isolate</h3>
-                    <div class="rating">
-                        <span class="stars">★★★★☆</span>
-                        <span class="reviews">(124)</span>
-                    </div>
+                    <div class="rating"><span class="stars">★★★★☆</span> <span class="reviews">(124)</span></div>
                     <div class="price-row">
                         <span class="price-blue">$54.99</span>
                         <span class="price-old">$64.99</span>
@@ -176,17 +164,15 @@
             </div>
 
             <!-- Product 2 -->
-            <div class="product-card">
+            <div class="product-card" data-category="new" data-id="2">
                 <div class="product-img-box bg-dark">
                     <img src="https://images.unsplash.com/photo-1584017911766-d451b3d0e843?q=80&w=400&auto=format&fit=crop" alt="Multivitamin">
+                    <button class="quick-view-btn">Quick View</button>
                 </div>
                 <div class="product-info">
                     <span class="category-name text-blue">Daily Wellness</span>
                     <h3 class="product-name">Bio-Active Men's Multivitamin</h3>
-                    <div class="rating">
-                        <span class="stars">★★★★★</span>
-                        <span class="reviews">(89)</span>
-                    </div>
+                    <div class="rating"><span class="stars">★★★★★</span> <span class="reviews">(89)</span></div>
                     <div class="price-row">
                         <span class="price-blue">$32.00</span>
                     </div>
@@ -194,17 +180,15 @@
             </div>
 
             <!-- Product 3 -->
-            <div class="product-card">
+            <div class="product-card" data-category="bestsellers" data-id="3">
                 <div class="product-img-box bg-dark">
                     <img src="https://images.unsplash.com/photo-1622543925917-763c34d1a86e?q=80&w=400&auto=format&fit=crop" alt="Pre-Workout">
+                    <button class="quick-view-btn">Quick View</button>
                 </div>
                 <div class="product-info">
                     <span class="category-name text-orange">Energy & Focus</span>
                     <h3 class="product-name">Neuro-Focus Pre-Workout</h3>
-                    <div class="rating">
-                        <span class="stars">★★★★☆</span>
-                        <span class="reviews">(212)</span>
-                    </div>
+                    <div class="rating"><span class="stars">★★★★☆</span> <span class="reviews">(212)</span></div>
                     <div class="price-row">
                         <span class="price-blue">$44.50</span>
                     </div>
@@ -212,17 +196,15 @@
             </div>
 
             <!-- Product 4 -->
-            <div class="product-card">
+            <div class="product-card" data-category="new" data-id="4">
                 <div class="product-img-box bg-dark">
                     <img src="https://images.unsplash.com/photo-1599818815152-a38f328fbd4b?q=80&w=400&auto=format&fit=crop" alt="Daily Greens">
+                    <button class="quick-view-btn">Quick View</button>
                 </div>
                 <div class="product-info">
                     <span class="category-name text-green">Plant-Based</span>
                     <h3 class="product-name">Phyto-Nutrient Daily Greens</h3>
-                    <div class="rating">
-                        <span class="stars">★★★★★</span>
-                        <span class="reviews">(56)</span>
-                    </div>
+                    <div class="rating"><span class="stars">★★★★★</span> <span class="reviews">(56)</span></div>
                     <div class="price-row">
                         <span class="price-blue">$39.99</span>
                     </div>
@@ -232,7 +214,7 @@
     </section>
 
     <!-- Proactive Wellness Section -->
-    <section class="wellness-section">
+    <section class="wellness-section reveal">
         <div class="wellness-img">
             <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=1200&auto=format&fit=crop" alt="Pharmacist">
         </div>
@@ -245,8 +227,7 @@
                     <div class="feature-icon bg-blue-light text-blue">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                            <line x1="3" y1="9" x2="21" y2="9"></line>
-                            <line x1="9" y1="21" x2="9" y2="9"></line>
+                            <line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line>
                         </svg>
                     </div>
                     <div class="feature-text">
@@ -268,29 +249,16 @@
                 </div>
             </div>
             
-            <button class="btn-blue-solid mt-32">Start Your Free Consultation</button>
+            <button class="btn-blue-solid mt-32 hover-scale">Start Your Free Consultation</button>
         </div>
-    </section>
-
-    <!-- Newsletter -->
-    <section class="newsletter-section">
-        <div class="newsletter-content">
-            <h2>Stay Ahead of the Curve</h2>
-            <p>Get expert nutritional advice and early access to new product drops directly from our laboratory.</p>
-        </div>
-        <form class="newsletter-form">
-            <input type="email" placeholder="Enter your email">
-            <button type="submit">Join</button>
-        </form>
     </section>
 
     <!-- Footer -->
     <footer class="footer">
         <div class="footer-left">
-            <h3 class="logo">PharmaCare</h3>
+            <h3 class="logo">PHARMACARE</h3>
             <p>Your trusted partner in precision medicine and proactive wellness. Licensed and regulated since 1994.</p>
         </div>
-        
         <div class="footer-links-container">
             <div class="footer-col">
                 <h4>PRODUCTS</h4>
@@ -304,22 +272,105 @@
                 <a href="#">Shipping Policy</a>
                 <a href="#">Order Status</a>
             </div>
-            <div class="footer-col">
-                <h4>LEGAL</h4>
-                <a href="#">Privacy Policy</a>
-                <a href="#">Terms of Service</a>
-                <a href="#">HIPAA Compliance</a>
-            </div>
-        </div>
-        
-        <div class="footer-bottom">
-            <p>© 2024 PharmaCare. All rights reserved. Licensed Pharmacy #12345.</p>
-            <div class="footer-icons">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-            </div>
         </div>
     </footer>
+
+    <!-- CART DRAWER -->
+    <div class="cart-overlay" id="cart-overlay"></div>
+    <div class="cart-drawer" id="cart-drawer">
+        <div class="cart-header">
+            <h3>Your Performance Stack</h3>
+            <button id="close-cart-btn">&times;</button>
+        </div>
+        <div class="cart-items" id="cart-items">
+            <!-- Items injected by JS -->
+            <div class="empty-cart-msg">Your stack is currently empty.</div>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Subtotal</span>
+                <span id="cart-subtotal">$0.00</span>
+            </div>
+            <button class="checkout-btn">Proceed to Checkout</button>
+        </div>
+    </div>
+
+    <!-- QUICK VIEW MODAL -->
+    <div class="modal-overlay" id="quickview-overlay"></div>
+    <div class="quickview-modal" id="quickview-modal">
+        <button class="modal-close" id="close-quickview-btn">&times;</button>
+        <div class="quickview-content">
+            <div class="qv-img">
+                <img src="" id="qv-image" alt="Product">
+            </div>
+            <div class="qv-info">
+                <span class="category-name" id="qv-category">Category</span>
+                <h2 id="qv-title">Product Title</h2>
+                <div class="price-row mb-4">
+                    <span class="price-blue text-2xl" id="qv-price">$0.00</span>
+                </div>
+                <p class="qv-desc">Premium clinically dosed ingredients for maximum performance and recovery. Backed by science.</p>
+                
+                <div class="qv-specs">
+                    <div class="spec"><strong>Form:</strong> Powder</div>
+                    <div class="spec"><strong>Servings:</strong> 30</div>
+                    <div class="spec"><strong>Flavor:</strong> Vanilla</div>
+                </div>
+
+                <button class="btn-blue-solid w-full mt-4" id="qv-add-to-cart">Add to Cart</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- WELLNESS QUIZ MODAL -->
+    <div class="modal-overlay" id="quiz-overlay"></div>
+    <div class="quiz-modal" id="quiz-modal">
+        <button class="modal-close" id="close-quiz-btn">&times;</button>
+        <div class="quiz-progress">
+            <div class="progress-bar" id="quiz-progress-bar"></div>
+        </div>
+        
+        <!-- Step 1 -->
+        <div class="quiz-step active" id="quiz-step-1">
+            <h2>What is your primary fitness goal?</h2>
+            <div class="quiz-options">
+                <button class="quiz-opt" data-goal="muscle">Muscle Growth & Power</button>
+                <button class="quiz-opt" data-goal="energy">Daily Energy & Focus</button>
+                <button class="quiz-opt" data-goal="recovery">Recovery & Joint Health</button>
+                <button class="quiz-opt" data-goal="weight">Weight Management</button>
+            </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="quiz-step hidden" id="quiz-step-2">
+            <h2>How often do you train?</h2>
+            <div class="quiz-options">
+                <button class="quiz-opt">1-2 days/week</button>
+                <button class="quiz-opt">3-4 days/week</button>
+                <button class="quiz-opt">5+ days/week</button>
+            </div>
+        </div>
+
+        <!-- Result -->
+        <div class="quiz-step hidden" id="quiz-result">
+            <h2 class="text-blue mb-2">Your Recommended Stack</h2>
+            <p class="mb-4 text-gray-400">Based on your answers, our pharmacists recommend:</p>
+            <div class="result-card">
+                <div class="flex items-center gap-4">
+                    <img src="https://images.unsplash.com/photo-1584017911766-d451b3d0e843?q=80&w=200&auto=format&fit=crop" class="w-16 h-16 rounded object-cover" alt="Stack">
+                    <div>
+                        <h4 class="font-bold text-white">The Alpha Protocol</h4>
+                        <span class="text-blue font-bold">$89.99/mo</span>
+                    </div>
+                </div>
+                <button class="btn-blue-solid w-full mt-4" id="quiz-add-stack">Add Stack to Cart</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast">Added to Cart!</div>
+
+    <script src="script.js"></script>
 </body>
 </html>
