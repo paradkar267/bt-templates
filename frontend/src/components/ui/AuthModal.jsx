@@ -114,11 +114,15 @@ export function AuthModal({ isOpen, onClose }) {
            toast.success("Successfully logged in!");
            onClose();
         }
-        await signIn(email, password);
-        onClose();
       } else if (view === 'signup') {
-        await signUp(email, password, fullName);
-        setView('verify');
+        const data = await signUp(email, password, fullName);
+        if (data.user && !data.session) {
+           setView('verify');
+           toast.info("Please check your email for the verification code.");
+        } else {
+           toast.success("Account created successfully!");
+           onClose();
+        }
       } else if (view === 'verify') {
         await verifyOtp(email, otp);
         onClose();
