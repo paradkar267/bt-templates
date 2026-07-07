@@ -4,13 +4,13 @@ import { useAuth } from './AuthContext';
 import { useTheme } from './ThemeContext';
 import { supabase } from './lib/supabase';
 import { toast } from 'sonner';
-import { User, Moon, Sun, Settings as SettingsIcon, Save, Loader2, LogOut, ArrowLeft, Camera } from 'lucide-react';
+import { User, Moon, Sun, Settings as SettingsIcon, Save, Loader2, LogOut, ArrowLeft, Camera, Lock } from 'lucide-react';
 import { motion } from 'framer-motion';
 import UserMenu from './UserMenu';
 import { Logo } from './components/ui/Logo';
 
 export default function SettingsPage() {
-  const { user, profile, setProfile, signOut } = useAuth();
+  const { user, profile, setProfile, signOut, updatePassword } = useAuth();
   const { theme, setTheme } = useTheme();
   const isDark = theme === 'dark';
   
@@ -19,6 +19,28 @@ export default function SettingsPage() {
   const [avatarUrl, setAvatarUrl] = useState(profile?.avatar_url || '');
   const [isSaving, setIsSaving] = useState(false);
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
+  
+  // Password State
+  const [newPassword, setNewPassword] = useState('');
+  const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
+
+  const handlePasswordUpdate = async (e) => {
+    e.preventDefault();
+    if (newPassword.length < 6) {
+      toast.error("Password must be at least 6 characters long");
+      return;
+    }
+    setIsUpdatingPassword(true);
+    try {
+      await updatePassword(newPassword);
+      toast.success("Password updated successfully!");
+      setNewPassword('');
+    } catch (error) {
+      // Error handled in AuthContext
+    } finally {
+      setIsUpdatingPassword(false);
+    }
+  };
 
   const handleAvatarUpload = async (event) => {
     try {
@@ -146,6 +168,18 @@ export default function SettingsPage() {
             </button>
 
             <button
+              onClick={() => setActiveTab('security')}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-semibold transition-all ${
+                activeTab === 'security' 
+                  ? 'bg-black text-white dark:bg-white dark:text-black shadow-lg' 
+                  : 'bg-white text-gray-600 hover:bg-gray-100 dark:bg-white/5 dark:text-gray-400 dark:hover:bg-white/10'
+              }`}
+            >
+              <Lock className="w-5 h-5" />
+              Security
+            </button>
+
+            <button
               onClick={signOut}
               className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-semibold text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 transition-all mt-4"
             >
@@ -236,6 +270,45 @@ export default function SettingsPage() {
                   >
                     {isSaving ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
                     Save Changes
+                  </button>
+                </form>
+              </motion.div>
+            )}
+
+            {activeTab === 'security' && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-[2rem] p-8 shadow-sm backdrop-blur-xl"
+              >
+                <h2 className="text-xl font-bold mb-2">Security & Password</h2>
+                <p className="text-gray-500 dark:text-gray-400 text-sm mb-8">
+                  If you signed in with Google/GitHub, you can set a password here to allow email/password login as well.
+                </p>
+                
+                <form onSubmit={handlePasswordUpdate} className="max-w-md space-y-4">
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-1.5 ml-1">
+                      New Password
+                    </label>
+                    <input
+                      type="password"
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      required
+                      className="block w-full px-4 py-3.5 bg-gray-50 dark:bg-black/50 border border-black/10 dark:border-white/10 rounded-2xl text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20 transition-all font-medium"
+                      placeholder="••••••••"
+                      minLength={6}
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={isUpdatingPassword || !newPassword}
+                    className="flex items-center justify-center gap-2 px-6 py-3.5 bg-black text-white dark:bg-white dark:text-black font-bold rounded-2xl hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-50 disabled:pointer-events-none w-full sm:w-auto mt-4"
+                  >
+                    {isUpdatingPassword ? <Loader2 className="w-5 h-5 animate-spin" /> : <Lock className="w-5 h-5" />}
+                    Set Password
                   </button>
                 </form>
               </motion.div>
