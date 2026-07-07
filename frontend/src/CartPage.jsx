@@ -151,8 +151,7 @@ export default function CartPage() {
     const orderId = paymentId || 'mock_' + Math.random().toString(36).substr(2, 9);
     
     // Call backend to send email receipt (Non-blocking)
-    const backendUrl = import.meta.env.VITE_BACKEND_URL || 'https://bt-templates.onrender.com';
-    fetch(`${backendUrl}/api/send-receipt`, {
+    fetch(`/api/send-receipt`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
