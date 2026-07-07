@@ -11,6 +11,10 @@ import rateLimit from 'express-rate-limit';
 import { createClient } from '@supabase/supabase-js';
 import multer from 'multer';
 import fs from 'fs';
+import dns from 'dns';
+
+// Force IPv4 for Nodemailer (Fixes ENETUNREACH error on Render)
+dns.setDefaultResultOrder('ipv4first');
 
 const upload = multer({ storage: multer.memoryStorage() });
 
@@ -28,8 +32,8 @@ app.use(helmet());
 
 // Rate Limiter: max 100 requests per 15 minutes
 const apiLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, 
-  max: 100, 
+  windowMs: 15 * 60 * 1000,
+  max: 100,
   message: 'Too many requests from this IP, please try again after 15 minutes',
   standardHeaders: true,
   legacyHeaders: false,
@@ -78,8 +82,8 @@ app.post('/api/send-receipt', async (req, res) => {
     </tr>
   `).join('');
 
-  const orderDate = new Date().toLocaleDateString('en-IN', { 
-    year: 'numeric', month: 'long', day: 'numeric' 
+  const orderDate = new Date().toLocaleDateString('en-IN', {
+    year: 'numeric', month: 'long', day: 'numeric'
   });
   const orderTime = new Date().toLocaleTimeString('en-IN', {
     hour: '2-digit', minute: '2-digit'
@@ -115,14 +119,14 @@ app.post('/api/send-receipt', async (req, res) => {
         <div class="card-bg" style="background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.08);">
           
           <!-- Header -->
-          <div class="header-bg" style="background-color: #111827; padding: 36px 32px; text-align: center;">
+          <div class="header-bg" style="background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%); padding: 36px 32px; text-align: center;">
             <h1 style="margin: 0 0 4px 0; font-size: 28px; font-weight: 800; letter-spacing: 3px; color: #ffffff;">BIZLEAP</h1>
-            <p style="margin: 0; font-size: 12px; color: #a1a1aa; letter-spacing: 1px; text-transform: uppercase;">Digital Marketplace</p>
+            <p style="margin: 0; font-size: 12px; color: rgba(255,255,255,0.5); letter-spacing: 1px; text-transform: uppercase;">Digital Marketplace</p>
           </div>
 
           <!-- Success Badge -->
           <div style="text-align: center; padding: 28px 32px 0;">
-            <div style="display: inline-block; background-color: #10b981; color: #ffffff; padding: 8px 20px; border-radius: 50px; font-size: 13px; font-weight: 700; letter-spacing: 0.5px;">
+            <div style="display: inline-block; background: linear-gradient(135deg, #10b981, #059669); color: #fff; padding: 8px 20px; border-radius: 50px; font-size: 13px; font-weight: 700; letter-spacing: 0.5px;">
               ✓ PAYMENT SUCCESSFUL
             </div>
           </div>
@@ -200,7 +204,7 @@ app.post('/api/send-receipt', async (req, res) => {
 
           <!-- CTA Button -->
           <div style="text-align: center; padding: 0 32px 32px;">
-            <a href="${baseUrl}/my-templates" style="display: inline-block; background-color: #000000; color: #ffffff; padding: 14px 36px; text-decoration: none; border-radius: 12px; font-weight: 700; font-size: 14px; letter-spacing: 0.5px; box-shadow: 0 4px 14px rgba(0,0,0,0.2);">
+            <a href="${baseUrl}/my-templates" style="display: inline-block; background: linear-gradient(135deg, #0a0a0a, #1a1a2e); color: #ffffff; padding: 14px 36px; text-decoration: none; border-radius: 12px; font-weight: 700; font-size: 14px; letter-spacing: 0.5px; box-shadow: 0 4px 14px rgba(0,0,0,0.2);">
               Download Your Templates →
             </a>
           </div>
@@ -292,9 +296,9 @@ app.post('/api/contact', async (req, res) => {
 
 // Initialize Supabase Admin client
 const supabaseUrl = process.env.VITE_SUPABASE_URL;
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY; 
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-const supabaseAdmin = (supabaseUrl && supabaseServiceKey) 
+const supabaseAdmin = (supabaseUrl && supabaseServiceKey)
   ? createClient(supabaseUrl, supabaseServiceKey)
   : null;
 
@@ -315,7 +319,7 @@ app.post('/api/generate-download', async (req, res) => {
   try {
     // 1. Verify User Token
     const { data: { user }, error: userError } = await supabaseAdmin.auth.getUser(token);
-    
+
     if (userError || !user) {
       return res.status(401).json({ error: 'Invalid or expired token' });
     }
@@ -340,8 +344,8 @@ app.post('/api/generate-download', async (req, res) => {
       .single();
 
     if (mappingError || !mapping) {
-       console.log(`No mapping found for template ${templateId}, falling back to demo file`);
-       mapping = { file_path: 'demo-template.zip' };
+      console.log(`No mapping found for template ${templateId}, falling back to demo file`);
+      mapping = { file_path: 'demo-template.zip' };
     }
 
     // 4. Generate Signed URL (valid for 60 seconds)
@@ -369,7 +373,7 @@ app.get('/api/templates', async (req, res) => {
   const { data, error } = await supabaseAdmin
     .from('templates')
     .select('*');
-    
+
   if (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -385,7 +389,7 @@ app.get('/sitemap.xml', async (req, res) => {
 
     const baseUrl = 'https://btmarket.com'; // Replace with actual domain
     const staticPages = ['', '/templates', '/featured', '/ui-kits', '/contact'];
-    
+
     let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
     xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
 
@@ -434,10 +438,10 @@ app.get('/api/admin/stats', async (req, res) => {
 
     const { data: purchases } = await supabaseAdmin.from('purchases').select('*');
     const { count: userCount } = await supabaseAdmin.auth.admin.listUsers();
-    
+
     // Fallback if listUsers doesn't return count directly
-    const actualUserCount = userCount || 0; 
-    
+    const actualUserCount = userCount || 0;
+
     let totalRevenue = 0;
     if (purchases) {
       totalRevenue = purchases.reduce((acc, curr) => acc + (parseFloat(curr.price) || 0), 0);
@@ -501,7 +505,7 @@ app.post('/api/admin/upload-template', upload.single('file'), async (req, res) =
     let parsedKeywords = [];
     try {
       parsedKeywords = JSON.parse(keywords);
-    } catch(e) {
+    } catch (e) {
       if (typeof keywords === 'string') {
         parsedKeywords = keywords.split(',').map(k => k.trim());
       }
@@ -587,7 +591,7 @@ app.delete('/api/admin/template/:id', async (req, res) => {
         .from('secure_templates')
         .remove([fileMapping.file_path]);
     }
-    
+
     if (template && template.title) {
       // Fallback: also try to delete templates/${template.title}.zip (legacy script uploads)
       await supabaseAdmin.storage.from('secure_templates').remove([`templates/${template.title}.zip`]);
@@ -619,7 +623,7 @@ app.delete('/api/admin/template/:id', async (req, res) => {
     console.error('Delete error:', err);
     try {
       fs.writeFileSync(path.resolve(__dirname, 'delete_error.log'), err.stack || err.message);
-    } catch (e) {}
+    } catch (e) { }
     res.status(500).json({ error: err.message });
   }
 });
@@ -628,16 +632,16 @@ app.delete('/api/admin/template/:id', async (req, res) => {
 app.post('/api/admin/update-price', async (req, res) => {
   const authHeader = req.headers.authorization;
   console.log("Update Price Endpoint hit! AuthHeader:", !!authHeader);
-  
+
   if (!supabaseAdmin) return res.status(500).json({ error: 'Misconfigured' });
   if (!authHeader) return res.status(401).json({ error: 'Missing auth' });
   const token = authHeader.replace('Bearer ', '');
 
   try {
     const { data: { user }, error: userError } = await supabaseAdmin.auth.getUser(token);
-    
+
     console.log("Auth Check:", { email: user?.email, error: userError?.message });
-    
+
     if (userError || !user || user.email?.toLowerCase() !== (process.env.ADMIN_EMAIL?.toLowerCase() || 'bizleap1@gmail.com')) {
       return res.status(403).json({ error: 'Forbidden' });
     }
