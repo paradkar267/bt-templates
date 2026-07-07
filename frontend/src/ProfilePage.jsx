@@ -177,34 +177,6 @@ export default function ProfilePage() {
               </form>
             </div>
 
-            {/* Section 3: Notifications */}
-            <div className="bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-white/10 rounded-3xl p-8 shadow-sm">
-              <h3 className="text-xl font-bold mb-6 flex items-center gap-2"><Bell className="w-5 h-5 text-gray-400" /> Notifications</h3>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-black rounded-2xl border border-gray-100 dark:border-gray-900">
-                  <div>
-                    <p className="font-bold">Product Updates</p>
-                    <p className="text-sm text-gray-500">Get notified when templates you bought are updated.</p>
-                  </div>
-                  <Toggle enabled={notifEmail} onChange={setNotifEmail} />
-                </div>
-                <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-black rounded-2xl border border-gray-100 dark:border-gray-900">
-                  <div>
-                    <p className="font-bold">Special Offers</p>
-                    <p className="text-sm text-gray-500">Receive emails about sales and discounts.</p>
-                  </div>
-                  <Toggle enabled={notifOffers} onChange={setNotifOffers} />
-                </div>
-                <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-black rounded-2xl border border-gray-100 dark:border-gray-900">
-                  <div>
-                    <p className="font-bold">Order Confirmations</p>
-                    <p className="text-sm text-gray-500">Receive receipts and purchase details.</p>
-                  </div>
-                  <Toggle enabled={notifOrders} onChange={setNotifOrders} />
-                </div>
-              </div>
-            </div>
-
 
             {/* Section 5: Security */}
             <div className="bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-white/10 rounded-3xl p-8 shadow-sm">
