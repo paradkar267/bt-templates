@@ -11,7 +11,7 @@ export const Logo = ({ className = '' }) => {
       <img 
         src='/logo.png' 
         alt='Bizleap Logo' 
-        className='h-12 md:h-14 w-auto object-contain group-hover:scale-105 transition-transform drop-shadow-sm' 
+        className='h-12 md:h-14 w-auto object-contain group-hover:scale-105 transition-transform drop-shadow-sm dark:invert' 
       />
     </Link>
   );
