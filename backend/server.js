@@ -86,10 +86,10 @@ app.post('/api/send-receipt', async (req, res) => {
   `).join('');
 
   const orderDate = new Date().toLocaleDateString('en-IN', {
-    year: 'numeric', month: 'long', day: 'numeric'
+    timeZone: 'Asia/Kolkata', year: 'numeric', month: 'long', day: 'numeric'
   });
   const orderTime = new Date().toLocaleTimeString('en-IN', {
-    hour: '2-digit', minute: '2-digit'
+    timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit'
   });
 
   const htmlContent = `

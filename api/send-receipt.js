@@ -41,8 +41,8 @@ export default async function handler(req, res) {
     const total = orderDetails.total || '0.00';
     const orderId = orderDetails.orderId || Math.random().toString(36).substring(7).toUpperCase();
     const baseUrl = frontendUrl || 'https://bt-templates.vercel.app';
-    const orderDate = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
-    const orderTime = new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
+    const orderDate = new Date().toLocaleDateString('en-IN', { timeZone: 'Asia/Kolkata', day: '2-digit', month: 'short', year: 'numeric' });
+    const orderTime = new Date().toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', hour12: true });
     const customerEmail = to;
 
     // Build items rows
