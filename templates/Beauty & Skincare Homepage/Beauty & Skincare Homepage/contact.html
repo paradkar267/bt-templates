@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - Lumière Skincare</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=17">
+    <style>
+        .contact-section {
+            display: flex;
+            min-height: 80vh;
+            background-color: var(--color-white);
+            padding: 120px 80px;
+            gap: 80px;
+        }
+        .contact-info {
+            flex: 1;
+        }
+        .contact-form-container {
+            flex: 1.5;
+            background-color: var(--color-off-white);
+            padding: 60px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+        }
+        .info-block {
+            margin-bottom: 40px;
+        }
+        .info-block h4 {
+            font-size: 13px;
+            letter-spacing: 2px;
+            color: var(--color-text-muted);
+            margin-bottom: 12px;
+        }
+        .info-block p {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .form-group label {
+            font-size: 13px;
+            letter-spacing: 1px;
+            font-weight: 500;
+        }
+        .form-group input, .form-group textarea, .form-group select {
+            padding: 16px;
+            border: 1px solid var(--border-color);
+            background: transparent;
+            font-family: var(--font-sans);
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            border-color: var(--color-black);
+        }
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="index.html" class="logo">LUMIÈRE SKINCARE</a>
+        <ul class="nav-links">
+            <li><a href="shop.html">Shop All</a></li>
+            <li><a href="bestsellers.html">Best Sellers</a></li>
+            <li><a href="quiz.html">Skin Quiz</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="contact.html" class="active">Contact</a></li>
+        </ul>
+        <div class="nav-icons">
+            <button class="icon-btn" aria-label="Cart">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+            </button>
+            <button class="icon-btn" aria-label="Profile">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Contact Section -->
+    <section class="contact-section">
+        <div class="contact-info">
+            <h1 class="heading-serif" style="font-size: 56px; margin-bottom: 24px;">Get in Touch</h1>
+            <p style="color: var(--color-text-muted); margin-bottom: 48px; line-height: 1.6;">Whether you have a question about our formulations, need help finding your perfect routine, or simply want to share your experience, we're here for you.</p>
+            
+            <div class="info-block">
+                <h4>BOUTIQUE</h4>
+                <p>124 Radiance Ave,<br>Soho, NY 10012</p>
+            </div>
+            
+            <div class="info-block">
+                <h4>CONTACT</h4>
+                <p>hello@lumiereskincare.com<br>1-800-LUMIERE</p>
+            </div>
+            
+            <div class="info-block">
+                <h4>HOURS</h4>
+                <p>Monday - Friday: 9am - 7pm EST<br>Saturday: 10am - 5pm EST</p>
+            </div>
+        </div>
+        
+        <div class="contact-form-container">
+            <form class="contact-form">
+                <div class="form-group">
+                    <label for="name">FULL NAME</label>
+                    <input type="text" id="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">EMAIL ADDRESS</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="inquiry">INQUIRY TYPE</label>
+                    <select id="inquiry">
+                        <option>Product Question</option>
+                        <option>Order Status</option>
+                        <option>Press & Partnerships</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="message">MESSAGE</label>
+                    <textarea id="message" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-black" style="margin-top: 16px;">SEND MESSAGE</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-top">
+            <div class="footer-brand">
+                <h3 class="logo">LUMIÈRE<br>SKINCARE</h3>
+                <p>Conscious beauty for the modern intellectual.</p>
+            </div>
+            <div class="footer-links">
+                <div class="footer-col">
+                    <h4>SHOP</h4>
+                    <ul>
+                        <li><a href="shop.html">Skincare</a></li>
+                        <li><a href="shop.html">Body</a></li>
+                        <li><a href="shop.html">New Arrivals</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>EXPLORE</h4>
+                    <ul>
+                        <li><a href="about.html">About Lumière</a></li>
+                        <li><a href="quiz.html">Skin Quiz</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>HELP</h4>
+                    <ul>
+                        <li><a href="contact.html">FAQ & Shipping</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>SOCIALS</h4>
+                    <div class="social-icons">
+                        <a href="#" aria-label="Website"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></a>
+                        <a href="#" aria-label="Instagram"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 Lumière Skincare. All rights reserved.</p>
+        </div>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>

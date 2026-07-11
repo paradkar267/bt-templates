@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Bookings - Aura Beauty</title>
+    <link rel="stylesheet" href="style.css?v=6">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        .bookings-container {
+            max-width: 900px;
+            margin: 4rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+        }
+        .bookings-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .bookings-header h2 {
+            font-family: var(--font-heading);
+            color: var(--color-dark-blue);
+            font-size: 2rem;
+        }
+        .booking-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            transition: box-shadow 0.2s;
+        }
+        .booking-card:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        .booking-date {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: var(--color-light-blue);
+            color: var(--color-dark-blue);
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+        .booking-date span.day { font-size: 1.5rem; }
+        .booking-date span.month { font-size: 0.9rem; text-transform: uppercase; }
+        
+        .booking-info {
+            flex: 1;
+            margin-left: 2rem;
+        }
+        .booking-info h4 {
+            font-size: 1.2rem;
+            color: var(--color-dark-blue);
+            margin-bottom: 0.3rem;
+        }
+        .booking-info p {
+            color: var(--color-text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 0.2rem;
+        }
+        .booking-status {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .status-upcoming {
+            background: #e6f4ea;
+            color: #1e8e3e;
+        }
+        .status-completed {
+            background: #f1f3f4;
+            color: #5f6368;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="#" class="logo">Aura Beauty</a>
+        <ul class="nav-links">
+            <li><a href="index.html">Shop All</a></li>
+            <li><a href="treatments.html">Treatments</a></li>
+            <li><a href="advice.html">Beauty Advice</a></li>
+            <li><a href="stores.html">Stores</a></li>
+        </ul>
+        <div class="nav-right">
+            <a href="#" class="btn-outline-blue">Book Facial</a>
+            <a href="#" class="btn-solid-blue">Sign In</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div style="background-color: var(--color-bg-light); min-height: 80vh; padding: 6rem 2rem;">
+        <div class="bookings-container">
+            <div class="bookings-header">
+                <h2>My Bookings</h2>
+                <p style="color: var(--color-text-muted);">Manage your upcoming appointments and view past treatments.</p>
+            </div>
+
+            <!-- Upcoming Booking -->
+            <div class="booking-card">
+                <div class="booking-date">
+                    <span class="day">15</span>
+                    <span class="month">Aug</span>
+                </div>
+                <div class="booking-info">
+                    <h4>Signature Glow Facial</h4>
+                    <p>New York Flagship • 2:00 PM - 3:30 PM</p>
+                    <p>Esthetician: Sarah Jenkins</p>
+                </div>
+                <div>
+                    <span class="booking-status status-upcoming">Upcoming</span>
+                </div>
+            </div>
+
+            <!-- Past Booking -->
+            <div class="booking-card">
+                <div class="booking-date">
+                    <span class="day">02</span>
+                    <span class="month">Jun</span>
+                </div>
+                <div class="booking-info">
+                    <h4>Advanced PDRN Repair</h4>
+                    <p>New York Flagship • 11:00 AM - 12:00 PM</p>
+                    <p>Esthetician: Michael Chen</p>
+                </div>
+                <div>
+                    <span class="booking-status status-completed">Completed</span>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 3rem;">
+                <a href="#" class="btn-solid-blue" onclick="document.querySelector('.btn-outline-blue').click(); return false;">Book Another Appointment</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-bottom">
+            <p>© 2024 Aura Beauty. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+</html>

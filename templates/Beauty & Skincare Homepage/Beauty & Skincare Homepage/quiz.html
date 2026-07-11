@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skin Quiz - Lumière Skincare</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=17">
+    <style>
+        .quiz-section {
+            background-color: var(--color-off-white);
+            padding: 100px 20px;
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .quiz-container {
+            max-width: 600px;
+            width: 100%;
+            background: var(--color-white);
+            padding: 60px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+        .quiz-question {
+            font-family: var(--font-serif);
+            font-size: 32px;
+            margin-bottom: 40px;
+        }
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+        .quiz-option {
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        .quiz-option:hover {
+            border-color: var(--color-black);
+            background-color: var(--color-black);
+            color: var(--color-white);
+        }
+        .quiz-progress {
+            font-size: 13px;
+            color: var(--color-text-muted);
+            letter-spacing: 2px;
+            margin-bottom: 24px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="index.html" class="logo">LUMIÈRE SKINCARE</a>
+        <ul class="nav-links">
+            <li><a href="shop.html">Shop All</a></li>
+            <li><a href="bestsellers.html">Best Sellers</a></li>
+            <li><a href="quiz.html" class="active">Skin Quiz</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <div class="nav-icons">
+            <button class="icon-btn" aria-label="Cart">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <path d="M16 10a4 4 0 0 1-8 0"></path>
+                </svg>
+            </button>
+            <button class="icon-btn" aria-label="Profile">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Quiz Section -->
+    <section class="quiz-section">
+        <div class="quiz-container">
+            <div class="quiz-progress">STEP 1 OF 3</div>
+            <h2 class="quiz-question">How does your skin feel by midday?</h2>
+            <div class="quiz-options">
+                <div class="quiz-option">Oily and shiny all over</div>
+                <div class="quiz-option">Tight and dry</div>
+                <div class="quiz-option">Oily in the T-zone, dry elsewhere</div>
+                <div class="quiz-option">Balanced and comfortable</div>
+            </div>
+            <a href="#" class="btn btn-black" style="width: 100%;">NEXT QUESTION</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-top">
+            <div class="footer-brand">
+                <h3 class="logo">LUMIÈRE<br>SKINCARE</h3>
+                <p>Conscious beauty for the modern intellectual.</p>
+            </div>
+            <div class="footer-links">
+                <div class="footer-col">
+                    <h4>SHOP</h4>
+                    <ul>
+                        <li><a href="shop.html">Skincare</a></li>
+                        <li><a href="shop.html">Body</a></li>
+                        <li><a href="shop.html">New Arrivals</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>EXPLORE</h4>
+                    <ul>
+                        <li><a href="about.html">About Lumière</a></li>
+                        <li><a href="quiz.html">Skin Quiz</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>HELP</h4>
+                    <ul>
+                        <li><a href="contact.html">FAQ & Shipping</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>SOCIALS</h4>
+                    <div class="social-icons">
+                        <a href="#" aria-label="Website"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></a>
+                        <a href="#" aria-label="Instagram"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 Lumière Skincare. All rights reserved.</p>
+        </div>
+    </footer>
+    <script src="script.js"></script>
+    <script>
+        // Simple interactive demo logic for the quiz
+        const options = document.querySelectorAll('.quiz-option');
+        options.forEach(opt => {
+            opt.addEventListener('click', () => {
+                options.forEach(o => {
+                    o.style.backgroundColor = 'transparent';
+                    o.style.color = 'var(--color-text-main)';
+                });
+                opt.style.backgroundColor = 'var(--color-black)';
+                opt.style.color = 'var(--color-white)';
+            });
+        });
+    </script>
+</body>
+</html>

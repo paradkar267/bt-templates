@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumière Skincare</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=17">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="index.html" class="logo">LUMIÈRE SKINCARE</a>
+        <ul class="nav-links">
+            <li><a href="shop.html" class="active">Shop All</a></li>
+            <li><a href="bestsellers.html">Best Sellers</a></li>
+            <li><a href="quiz.html">Skin Quiz</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <div class="nav-icons">
+            <button class="icon-btn" aria-label="Cart">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <path d="M16 10a4 4 0 0 1-8 0"></path>
+                </svg>
+            </button>
+            <button class="icon-btn" aria-label="Profile">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="hero-bg">
+            <img src="hero-bg.png" style="object-position: center right;" alt="Woman with soft glowing skin">
+        </div>
+        <div class="hero-content">
+            <h1 class="hero-title">The Science of Subtle Radiance.</h1>
+            <p class="hero-subtitle">
+                Discover high-performance skincare that respects your biology. Formulated with botanical precision and clinical rigor.
+            </p>
+            <div class="hero-actions">
+                <a href="#" class="btn btn-black">SHOP COLLECTION</a>
+                <a href="#" class="btn btn-outline">SKIN QUIZ</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Serums Section -->
+    <section class="serums-section">
+        <div class="section-header center" style="margin-bottom: 40px;">
+            <span class="subheading">DAILY ESSENTIALS</span>
+            <h2 class="heading-serif" style="font-size: 32px;">Potent Serums</h2>
+        </div>
+        <div class="small-cards-grid">
+            <div class="small-card">
+                <div class="small-card-img">
+                    <img src="https://images.pexels.com/photos/4465124/pexels-photo-4465124.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Vitamin C Serum">
+                </div>
+                <div class="small-card-info">
+                    <h4>Vitamin C Glow Serum</h4>
+                    <p class="small-desc">Brightens and evens skin tone.</p>
+                    <span class="price">$45.00</span>
+                </div>
+            </div>
+            <div class="small-card">
+                <div class="small-card-img">
+                    <img src="https://images.pexels.com/photos/3762879/pexels-photo-3762879.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Hyaluronic Acid">
+                </div>
+                <div class="small-card-info">
+                    <h4>Hyaluronic Acid 2%</h4>
+                    <p class="small-desc">Deep multi-level hydration.</p>
+                    <span class="price">$32.00</span>
+                </div>
+            </div>
+            <div class="small-card">
+                <div class="small-card-img">
+                    <img src="https://images.pexels.com/photos/4041391/pexels-photo-4041391.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Retinol Serum">
+                </div>
+                <div class="small-card-info">
+                    <h4>Retinol Night Repair</h4>
+                    <p class="small-desc">Fights signs of aging.</p>
+                    <span class="price">$58.00</span>
+                </div>
+            </div>
+            <div class="small-card">
+                <div class="small-card-img">
+                    <img src="https://images.pexels.com/photos/3685523/pexels-photo-3685523.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Niacinamide Serum">
+                </div>
+                <div class="small-card-info">
+                    <h4>Niacinamide 10%</h4>
+                    <p class="small-desc">Refines pores and texture.</p>
+                    <span class="price">$28.00</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Discovery Section -->
+    <section class="discovery-section">
+        <div class="discovery-grid">
+            <!-- Left Banner -->
+            <div class="discovery-card image-card">
+                <img src="discovery-bg.png" alt="Skincare bottles">
+                <div class="card-overlay-box">
+                    <h2>Find Your Perfect Ritual</h2>
+                    <p>Our intelligent skin quiz analyzes your climate, lifestyle, and skin concerns to build a 3-step routine just for you.</p>
+                    <a href="#" class="link-underline">TAKE THE QUIZ →</a>
+                </div>
+            </div>
+            
+            <!-- Right Banner -->
+            <div class="discovery-card text-card has-collage-bg">
+                <div class="collage-bg">
+                    <img src="https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=400" alt="Cosmetic 1">
+                    <img src="https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?auto=format&fit=crop&w=400" alt="Cosmetic 2">
+                    <img src="https://images.unsplash.com/photo-1617897903246-719242758050?auto=format&fit=crop&w=400" alt="Cosmetic 3">
+                </div>
+                <div class="text-card-content overlay-text">
+                    <div class="sparkle-icon">✨</div>
+                    <h2>New Arrivals</h2>
+                    <p>Discover the Peptide Rejuvenating Elixir.</p>
+                    <a href="#" class="link-underline">VIEW DETAILS</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Curated Bundles Section -->
+    <section class="bundles-section">
+        <div class="section-header center">
+            <span class="subheading">TARGETED CARE</span>
+            <h2 class="heading-serif">Curated Bundles</h2>
+        </div>
+
+        <div class="products-grid">
+            <!-- Product 1 -->
+            <div class="product-card">
+                <div class="product-img">
+                    <img src="bundle1.png" alt="The Hydration Trio">
+                </div>
+                <div class="product-info">
+                    <div class="title-price">
+                        <h3>The Hydration Trio</h3>
+                        <span class="price">$124.00</span>
+                    </div>
+                    <p class="product-type">Dry & Dehydrated Skin</p>
+                </div>
+            </div>
+
+            <!-- Product 2 -->
+            <div class="product-card">
+                <div class="product-img">
+                    <img src="bundle2.png" alt="Clarifying Ritual">
+                </div>
+                <div class="product-info">
+                    <div class="title-price">
+                        <h3>Clarifying Ritual</h3>
+                        <span class="price">$98.00</span>
+                    </div>
+                    <p class="product-type">Oily & Blemish-Prone</p>
+                </div>
+            </div>
+
+            <!-- Product 3 -->
+            <div class="product-card">
+                <div class="product-img">
+                    <img src="bundle3.png" alt="Renewal System">
+                </div>
+                <div class="product-info">
+                    <div class="title-price">
+                        <h3>Renewal System</h3>
+                        <span class="price">$210.00</span>
+                    </div>
+                    <p class="product-type">Advanced Aging</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Transition Divider -->
+    <div class="section-divider">
+        <p>Know what you're using?</p>
+    </div>
+
+    <!-- Spotlight Section -->
+    <section class="spotlight-section">
+        <div class="spotlight-content fade-transition" id="spotlightContentArea">
+            <span class="subheading">THE SPOTLIGHT</span>
+            <h2 class="spotlight-title" id="spotlightTitle">Niacinamide +<br/>Rosehip</h2>
+            <p class="spotlight-desc" id="spotlightDesc">
+                Our signature blend combines the brightening power of Vitamin B3 with the deep nourishment of cold-pressed organic rosehip oil.
+            </p>
+            
+            <div class="feature-boxes">
+                <div class="feature-box">
+                    <div class="feature-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M10 2v7.31M14 9.31V2M8.5 2h7M14 9.31L20.84 18A2 2 0 0 1 19.26 21H4.74a2 2 0 0 1-1.58-3L10 9.31" />
+                        </svg>
+                    </div>
+                    <div class="feature-text">
+                        <h4 id="feature1Title">CLINICALLY PROVEN</h4>
+                        <p id="feature1Desc">Reduces pore visibility by 34% in 4 weeks.</p>
+                    </div>
+                </div>
+                <div class="feature-box">
+                    <div class="feature-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
+                            <path d="M8 14s1.5 2 4 2 4-2 4-2" />
+                            <line x1="9" y1="9" x2="9.01" y2="9" />
+                            <line x1="15" y1="9" x2="15.01" y2="9" />
+                        </svg>
+                    </div>
+                    <div class="feature-text">
+                        <h4 id="feature2Title">ETHICALLY SOURCED</h4>
+                        <p id="feature2Desc">Direct-from-farm cold-pressed oils.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="spotlight-image-col" id="spotlightImgCol">
+            <div class="spotlight-cards-stack" id="spotlightCardsStack">
+                <div class="stack-card order-0">
+                    <img src="drop1.png" alt="Niacinamide Extract">
+                </div>
+                <div class="stack-card order-1">
+                    <img src="drop2.png" alt="Salicylic Serum">
+                </div>
+                <div class="stack-card order-2">
+                    <img src="drop3.png" alt="Hyaluronic Drop">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter-section">
+        <div class="newsletter-content">
+            <h2 class="newsletter-title">Join the Collective</h2>
+            <p class="newsletter-desc">Receive skin care wisdom, early access to new launches, and 15% off your first order.</p>
+            <form class="newsletter-form">
+                <input type="email" placeholder="YOUR EMAIL" required>
+                <button type="submit" class="btn-subscribe">SUBSCRIBE</button>
+            </form>
+            
+            <div class="newsletter-socials">
+                <p>Join us on social media to know more about us.</p>
+                <div class="social-icons-wrapper">
+                    <a href="#" aria-label="Instagram">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                        </svg>
+                    </a>
+                    <a href="#" aria-label="Facebook">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3.81l.39-4h-4.2V7a1 1 0 0 1 1-1h3z"></path>
+                        </svg>
+                    </a>
+                    <a href="#" aria-label="Twitter">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-top">
+            <div class="footer-brand">
+                <h3 class="logo">LUMIÈRE<br>SKINCARE</h3>
+                <p>Conscious beauty for the modern intellectual.</p>
+            </div>
+            
+            <div class="footer-links">
+                <div class="footer-col">
+                    <h4>SHOP</h4>
+                    <ul>
+                        <li><a href="shop.html">Skincare</a></li>
+                        <li><a href="shop.html">Body</a></li>
+                        <li><a href="shop.html">New Arrivals</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>EXPLORE</h4>
+                    <ul>
+                        <li><a href="about.html">About Lumière</a></li>
+                        <li><a href="about.html">Our Ingredients</a></li>
+                        <li><a href="about.html">Sustainability</a></li>
+                        <li><a href="quiz.html">Skin Quiz</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>HELP</h4>
+                    <ul>
+                        <li><a href="contact.html">FAQ & Shipping</a></li>
+                        <li><a href="contact.html">Returns Policy</a></li>
+                        <li><a href="contact.html">Track Order</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>SOCIALS</h4>
+                    <div class="social-icons">
+                        <a href="#" aria-label="Website">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="2" y1="12" x2="22" y2="12"></line>
+                                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                            </svg>
+                        </a>
+                        <a href="#" aria-label="Instagram">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>© 2024 Lumière Skincare. All rights reserved.</p>
+        </div>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>

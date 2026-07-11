@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Best Sellers - Lumière Skincare</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=17">
+    <style>
+        .hero-bestseller {
+            height: 80vh;
+            background-color: var(--color-off-white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 80px;
+            position: relative;
+        }
+        .bestseller-img {
+            flex: 1;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .bestseller-img img {
+            max-height: 90%;
+            max-width: 90%;
+            object-fit: cover;
+            border-radius: 4px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.1);
+        }
+        .bestseller-content {
+            flex: 1;
+            padding-left: 60px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="index.html" class="logo">LUMIÈRE SKINCARE</a>
+        <ul class="nav-links">
+            <li><a href="shop.html">Shop All</a></li>
+            <li><a href="bestsellers.html" class="active">Best Sellers</a></li>
+            <li><a href="quiz.html">Skin Quiz</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <div class="nav-icons">
+            <button class="icon-btn" aria-label="Cart">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <path d="M16 10a4 4 0 0 1-8 0"></path>
+                </svg>
+            </button>
+            <button class="icon-btn" aria-label="Profile">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Bestseller Section -->
+    <header class="hero-bestseller">
+        <div class="bestseller-img">
+            <img src="bundle1.png" alt="The Hydration Trio">
+        </div>
+        <div class="bestseller-content">
+            <span class="subheading" style="color: var(--color-text-muted);">#1 CULT FAVORITE</span>
+            <h1 class="heading-serif" style="font-size: 64px; margin-top: 16px; margin-bottom: 24px;">The Hydration Trio</h1>
+            <p style="font-size: 16px; color: var(--color-text-muted); margin-bottom: 40px; line-height: 1.6;">Our multi-award winning set that transformed over 100,000 routines globally. Featuring three synergistic formulas for ultimate barrier repair and intense, sustained hydration.</p>
+            <a href="#" class="btn btn-black">SHOP THE TRIO — $124</a>
+        </div>
+    </header>
+
+    <!-- Transition Divider -->
+    <div class="section-divider">
+        <p>More Cult Favorites</p>
+    </div>
+
+    <!-- Runner up Grid -->
+    <section class="bundles-section" style="padding-top: 40px; background-color: var(--color-white);">
+        <div class="products-grid">
+            <div class="product-card">
+                <div class="product-img">
+                    <img src="vitamin_c.png" alt="Vitamin C Elixir">
+                </div>
+                <div class="product-info">
+                    <div class="title-price">
+                        <h3>Vitamin C Elixir</h3>
+                        <span class="price">$85.00</span>
+                    </div>
+                    <p class="product-type">Brightening Serum</p>
+                </div>
+            </div>
+            <div class="product-card">
+                <div class="product-img">
+                    <img src="bha_exfoliant.png" alt="BHA Liquid Exfoliant">
+                </div>
+                <div class="product-info">
+                    <div class="title-price">
+                        <h3>BHA Liquid Exfoliant</h3>
+                        <span class="price">$65.00</span>
+                    </div>
+                    <p class="product-type">Pore Clarifying</p>
+                </div>
+            </div>
+            <div class="product-card">
+                <div class="product-img">
+                    <img src="bundle3.png" alt="Renewal System">
+                </div>
+                <div class="product-info">
+                    <div class="title-price">
+                        <h3>Renewal System</h3>
+                        <span class="price">$210.00</span>
+                    </div>
+                    <p class="product-type">Advanced Aging</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-top">
+            <div class="footer-brand">
+                <h3 class="logo">LUMIÈRE<br>SKINCARE</h3>
+                <p>Conscious beauty for the modern intellectual.</p>
+            </div>
+            <div class="footer-links">
+                <div class="footer-col">
+                    <h4>SHOP</h4>
+                    <ul>
+                        <li><a href="shop.html">Skincare</a></li>
+                        <li><a href="shop.html">Body</a></li>
+                        <li><a href="shop.html">New Arrivals</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>EXPLORE</h4>
+                    <ul>
+                        <li><a href="about.html">About Lumière</a></li>
+                        <li><a href="quiz.html">Skin Quiz</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>HELP</h4>
+                    <ul>
+                        <li><a href="contact.html">FAQ & Shipping</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>SOCIALS</h4>
+                    <div class="social-icons">
+                        <a href="#" aria-label="Website"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></a>
+                        <a href="#" aria-label="Instagram"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 Lumière Skincare. All rights reserved.</p>
+        </div>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>

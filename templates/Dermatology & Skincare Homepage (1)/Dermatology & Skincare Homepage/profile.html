@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - Aura Beauty</title>
+    <link rel="stylesheet" href="style.css?v=6">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        .profile-container {
+            max-width: 800px;
+            margin: 4rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+        }
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 2rem;
+        }
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: var(--color-light-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: var(--color-dark-blue);
+        }
+        .profile-details h2 {
+            font-family: var(--font-heading);
+            color: var(--color-dark-blue);
+            margin-bottom: 0.5rem;
+            font-size: 2rem;
+        }
+        .profile-details p {
+            color: var(--color-text-muted);
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        .info-group label {
+            display: block;
+            color: var(--color-text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        .info-group div {
+            padding: 1rem;
+            background: #fdfbf7;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--color-dark-blue);
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="#" class="logo">Aura Beauty</a>
+        <ul class="nav-links">
+            <li><a href="index.html">Shop All</a></li>
+            <li><a href="treatments.html">Treatments</a></li>
+            <li><a href="advice.html">Beauty Advice</a></li>
+            <li><a href="stores.html">Stores</a></li>
+        </ul>
+        <div class="nav-right">
+            <a href="#" class="btn-outline-blue">Book Facial</a>
+            <a href="#" class="btn-solid-blue">Sign In</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div style="background-color: var(--color-bg-light); min-height: 80vh; padding: 6rem 2rem;">
+        <div class="profile-container">
+            <div class="profile-header">
+                <div class="profile-avatar">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                </div>
+                <div class="profile-details">
+                    <h2>Jane Doe</h2>
+                    <p>Premium Member</p>
+                </div>
+                <div style="margin-left: auto;">
+                    <a href="#" class="btn-outline-caramel">Edit Profile</a>
+                </div>
+            </div>
+
+            <h3 style="font-family: var(--font-heading); color: var(--color-dark-blue); margin-bottom: 1.5rem; font-size: 1.5rem;">Personal Information</h3>
+            <div class="info-grid">
+                <div class="info-group">
+                    <label>Full Name</label>
+                    <div>Jane Doe</div>
+                </div>
+                <div class="info-group">
+                    <label>Email Address</label>
+                    <div>jane.doe@example.com</div>
+                </div>
+                <div class="info-group">
+                    <label>Phone Number</label>
+                    <div>+1 (555) 123-4567</div>
+                </div>
+                <div class="info-group">
+                    <label>Preferred Store</label>
+                    <div>New York Flagship</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-bottom">
+            <p>© 2024 Aura Beauty. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+</html>

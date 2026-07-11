@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aura Beauty - Find a Store</title>
+    <link rel="stylesheet" href="style.css?v=6">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="index.html" class="logo">Aura Beauty</a>
+        <ul class="nav-links">
+            <li><a href="index.html">Shop All</a></li>
+            <li><a href="treatments.html">Treatments</a></li>
+            <li><a href="advice.html">Beauty Advice</a></li>
+            <li><a href="stores.html" class="active">Stores</a></li>
+        </ul>
+        <div class="nav-right">
+            <a href="#" class="btn-outline-blue">Book Facial</a>
+            <a href="#" class="btn-solid-blue">Sign In</a>
+        </div>
+    </nav>
+
+    <header class="hero" style="min-height: 60vh; display: flex; align-items: center; justify-content: center; background-image: url('store_hero.png'); background-size: cover; background-position: center; position: relative; text-align: center; padding: 2rem;">
+        <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.4);"></div>
+        <div style="position: relative; z-index: 2; color: white;">
+            <h1 style="font-family: var(--font-heading); font-size: 3.5rem; margin-bottom: 1rem; text-shadow: 0 4px 15px rgba(0,0,0,0.4);">Find a Store Near You</h1>
+            <p style="font-size: 1.2rem; max-width: 600px; margin: 0 auto; text-shadow: 0 2px 10px rgba(0,0,0,0.5);">Experience our products firsthand and consult with our skincare experts at a location near you.</p>
+        </div>
+    </header>
+
+    <style>
+        .stores-carousel {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            overflow-x: auto;
+            flex-wrap: nowrap;
+            padding: 4rem 2rem 6rem 2rem;
+            margin: 2rem auto;
+            max-width: 1400px;
+            scroll-snap-type: x mandatory;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .stores-carousel::-webkit-scrollbar {
+            display: none;
+        }
+        .carousel-card {
+            flex: 0 0 350px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            overflow: hidden;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            scroll-snap-align: center;
+            border: 4px solid white;
+        }
+        .carousel-card:first-child {
+            z-index: 4;
+        }
+        .carousel-card:nth-child(2) { z-index: 3; }
+        .carousel-card:nth-child(3) { z-index: 2; }
+        .carousel-card:nth-child(4) { z-index: 1; }
+        
+        .carousel-card:hover {
+            transform: scale(1.08) translateY(-15px);
+            z-index: 10 !important;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+        }
+
+        .carousel-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            display: block;
+        }
+        .carousel-content {
+            padding: 2rem;
+            text-align: left;
+        }
+        .carousel-content h3 {
+            font-family: var(--font-heading);
+            color: var(--color-dark-blue);
+            font-size: 1.6rem;
+            margin-bottom: 0.8rem;
+        }
+        .carousel-details {
+            color: var(--color-text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        .carousel-details strong {
+            color: var(--color-dark-blue);
+            display: block;
+            margin-top: 1rem;
+            margin-bottom: 0.3rem;
+        }
+    </style>
+
+    <!-- Dummy Stores Carousel -->
+    <section class="stores-carousel">
+        <!-- New York Flagship -->
+        <div class="carousel-card">
+            <img src="store_ny.png" alt="New York Flagship" class="carousel-img">
+            <div class="carousel-content">
+                <h3>New York Flagship</h3>
+                <div class="carousel-details">
+                    <p>123 5th Avenue, Suite 400<br>New York, NY 10001</p>
+                    <strong>Hours:</strong>
+                    <p>Mon - Sat: 10am - 8pm<br>Sun: 11am - 6pm</p>
+                </div>
+                <a href="#" class="btn-outline-caramel">Get Directions</a>
+            </div>
+        </div>
+
+        <!-- London Boutique -->
+        <div class="carousel-card">
+            <img src="store_london.png" alt="London Boutique" class="carousel-img">
+            <div class="carousel-content">
+                <h3>London Boutique</h3>
+                <div class="carousel-details">
+                    <p>45 New Bond Street<br>London W1S 1DG, UK</p>
+                    <strong>Hours:</strong>
+                    <p>Mon - Sat: 9am - 7pm<br>Sun: 12pm - 6pm</p>
+                </div>
+                <a href="#" class="btn-outline-caramel">Get Directions</a>
+            </div>
+        </div>
+
+        <!-- Paris Studio -->
+        <div class="carousel-card">
+            <img src="store_paris.png" alt="Paris Studio" class="carousel-img">
+            <div class="carousel-content">
+                <h3>Paris Studio</h3>
+                <div class="carousel-details">
+                    <p>8 Rue de Rivoli<br>75001 Paris, France</p>
+                    <strong>Hours:</strong>
+                    <p>Mon - Sat: 10am - 7:30pm<br>Sun: Closed</p>
+                </div>
+                <a href="#" class="btn-outline-caramel">Get Directions</a>
+            </div>
+        </div>
+
+    </section>
+
+    <script src="main.js"></script>
+</body>
+</html>

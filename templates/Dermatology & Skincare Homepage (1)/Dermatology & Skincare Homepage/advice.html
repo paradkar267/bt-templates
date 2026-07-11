@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aura Beauty - Beauty Advice</title>
+    <link rel="stylesheet" href="style.css?v=6">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="index.html" class="logo">Aura Beauty</a>
+        <ul class="nav-links">
+            <li><a href="index.html">Shop All</a></li>
+            <li><a href="treatments.html">Treatments</a></li>
+            <li><a href="advice.html" class="active">Beauty Advice</a></li>
+            <li><a href="stores.html">Stores</a></li>
+        </ul>
+        <div class="nav-right">
+            <a href="#" class="btn-outline-blue">Book Facial</a>
+            <a href="#" class="btn-solid-blue">Sign In</a>
+        </div>
+    </nav>
+
+    <!-- Triptych Hero Section -->
+    <header class="triptych-section" style="position: relative;">
+        <!-- Background Image Columns -->
+        <div class="triptych-column" style="background-image: url('repair.png');"></div>
+        <div class="triptych-column" style="background-image: url('protect.png');"></div>
+        <div class="triptych-column" style="background-image: url('glow.png');"></div>
+        
+        <!-- Hero Text Overlay -->
+        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: white; z-index: 10; width: 90%; max-width: 800px; pointer-events: none;">
+            <h1 style="font-family: var(--font-heading); font-size: 4rem; margin-bottom: 1rem; text-shadow: 0 4px 15px rgba(0,0,0,0.6);">Beauty Advice</h1>
+            <p style="font-size: 1.2rem; margin: 0 auto; text-shadow: 0 2px 10px rgba(0,0,0,0.8);">Expert tips, skincare routines, and dermatological insights to help you achieve your healthiest skin yet.</p>
+        </div>
+    </header>
+
+    <!-- Skin Profiles Section -->
+    <section class="skin-profiles-section" style="padding: 5rem 2rem; background: var(--color-bg-light); text-align: center;">
+        <h2 style="font-family: var(--font-heading); font-size: 2.5rem; margin-bottom: 3rem;">Understanding Skin Profiles</h2>
+        <div class="skin-profiles-list" style="max-width: 1000px; margin: 0 auto; text-align: left; display: flex; flex-direction: column; gap: 5rem;">
+            <!-- Profile 1: Image Left -->
+            <div class="profile-row" style="display: flex; flex-wrap: wrap; align-items: center; gap: 4rem;">
+                <div class="profile-image-container" style="flex: 1; min-width: 300px; position: relative; border-radius: 12px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.08);">
+                    <img src="texture_acne.png" alt="Oily & Acne-Prone Skin Texture" style="width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; transition: transform 0.5s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                    <div class="hotspot" style="top: 45%; left: 50%;">
+                        <div class="hotspot-pulse"></div>
+                        <div class="tooltip">T-Zone Shine & Breakouts</div>
+                    </div>
+                </div>
+                <div class="profile-details" style="flex: 1; min-width: 300px;">
+                    <h3 style="font-family: var(--font-heading); font-size: 2.2rem; color: var(--color-dark-blue); margin-bottom: 1rem;">Oily & Acne-Prone</h3>
+                    <p style="font-size: 1.15rem; color: var(--color-text-muted); line-height: 1.7;">Characterized by excess sebum, enlarged pores, and frequent blemishes. Requires balancing and non-comedogenic hydration.</p>
+                </div>
+            </div>
+
+            <!-- Profile 2: Image Right -->
+            <div class="profile-row" style="display: flex; flex-wrap: wrap; align-items: center; gap: 4rem; flex-direction: row-reverse;">
+                <div class="profile-image-container" style="flex: 1; min-width: 300px; position: relative; border-radius: 12px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.08);">
+                    <img src="texture_hyper.png" alt="Hyperpigmentation Skin Texture" style="width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; transition: transform 0.5s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                    <div class="hotspot" style="top: 55%; left: 35%;">
+                        <div class="hotspot-pulse"></div>
+                        <div class="tooltip">Sun Spots & Uneven Tone</div>
+                    </div>
+                </div>
+                <div class="profile-details" style="flex: 1; min-width: 300px;">
+                    <h3 style="font-family: var(--font-heading); font-size: 2.2rem; color: var(--color-dark-blue); margin-bottom: 1rem;">Hyperpigmentation</h3>
+                    <p style="font-size: 1.15rem; color: var(--color-text-muted); line-height: 1.7;">Dark patches caused by sun exposure or post-inflammatory marks. Needs brightening agents like Vitamin C and diligent SPF.</p>
+                </div>
+            </div>
+
+            <!-- Profile 3: Image Left -->
+            <div class="profile-row" style="display: flex; flex-wrap: wrap; align-items: center; gap: 4rem;">
+                <div class="profile-image-container" style="flex: 1; min-width: 300px; position: relative; border-radius: 12px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.08);">
+                    <img src="texture_mature.png" alt="Mature & Dry Skin Texture" style="width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; transition: transform 0.5s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                    <div class="hotspot" style="top: 40%; left: 60%;">
+                        <div class="hotspot-pulse"></div>
+                        <div class="tooltip">Fine Lines & Loss of Elasticity</div>
+                    </div>
+                </div>
+                <div class="profile-details" style="flex: 1; min-width: 300px;">
+                    <h3 style="font-family: var(--font-heading); font-size: 2.2rem; color: var(--color-dark-blue); margin-bottom: 1rem;">Mature & Dry</h3>
+                    <p style="font-size: 1.15rem; color: var(--color-text-muted); line-height: 1.7;">Lacks moisture and natural oils, showing fine lines. Thrives on rich ceramides, peptides, and deep moisturization.</p>
+                </div>
+            </div>
+
+            <!-- Profile 4: Image Right -->
+            <div class="profile-row" style="display: flex; flex-wrap: wrap; align-items: center; gap: 4rem; flex-direction: row-reverse;">
+                <div class="profile-image-container" style="flex: 1; min-width: 300px; position: relative; border-radius: 12px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.08);">
+                    <img src="texture_sensitive.png" alt="Sensitive Skin Texture" style="width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; transition: transform 0.5s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                    <div class="hotspot" style="top: 50%; left: 70%;">
+                        <div class="hotspot-pulse"></div>
+                        <div class="tooltip">Redness & Reactivity</div>
+                    </div>
+                </div>
+                <div class="profile-details" style="flex: 1; min-width: 300px;">
+                    <h3 style="font-family: var(--font-heading); font-size: 2.2rem; color: var(--color-dark-blue); margin-bottom: 1rem;">Sensitive & Reactive</h3>
+                    <p style="font-size: 1.15rem; color: var(--color-text-muted); line-height: 1.7;">Easily irritated with visible redness or compromised barrier. Benefits from soothing ingredients like Centella and Aloe.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <script src="main.js"></script>
+</body>
+</html>
